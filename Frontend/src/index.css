@@ -1,0 +1,406 @@
+/* styles.css */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  /* font-family: "Poppins"; */
+}
+
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  background-color: #fcfdfd;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  height: 100%;
+  max-width: 80%;
+  margin: 5rem auto;
+  flex-direction: row;
+  gap: 1rem; /* add a gap between the two sections */
+  font-size: 1.5rem;
+  /* border: 2px solid rgb(5, 27, 70); */
+  background-color: hsl(0, 0%, 100%);
+  font-family: "popins";
+
+  border-radius: 2rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
+  gap: 0.25rem;
+  padding: 2rem;
+  max-width: 60%;
+
+  flex: 1; /* take up equal space */
+}
+
+.intro {
+  flex: 1; /* take up equal space */
+}
+
+.intro {
+  margin-top: 3rem;
+  max-width: 40%;
+  font-size: 1.5rem;
+}
+
+#welcomeimg {
+  height: 90%;
+}
+
+.link-underline {
+  text-decoration: none !important;
+  color: #f8f9fa;
+}
+
+.link-underline:hover {
+  text-decoration: none !important;
+  color: #259496;
+}
+
+/* login page */
+.login-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.loginleft {
+  width: 40%;
+  height: 100vh;
+  margin-top: 4rem;
+  background-image: url(""); /* add your background image URL here */
+  background-size: cover;
+  background-position: center;
+}
+
+.loginright {
+  width: 60%;
+  padding: 20px;
+}
+
+.login-form {
+  max-width: 80%;
+  margin: 0 0 0 20rem;
+  height: 100%;
+  background-color: #f9f9f9;
+  border: 4px solid #259496;
+  border-radius: 1rem;
+}
+
+.login-form h1 {
+  margin: 2rem 0;
+  font-size: 25px;
+  font-weight: bold;
+  color: #110536;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  justify-content: left;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 80%;
+  height: 40px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 2rem;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #259496;
+  box-shadow: 0 0 10px rgba(142, 201, 213, 0.1);
+  border: 2px solid #259496;
+}
+
+button[type="submit"] {
+  width: 60%;
+  height: 4rem;
+  padding: 10px;
+  margin-bottom: 2rem;
+  font-size: 16px;
+  font-weight: bold;
+  color: #f7f9fb;
+  background-color: #83b8ed;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #f9f5fa;
+  color: #0f5f64;
+  border: 2px solid #0f5f64;
+  box-shadow: 0 0 5px rgb(114, 205, 223), 0 0 15px rgb(114, 205, 223),
+    0 0 30px rgb(114, 205, 223);
+}
+
+.studentlogin-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #fdfdfb;
+}
+
+#facultyloginimg {
+  height: 90vh;
+  margin-left: 12rem;
+}
+
+.profilebtn {
+  margin: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.fbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  font-size: 1rem;
+  margin-right: 4%;
+  width: 5rem;
+  color: #ffffff;
+  border: none;
+  background-color: #1282a2;
+  font-family: "popins";
+  border-radius: 8%;
+}
+
+.fbtn:hover {
+  color: #ffffff;
+  background-color: #001f54;
+  border: none !important;
+  text-decoration: underline;
+}
+
+#loginbtn {
+  color: white;
+  background-color: #259496;
+  text-decoration: none !important;
+  width: 40%;
+  height: 2.5rem;
+  padding: 10px;
+  margin-bottom: 2rem;
+  font-size: 16px;
+  font-weight: bold;
+  color: #f7f9fb;
+  background-color: #259496;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+}
+
+#loginbtn:hover {
+  background-color: #001f54;
+  color: #ffffff;
+  border: 2px solid #034078;
+  box-shadow: 0 0 5px #034078, 0 0 15px #034078, 0 0 30px #034078;
+}
+/* navbar */
+
+.navbar {
+  background-color: #001f54;
+  height: 4.5rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand img {
+  width: 8rem;
+  height: 4rem;
+  margin-left: 2rem;
+}
+
+.navbar-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-start {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.navbar-item {
+  margin-right: 40px;
+  font-size: 20px;
+  color: #fefcfb;
+  text-decoration: none;
+}
+
+.navbar-item:hover {
+  color: #6b6767;
+}
+
+.navbar-burger {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navbar-burger {
+    display: block;
+    cursor: pointer;
+  }
+  .navbar-menu {
+    display: none;
+  }
+  .navbar-menu.is-active {
+    display: block;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    background-color: #2f1044;
+    padding: 1rem;
+  }
+  .navbar-start {
+    flex-direction: column;
+  }
+  .navbar-end {
+    flex-direction: column;
+  }
+  .navbar-item {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
+
+
+/* student dashboard */
+
+.dashboard {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Top Section - Student Details */
+.top-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.name-box {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Pie Chart Section */
+.piechart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pie-chart-section {
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.attendance-data {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.attendance-data h4 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+/* Timetable Section */
+.timetable {
+  margin-top: 20px;
+  background-color: #f0f9ff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.timetable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.timetable th, .timetable td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+.timetable th {
+  background-color: #007bff;
+  color: white;
+}
+
+.timetable td {
+  background-color: #f0f9ff;
+}
