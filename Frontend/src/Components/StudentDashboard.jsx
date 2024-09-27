@@ -1,33 +1,56 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-// import './StudentDashboard.css';  // Import CSS for styling
+import axios from 'axios'; 
 
 const StudentDashboard = () => {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
 
-  useEffect(() => {
-    // Mock data for students
-    const studentsData = [
-      { id: 1, name: 'John Doe', rollNo: '12345', college: 'ABC College', section: 'A', email: 'john@example.com', profilePic: 'https://via.placeholder.com/150' },
-      // Add more student data here...
-    ];
-    setStudents(studentsData);
+  // useEffect(() => {
+  //   // Mock data for students
+  //   const studentsData = [
+  //     { id: 1, name: 'John Doe', rollNo: '12345', college: 'ABC College', section: 'A', email: 'john@example.com', profilePic: 'https://via.placeholder.com/150' },
+  //   ];
+  //   setStudents(studentsData);
 
-    // Mock data for attendance
-    const attendanceData = [
-      { name: 'Present', value: 100 },  // Total present is 100 in the image
-      { name: 'Absent', value: 0 },     // Total absent is 0
-    ];
-    setAttendance(attendanceData);
+  //   // Mock data for attendance
+  //   const attendanceData = [
+  //     { name: 'Present', value: 100 },
+  //     { name: 'Absent', value: 0 },
+  //   ];
+  //   setAttendance(attendanceData);
+  // }, []);
+
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    axios.get('http://localhost/api/data')
+      .then(response => {
+        setStudents(response.data);
+      })
+      .catch(error => {
+        setError('Failed to fetch student data');
+        console.error(error);
+      });
+  
+    // axios.get('https://api.example.com/attendance')
+    //   .then(response => {
+    //     setAttendance(response.data);
+    //   })
+    //   .catch(error => {
+    //     setError('Failed to fetch attendance data');
+    //     console.error(error);
+    //   });
   }, []);
+
 
   const COLORS = ['#0088FE', '#FF8042'];  // Colors for the pie chart
 
   const renderStudentDetails = () => {
     return students.map((student) => (
-      <div key={student.id} className="student-detail">
+      <div  key={student.RollNO}  className="student-detail">
         <div className="profile-section">
           <img src={student.profilePic} alt={`${student.name} profile`} className="profile-pic" />
           <div className="name-box">
@@ -37,21 +60,23 @@ const StudentDashboard = () => {
             <p>Section: {student.section}</p>
             <p>Email: {student.email}</p>
           </div>
+            
+  
+          {error && <p>{error}</p>}
         </div>
       </div>
+
     ));
   };
 
-
   const renderPieChart = () => {
     return (
-      <>
       <div className="piechart">
         <ResponsiveContainer width="100%" height={200}>
           <PieChart>
             <Pie data={attendance} dataKey="value" cx="50%" cy="50%" outerRadius={80} label={(entry) => entry.name}>
               {attendance.map((entry, index) => (
-                <Cell key={`cell-${index}} fill={COLORS[index % COLORS.length]`} />
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
           </PieChart>
@@ -65,7 +90,6 @@ const StudentDashboard = () => {
           </ul>
         </div>
       </div>
-      </>
     );
   };
 
@@ -134,16 +158,29 @@ const StudentDashboard = () => {
 
   return (
     <div className="dashboard">
-      <div className="top-section">
-        {renderStudentDetails()}
+      {/* Sidebar */}
+      <div className="sidebar">
+        <ul>
+          <li>Dashboard</li>
+          <li>Attendance</li>
+          <li>Timetable</li>
+          <li>Marks</li>
+        </ul>
       </div>
-      <div className="middle-section">
-        <div className="pie-chart-section">
-          {renderPieChart()}
+
+      {/* Main Content */}
+      <div className="main-content">
+        <div className="top-section">
+          {renderStudentDetails()}
         </div>
-      </div>
-      <div className="timetable-section">
-        {renderTimetable()}
+        <div className="middle-section">
+          <div className="pie-chart-section">
+            {renderPieChart()}
+          </div>
+        </div>
+        <div className="timetable-section">
+          {renderTimetable()}
+        </div>
       </div>
     </div>
   );

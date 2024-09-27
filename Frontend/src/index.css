@@ -317,17 +317,19 @@ button[type="submit"]:hover {
 
 /* student dashboard */
 
-.dashboard {
+ .dashboard {
   max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
   background-color: white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-}
+} 
 
 /* Top Section - Student Details */
-.top-section {
+/* . */
+
+top-section {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -403,4 +405,4 @@ button[type="submit"]:hover {
 
 .timetable td {
   background-color: #f0f9ff;
-}
+} 
