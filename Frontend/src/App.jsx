@@ -22,7 +22,7 @@ function App() {
 
         <Route path="/admindashboard" element={<AdminDashboard/>}></Route>
         <Route path="/facultydashboard" element={<FacultyDashboard/>}></Route>
-        <Route path="/studentdashboard" element={<StudentDashboard/>}></Route>
+        <Route path="/studentdashboard/:RollNO" element={<StudentDashboard/>}></Route>
       </Routes>
     
     </BrowserRouter>

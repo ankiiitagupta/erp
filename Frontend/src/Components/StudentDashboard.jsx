@@ -1,10 +1,11 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import axios from 'axios'; 
+import { useParams } from 'react-router-dom';
+
 
 const StudentDashboard = () => {
+  const { RollNO } = useParams(); // Get Roll number from URL
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
 
@@ -26,16 +27,18 @@ const StudentDashboard = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:3006/api/data')
+    // Fetch student data using the Roll number
+    console.log("roll no is =" + RollNO);
+    axios.get(`http://localhost:3006/api/data?RollNO=${RollNO}`)
       .then(response => {
-        console.log(response.data); // Add this line to check the actual data structure
+        console.log(response.data); // Check the actual data structure
         setStudents(response.data);
       })
       .catch(error => {
         setError('Failed to fetch student data');
         console.error(error);
       });
-  }, []);
+  }, [RollNO]);
   
 
 
