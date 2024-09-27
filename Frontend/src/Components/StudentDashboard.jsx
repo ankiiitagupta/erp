@@ -26,48 +26,39 @@ const StudentDashboard = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost/api/data')
+    axios.get('http://localhost:3006/api/data')
       .then(response => {
+        console.log(response.data); // Add this line to check the actual data structure
         setStudents(response.data);
       })
       .catch(error => {
         setError('Failed to fetch student data');
         console.error(error);
       });
-  
-    // axios.get('https://api.example.com/attendance')
-    //   .then(response => {
-    //     setAttendance(response.data);
-    //   })
-    //   .catch(error => {
-    //     setError('Failed to fetch attendance data');
-    //     console.error(error);
-    //   });
   }, []);
+  
 
 
   const COLORS = ['#0088FE', '#FF8042'];  // Colors for the pie chart
 
   const renderStudentDetails = () => {
     return students.map((student) => (
-      <div  key={student.RollNO}  className="student-detail">
+      <div key={student.RollNO} className="student-detail">
         <div className="profile-section">
-          <img src={student.profilePic} alt={`${student.name} profile`} className="profile-pic" />
+          {/* <img src="https://via.placeholder.com/150" alt={`${student.Stud_name} profile`} className="profile-pic" /> */}
           <div className="name-box">
-            <h3>{student.name}</h3>
-            <p>Roll No: {student.rollNo}</p>
-            <p>College: {student.college}</p>
-            <p>Section: {student.section}</p>
-            <p>Email: {student.email}</p>
+            <h3>{student.Stud_name}</h3>
+            <p>Roll No: {student.RollNO}</p>
+            <p>Email: {student.Stud_Email}</p>
+            <p>Section: {student.Section}</p>
           </div>
-            
   
           {error && <p>{error}</p>}
         </div>
       </div>
-
     ));
   };
+  
 
   const renderPieChart = () => {
     return (

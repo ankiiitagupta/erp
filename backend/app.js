@@ -1,11 +1,15 @@
 const express = require("express");
 const mysql = require("mysql");
+const cors = require("cors");
+
 const app = express();
-const port = 3006;
+const port = 3006; // Make sure to use the same port here
+
+app.use(cors());
 
 const db = mysql.createConnection({
-  host: "192.168.224.78",
-  user: "ankita",
+  host: "localhost",
+  user: "root",
   password: "admin",
   database: "erp",
 });
@@ -17,26 +21,15 @@ db.connect((err) => {
   }
   console.log("Connected to MySQL DB");
 });
-const createTableQuery = `
-    CREATE TABLE IF NOT EXISTS test123 (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      email VARCHAR(255) NOT NULL UNIQUE
-    )
-  `;
-
-db.query(createTableQuery, (err, result) => {
-  if (err) throw err;
-  console.log("Table created or already exists");
-});
 
 app.get("/api/data", (req, res) => {
-  db.query("SELECT * FROM student", (err, results) => {
+  db.query("SELECT * FROM student WHERE RollNO = 1", (err, results) => {
     if (err) throw err;
     res.json(results);
   });
 });
 
+// Start the server on the specified port
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
