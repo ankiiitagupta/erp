@@ -1,25 +1,23 @@
-import React from 'react';
-import '../index.css';
-import '../assets/students.svg';
-import Login from '../Components/Login.jsx';
-import Welcome from '../Components/Welcome';
-
+import React from "react";
+import "../index.css";
+import "../assets/students.svg";
+import Login from "../Components/Login.jsx";
+import Header from "../Components/Header.jsx";
 
 const Home = () => {
   return (
     <>
-    <div className="container poppins-regular">
-      {/* <div className="intro">
-        <Welcome/>
-      </div> */}
-      <div className="content">
-        <Login/>
-      </div>
-      
+      <div className="main">
+        <Header />
+
+        <div className="container poppins-regular">
+          <div className="content">
+            <Login />
+          </div>
+        </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Home
-
+export default Home;
