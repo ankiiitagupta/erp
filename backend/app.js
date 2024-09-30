@@ -22,8 +22,22 @@ db.connect((err) => {
   console.log("Connected to MySQL DB");
 });
 
+app.get("/api/login", (req, res) => {
+  const { LoginID, PasswordHash } = req.query;
+  db.query("SELECT * FROM student WHERE LoginID = ? AND PasswordHash = ?", [LoginID, PasswordHash], (err, results) => {
+    if (err) throw err;
+    if (results.length > 0) {
+      res.json({ success: true, student: results[0] });
+    } else {
+      res.json({ success: false });
+    }
+  });
+});
+
+
 app.get("/api/data", (req, res) => {
-  db.query("SELECT * FROM student WHERE RollNO = 1", (err, results) => {
+  const {RollNO} = req.query;
+  db.query("SELECT * FROM student WHERE RollNO = ?",[RollNO] ,  (err, results) => {
     if (err) throw err;
     res.json(results);
   });
