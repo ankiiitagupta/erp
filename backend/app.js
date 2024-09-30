@@ -21,7 +21,7 @@ db.connect((err) => {
   }
   console.log("Connected to MySQL DB");
 });
-
+//login Login
 app.get("/api/login", (req, res) => {
   const { LoginID, PasswordHash } = req.query;
   db.query("SELECT * FROM student WHERE LoginID = ? AND PasswordHash = ?", [LoginID, PasswordHash], (err, results) => {
@@ -34,7 +34,7 @@ app.get("/api/login", (req, res) => {
   });
 });
 
-
+//Student data
 app.get("/api/data", (req, res) => {
   const {RollNO} = req.query;
   db.query("SELECT * FROM student WHERE RollNO = ?",[RollNO] ,  (err, results) => {
@@ -42,6 +42,19 @@ app.get("/api/data", (req, res) => {
     res.json(results);
   });
 });
+
+//Total attendence of student
+app.get("/api/totalattendence", (req, res) => {
+  const {RollNO} = req.query;
+  db.query("SELECT COUNT(LectureNumber) AS TotalLectures, SUM(CASE WHEN AttendanceStatus = 1 THEN 1 ELSE 0 END) AS PresentLectures FROM Attendance WHERE RollNO = ? GROUP BY ?;",[RollNO,RollNO] ,  (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
+
+
+
+
 
 // Start the server on the specified port
 app.listen(port, () => {
