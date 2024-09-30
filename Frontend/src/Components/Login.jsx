@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../axios.js'; 
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -21,7 +22,7 @@ function Login() {
     }
   
     try {
-      const response = await fetch(`http://localhost:3006/api/login?LoginID=${username}&PasswordHash=${password}`);
+      const response = await fetch(`${API_URL}/api/login?LoginID=${username}&PasswordHash=${password}`);
       const result = await response.json();
       if (result.success) {
         // Assume the response includes the Roll number
