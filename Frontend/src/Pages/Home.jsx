@@ -9,9 +9,9 @@ const Home = () => {
   return (
     <>
     <div className="container poppins-regular">
-      <div className="intro">
+      {/* <div className="intro">
         <Welcome/>
-      </div>
+      </div> */}
       <div className="content">
         <Login/>
       </div>

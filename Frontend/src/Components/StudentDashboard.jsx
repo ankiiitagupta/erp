@@ -8,20 +8,20 @@ const StudentDashboard = () => {
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
 
-  // useEffect(() => {
-  //   // Mock data for students
-  //   const studentsData = [
-  //     { id: 1, name: 'John Doe', rollNo: '12345', college: 'ABC College', section: 'A', email: 'john@example.com', profilePic: 'https://via.placeholder.com/150' },
-  //   ];
-  //   setStudents(studentsData);
+  useEffect(() => {
+    // Mock data for students
+    // const studentsData = [
+    //   { id: 1, name: 'John Doe', rollNo: '12345', college: 'ABC College', section: 'A', email: 'john@example.com', profilePic: 'https://via.placeholder.com/150' },
+    // ];
+    // setStudents(studentsData);
 
-  //   // Mock data for attendance
-  //   const attendanceData = [
-  //     { name: 'Present', value: 100 },
-  //     { name: 'Absent', value: 0 },
-  //   ];
-  //   setAttendance(attendanceData);
-  // }, []);
+    // Mock data for attendance
+    const attendanceData = [
+      { name: 'Present', value: 100 },
+      { name: 'Absent', value: 0 },
+    ];
+    setAttendance(attendanceData);
+  }, []);
 
   const [error, setError] = useState(null);
 
@@ -53,6 +53,7 @@ const StudentDashboard = () => {
             <p>Section: {student.Section}</p>
           </div>
   
+
           {error && <p>{error}</p>}
         </div>
       </div>
