@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+// import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import axios from 'axios'; 
 import { useParams } from 'react-router-dom';
 import { API_URL } from '../axios.js'; 
 import Header from './Header.jsx';
-
+import PieChart  from './PieChart.jsx';
+import Sidebar from './Sidebar.jsx'; 
 
 const StudentDashboard = () => {
   const { RollNO } = useParams(); // Get Roll number from URL
@@ -36,6 +37,7 @@ const StudentDashboard = () => {
       });
   }, [RollNO]);
 
+
   const COLORS = ['#0088FE', '#FF8042'];  // Colors for the pie chart
 
   const renderStudentDetails = () => {
@@ -45,9 +47,9 @@ const StudentDashboard = () => {
           <img src="https://via.placeholder.com/150" alt={`${student.Stud_name} profile`} className="profile-pic" />
           <div className="name-box">
             <h3>{student.Stud_name}</h3>
-            <p>Roll No: {student.RollNO}</p>
-            <p>Email: {student.Stud_Email}</p>
-            <p>Section: {student.Section}</p>
+            <p>Roll No: {student.RollNO}
+            <br/>Email: {student.Stud_Email}
+            <br/>Section: {student.Section}</p>
           </div>
   
 
@@ -60,21 +62,10 @@ const StudentDashboard = () => {
 
   const renderPieChart = () => {
     return attendance.map((attend) => (
-
-      
       <div className="piechart">
-        <ResponsiveContainer width="100%" height={200}>
-          <PieChart>
-            <Pie data={attendance} dataKey="value" cx="50%" cy="50%" outerRadius={80} label={(entry) => entry.name}>
-              {attendance.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+        <h4>Attendance Details</h4>
+        <PieChart/>
         <div key={attend.RollNO} className="attendance-data">
-        
-          <h4>Attendance Details</h4>
           <ul>
             <li>Total lectures: {attend.TotalLectures}</li>
             <li>Present: {attend.PresentLectures}</li>
@@ -151,6 +142,7 @@ const StudentDashboard = () => {
   return (
     <div className="dashboard">
       {/* Sidebar */}
+      <Sidebar />
       
       <Header/>
       {/* Main Content */}
@@ -170,5 +162,6 @@ const StudentDashboard = () => {
     </div>
   );
 };
+
 
 export default StudentDashboard;

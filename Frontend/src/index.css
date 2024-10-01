@@ -178,7 +178,7 @@ body {
 
 
 /* student dashboard */
-
+/* 
  .dashboard {
   max-width: 1200px;
   margin: 6rem auto;
@@ -189,9 +189,8 @@ body {
 } 
 
 /* Top Section - Student Details */
-/* . */
 
-.top-section {
+/* .top-section {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -215,10 +214,10 @@ body {
 .name-box {
   font-size: 1.5rem;
   font-weight: bold;
-}
+} */
 
 /* Pie Chart Section */
-.piechart {
+/* .piechart {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -239,10 +238,10 @@ body {
 .attendance-data h4 {
   font-size: 1.2rem;
   margin-bottom: 10px;
-}
+} */
 
 /* Timetable Section */
-.timetable {
+/* .timetable {
   margin-top: 20px;
   background-color: #f0f9ff;
   padding: 20px;
@@ -267,4 +266,119 @@ body {
 
 .timetable td {
   background-color: #f0f9ff;
-} 
+}  */ 
+
+/* StudentDashboard.css */
+
+.dashboard {
+  display: flex; /* Use flexbox to create a sidebar and main content layout */
+  height: 100vh; /* Full height of the viewport */
+
+}
+
+.sidebar {
+  width: 13rem; /* Width of the sidebar */
+  background-color: #001f54; /* Dark background for the sidebar */
+  padding: 1rem;
+  color: white;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sidebar ul {
+  list-style-type: none; /* Remove default list styles */
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 1rem 0; /* Margin between sidebar items */
+}
+
+.sidebar ul li a {
+  color: white; /* Link color */
+  text-decoration: none; /* Remove underline from links */
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+.main-content {
+  flex-grow: 1; /* Take remaining space after sidebar */
+  padding: 20px; /* Padding for the main content */
+  background-color: #f9f9f9; /* Light background for main content */
+  overflow-y: auto; /* Enable scrolling if content overflows */
+  margin-top:5rem;
+}
+
+.top-section {
+  margin-bottom: 20px; /* Margin below the student details */
+  
+}
+
+.student-detail {
+  display: flex; /* Flexbox for profile section */
+  align-items: center; /* Center items vertically */
+  background-color: white; /* White background for details */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.profile-section {
+  display: flex; /* Flexbox for profile image and details */
+  align-items: center; /* Center items vertically */
+  margin:1rem 0;
+  
+}
+
+.profile-pic {
+  border-radius: 60%; /* Circular profile picture */
+  margin: 0 4rem; /* Space between image and text */
+}
+
+.name-box {
+  flex-grow: 1; /* Allow name box to grow */
+}
+
+
+.pie-chart-section {
+  margin: 20px 0; /* Margin for pie chart */
+}
+
+.piechart {
+  background-color: white; /* White background for pie chart */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding for pie chart */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.attendance-data {
+  margin-top: 15px; /* Margin above attendance details */
+}
+
+.timetable {
+  margin-top: 20px; /* Margin above timetable */
+  background-color: white; /* White background for timetable */
+  border-radius: 8px; /* Rounded corners */
+  padding: 15px; /* Padding for timetable */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+table {
+  width: 100%; /* Full width for table */
+  border-collapse: collapse; /* Remove space between borders */
+}
+
+th, td {
+  border: 1px solid #ddd; /* Border for table cells */
+  padding: 8px; /* Padding for cells */
+  text-align: left; /* Align text to the left */
+}
+
+th {
+  background-color: #001f54; /* Dark background for table headers */
+  color: white; /* White text for headers */
+}
