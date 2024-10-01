@@ -36,8 +36,22 @@ app.get("/api/login", (req, res) => {
 
 //Student data
 app.get("/api/data", (req, res) => {
-  const {RollNO} = req.query;
-  db.query("SELECT * FROM student WHERE RollNO = ?",[RollNO] ,  (err, results) => {
+  const { RollNO } = req.query;
+  db.query(`
+    SELECT student.RollNo, 
+       student.Stud_name,
+       student.Stud_Gender, 
+       student.Stud_DOB, 
+       enrollment.EnrollmentID, 
+       student.Section, 
+       course.CourseName, 
+       department.DepartmentName
+FROM student 
+JOIN enrollment ON student.RollNo = enrollment.RollNo
+JOIN course ON enrollment.CourseID = course.CourseID
+JOIN department ON course.DepartmentID = department.DepartmentID
+WHERE student.RollNo = 2;
+`, [RollNO], (err, results) => {
     if (err) throw err;
     res.json(results);
   });
@@ -45,8 +59,8 @@ app.get("/api/data", (req, res) => {
 
 //Total attendence of student
 app.get("/api/totalattendence", (req, res) => {
-  const {RollNO} = req.query;
-  db.query("SELECT COUNT(LectureNumber) AS TotalLectures, SUM(CASE WHEN AttendanceStatus = 1 THEN 1 ELSE 0 END) AS PresentLectures FROM Attendance WHERE RollNO = ? GROUP BY ?;",[RollNO,RollNO] ,  (err, results) => {
+  const { RollNO } = req.query;
+  db.query("SELECT COUNT(LectureNumber) AS TotalLectures, SUM(CASE WHEN AttendanceStatus = 1 THEN 1 ELSE 0 END) AS PresentLectures FROM Attendance WHERE RollNO = ? GROUP BY ?;", [RollNO, RollNO], (err, results) => {
     if (err) throw err;
     res.json(results);
   });

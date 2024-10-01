@@ -6,7 +6,8 @@ import {
   MDBRow,
   MDBCol,
   MDBInput
-} from 'mdb-react-ui-kit';
+}
+from 'mdb-react-ui-kit';
 import { API_URL } from '../axios.js';
 
 function Login() {
