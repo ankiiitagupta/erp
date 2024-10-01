@@ -64,8 +64,9 @@ const StudentDashboard = () => {
     return attendance.map((attend) => (
       <div className="piechart">
         <h4>Attendance Details</h4>
-        <PieChart/>
+     
         <div key={attend.RollNO} className="attendance-data">
+        <PieChart/>
           <ul>
             <li>Total lectures: {attend.TotalLectures}</li>
             <li>Present: {attend.PresentLectures}</li>
