@@ -52,6 +52,34 @@ app.get("/api/totalattendence", (req, res) => {
   });
 });
 
+//Time Table of current date
+app.get("/api/todaystimetable", (req, res) => {
+  const { RollNO } = req.query;
+  const today = new Date();
+  const dayOfWeek = today.toLocaleString("en-US", { weekday: "long" });
+
+  db.query(
+    `SELECT DISTINCT t.TimetableID, t.SubjectID, s.SubjectName, f.Faculty_Name, t.DayOfWeek, t.StartTime, t.EndTime, t.RoomNumber, t.LectureNumber, s.SubjectID AS SubjectCode 
+     FROM Student AS st 
+     JOIN Enrollment AS e ON st.RollNO = e.RollNO 
+     JOIN Course AS c ON e.CourseID = c.CourseID 
+     JOIN Timetable AS t ON c.DepartmentID = t.DepartmentID 
+        AND t.YearOfStudy = st.Stud_YearOfStudy 
+        AND t.Section = st.Section 
+     JOIN Subject AS s ON t.SubjectID = s.SubjectID 
+     JOIN Faculty AS f ON s.FacultyID = f.FacultyID 
+     WHERE st.RollNO = ? AND t.DayOfWeek = ? 
+     ORDER BY t.StartTime;`,
+    [RollNO, dayOfWeek],
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Database query failed");
+        return;
+      }
+      res.json(results);
+    }
+  );
+});
 
 
 
