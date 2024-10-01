@@ -347,6 +347,10 @@ body {
 .pie-chart-section {
   margin: 20px 0; /* Margin for pie chart */
 }
+.pgraphcircle{
+  height: 100%;
+  width: 100%;
+}
 
 .piechart {
   background-color: white; /* White background for pie chart */
@@ -355,8 +359,26 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
+.piechartrow{
+  height: 17rem;
+  width: 40%;
+}
+
+.attdetail{
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  
+}
+
 .attendance-data {
-  margin-top: 15px; /* Margin above attendance details */
+  display:flex;
+  flex-direction: row;
+  margin-top: 1rem; /* Margin above attendance details */
+  justify-content: space-between;
+  margin-left:6rem;
+  margin-right: 12rem;
 }
 
 .timetable {
