@@ -3,6 +3,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import axios from 'axios'; 
 import { useParams } from 'react-router-dom';
 import { API_URL } from '../axios.js'; 
+import Header from './Header.jsx';
 
 
 const StudentDashboard = () => {
@@ -78,7 +79,7 @@ const StudentDashboard = () => {
             <li>Total lectures: {attend.TotalLectures}</li>
             <li>Present: {attend.PresentLectures}</li>
             <li>Absent: {attend.TotalLectures - attend.PresentLectures}</li>
-          </ul>
+          </ul> 
         </div>
       </div>
     ));
@@ -151,7 +152,7 @@ const StudentDashboard = () => {
     <div className="dashboard">
       {/* Sidebar */}
       
-
+      <Header/>
       {/* Main Content */}
       <div className="main-content">
         <div className="top-section">
