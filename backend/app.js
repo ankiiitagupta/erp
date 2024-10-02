@@ -50,7 +50,7 @@ FROM student
 JOIN enrollment ON student.RollNo = enrollment.RollNo
 JOIN course ON enrollment.CourseID = course.CourseID
 JOIN department ON course.DepartmentID = department.DepartmentID
-WHERE student.RollNo = 2;
+WHERE student.RollNo = ?;
 `, [RollNO], (err, results) => {
     if (err) throw err;
     res.json(results);
