@@ -38,23 +38,23 @@ app.get("/api/login", (req, res) => {
 app.get("/api/data", (req, res) => {
   const { RollNO } = req.query;
   db.query(`
-    SELECT student.RollNo, 
-       student.Stud_name,
-       student.Stud_Gender, 
-       student.Stud_DOB, 
-       enrollment.EnrollmentID, 
-       student.Section, 
-       course.CourseName, 
-       department.DepartmentName
-FROM student 
-JOIN enrollment ON student.RollNo = enrollment.RollNo
-JOIN course ON enrollment.CourseID = course.CourseID
-JOIN department ON course.DepartmentID = department.DepartmentID
-WHERE student.RollNo = ?;
-`, [RollNO], (err, results) => {
-    if (err) throw err;
-    res.json(results);
-  });
+          SELECT student.RollNO, 
+            student.Stud_name,
+            student.Stud_Gender, 
+            student.Stud_DOB, 
+            enrollment.EnrollmentID, 
+            student.Section, 
+            course.CourseName, 
+            department.DepartmentName
+      FROM student 
+      JOIN enrollment ON student.RollNO = enrollment.RollNO
+      JOIN course ON enrollment.CourseID = course.CourseID
+      JOIN department ON course.DepartmentID = department.DepartmentID
+      WHERE student.RollNO = ?;
+      `, [RollNO], (err, results) => {
+          if (err) throw err;
+          res.json(results);
+        });
 });
 
 //Total attendence of student
