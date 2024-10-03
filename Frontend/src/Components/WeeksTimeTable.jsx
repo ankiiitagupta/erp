@@ -1,7 +1,59 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import {API_URL} from "../axios"; // Add this import
+import axios from "axios";
 
-const WeeksTimeTable = (props) => {
-  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]; // Assuming the timetable runs from Monday to Friday
+const WeeksTimeTable = ({ RollNO }) => {
+  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const [periods, setPeriods] = useState(null);
+  const [error, setError] = useState(null); // Declare error state
+  const timeSlots = [
+    "09:45 AM - 10:35 AM",
+    "10:35 AM - 11:25 AM",
+    "11:25 AM - 12:20 PM",
+    "12:20 PM - 01:10 PM",
+    "02:05 PM - 02:55 PM",
+    "03:00 PM - 03:50 PM",
+    "03:55 PM - 04:45 PM",
+  ];
+
+  useEffect(() => {
+    // Fetch timetable data
+    axios
+      .get(`${API_URL}/api/weekstimetable?RollNO=${RollNO}`)
+      .then((response) => {
+        console.log(response.data);
+        setPeriods(response.data);
+      })
+      .catch((error) => {
+        setError("Failed to fetch timetable data");
+        console.error(error);
+      });
+  }, [RollNO]);
+
+  // Function to map lecture start time to the appropriate period
+  const getPeriodForLecture = (startTime) => {
+    switch (startTime) {
+      case "09:00:00":
+        return 0;
+      case "10:00:00":
+        return 1;
+      case "11:00:00":
+        return 2;
+      case "12:00:00":
+        return 3;
+      case "14:00:00":
+        return 4;
+      case "15:00:00":
+        return 5;
+        case "16:00:00":
+        return 6;
+      default:
+        return -1; // Return invalid if no match
+    }
+  };
+
+  if (error) return <div>{error}</div>; // Render error message if any
+  if (!periods) return <div>Loading...</div>; // Render loading message until data is fetched
 
   return (
     <div className="timetable">
@@ -9,47 +61,46 @@ const WeeksTimeTable = (props) => {
         <thead>
           <tr>
             <th>Day</th>
-            <th>Time Slot</th>
-            <th>Lecture Number</th>
-            <th>Subject</th>
-            <th>Faculty</th>
-            <th>Room</th>
-            <th>Attendance Status</th>
+            {timeSlots.map((slot, index) => (
+              <th key={index}>{slot}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {daysOfWeek.map((day) => (
-            <React.Fragment key={day}>
-              {props.ttpass
-                .filter((lecture) => lecture.Day === day) // Filter lectures by day
-                .map((lecture) => {
-                  let status = "Not Marked";
-                  let backgroundColor = ""; // Default background color
+          {daysOfWeek.map((day) => {
+            const lecturesForDay = periods.filter(
+              (lecture) => lecture.DayOfWeek === day
+            );
+            const lecturePeriods = new Array(timeSlots.length).fill(null); // Rename local variable
 
-                  if (lecture.AttendanceStatus === null) {
-                    status = "Not Marked";
-                    backgroundColor = "#fffacd"; // Light yellow for not marked
-                  } else if (lecture.AttendanceStatus === 1) {
-                    status = "Present";
-                    backgroundColor = "rgba(75, 192, 192, 0.5)"; // Light green for present
-                  } else {
-                    status = "Absent";
-                    backgroundColor = "rgba(255, 99, 132, 1)"; // Red for absent
-                  }
+            // Place each lecture into the correct period based on its StartTime
+            lecturesForDay.forEach((lecture) => {
+              const periodIndex = getPeriodForLecture(lecture.StartTime);
+              if (periodIndex !== -1) lecturePeriods[periodIndex] = lecture;
+            });
 
-                  return (
-                    <tr key={lecture.TimetableID} style={{ backgroundColor }}>
-                      <td>{day}</td>
-                      <td>{lecture.StartTime + " - " + lecture.EndTime}</td>
-                      <td>Period {lecture.LectureNumber}</td>
-                      <td>{lecture.SubjectName}</td>
-                      <td>{lecture.Faculty_Name}</td>
-                      <td>{lecture.RoomNumber}</td>
-                    </tr>
-                  );
-                })}
-            </React.Fragment>
-          ))}
+            return (
+              <tr key={day}>
+                <td>{day}</td>
+                {lecturePeriods.map((lecture, index) => (
+                  <td
+                    key={index}
+                    style={{ backgroundColor: lecture ? "#f0f8ff" : "#fff" }}
+                  >
+                    {lecture ? (
+                      <>
+                        <div>{lecture.SubjectName}</div>
+                        <div>{lecture.Faculty_Name}</div>
+                        <div>{lecture.RoomNumber}</div>
+                      </>
+                    ) : (
+                      <div>No Lecture</div>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

@@ -41,6 +41,7 @@ const StudentDashboard = () => {
         console.error(error);
       });
 
+
     // Fetch timetable data
     axios
       .get(`${API_URL}/api/todaystimetable?RollNO=${RollNO}`)
@@ -130,7 +131,7 @@ const StudentDashboard = () => {
         </div>
         {/* Toggle between Today's Timetable and Weekly Timetable */}
         {tFlag ? (
-          <WeeksTimeTable ttpass={timetable} />
+          <WeeksTimeTable RollNO={RollNO} />
         ) : (
           <TodaysTimeTable ttpass={timetable} />
         )}
