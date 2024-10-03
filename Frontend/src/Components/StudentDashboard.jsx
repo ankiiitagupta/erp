@@ -65,18 +65,26 @@ const StudentDashboard = () => {
             alt={`${student.Stud_name} profile`}
             className="profile-pic"
           />
+
           <div className="name-box">
-            <h3>{student.Stud_name}</h3>
-            <p>
+            <p className="left-section">
+              <h3>{student.Stud_name}</h3>
               Roll No: {student.RollNO}
               <br />
-              Email: {student.Stud_Email}
-              <br />
               Section: {student.Section}
+              <br />
+              Enrollment ID: {student.DepartmentName}
+              <br />
+              Gender: {student.Stud_Gender}
+            </p>
+            <p className="right-section">
+              DOB: {student.Stud_DOB}
+              <br />
+              Course: {student.CourseName}
+              <br />
+              Department: {student.DepartmentName}
             </p>
           </div>
-
-          
 
           {error && <p>{error}</p>}
         </div>
@@ -101,18 +109,25 @@ const StudentDashboard = () => {
               <li>Total lectures: {attend.TotalLectures}</li>
               <li>Present: {attend.PresentLectures}</li>
               <li>Absent: {attend.TotalLectures - attend.PresentLectures}</li>
-              <li>Percentage: {(attend.PresentLectures / attend.TotalLectures) * 100}</li>
+              <li>
+                Percentage:{" "}
+                {(attend.PresentLectures / attend.TotalLectures) * 100}
+              </li>
             </ul>
           </div>
         </div>
       </div>
     ));
   };
-
   const renderTimetable = () => {
     return (
       <div className="timetable">
-        <h4>Timetable</h4>
+        
+        <div className="ttbtn" onClick={renderFullTimetable}>
+         <h4>Timetable</h4>
+          <button className="btnshowmore" >Show More</button>
+        </div>
+
         <table>
           <thead>
             <tr>
@@ -122,24 +137,95 @@ const StudentDashboard = () => {
               <th>Subjects</th>
               <th>Faculty</th>
               <th>Room Number</th>
+              <th>Attendance Status</th>
             </tr>
           </thead>
           <tbody>
-            {timetable.map((lecture) => (
-              <tr key={lecture.TimetableID}>
-                <td>Period {lecture.LectureNumber}</td>
-                <td>{lecture.StartTime}</td>
-                <td>{lecture.EndTime}</td>
-                <td>{lecture.SubjectName}</td>
-                <td>{lecture.Faculty_Name}</td>
-                <td>{lecture.RoomNumber}</td>
-              </tr>
-            ))}
+            {timetable.map((lecture) => {
+              let status = "Not Marked";
+              let backgroundColor = ""; // For styling purposes
+
+              if (lecture.AttendanceStatus === null) {
+                status = "Not Marked";
+                backgroundColor = "#fffacd"; // No specific color
+              } else if (lecture.AttendanceStatus === 1) {
+                status = "Present";
+                backgroundColor = "rgba(75, 192, 192, 0.5)"; // Green
+              } else {
+                status = "Absent";
+                backgroundColor = "rgba(255, 99, 132, 1)"; // Red
+              }
+
+              return (
+                <tr key={lecture.TimetableID} style={{ backgroundColor }}>
+                  <td>Period {lecture.LectureNumber}</td>
+                  <td>{lecture.StartTime}</td>
+                  <td>{lecture.EndTime}</td>
+                  <td>{lecture.SubjectName}</td>
+                  <td>{lecture.Faculty_Name}</td>
+                  <td>{lecture.RoomNumber}</td>
+                  <td>{status}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
     );
   };
+
+  const renderFullTimetable = () => {
+    return (
+      <div className="timetable">
+        
+        <div className="ttbtn">
+         <h4>Timetable</h4>
+          <button className="btnshowmore" >Show More</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Days</th>
+            
+              
+            </tr>
+          </thead>
+          <tbody>
+            {timetable.map((lecture) => {
+              let status = "Not Marked";
+              let backgroundColor = ""; // For styling purposes
+
+              if (lecture.AttendanceStatus === null) {
+                status = "Not Marked";
+                backgroundColor = "#fffacd"; // No specific color
+              } else if (lecture.AttendanceStatus === 1) {
+                status = "Present";
+                backgroundColor = "rgba(75, 192, 192, 0.5)"; // Green
+              } else {
+                status = "Absent";
+                backgroundColor = "rgba(255, 99, 132, 1)"; // Red
+              }
+
+              return (
+                <tr key={lecture.TimetableID} style={{ backgroundColor }}>
+                  <th>{lecture.StartTime + "-" + lecture.EndTime}</th>
+                  <td>Period {lecture.LectureNumber}</td>
+                  <td>{lecture.StartTime}</td>
+                  <td>{lecture.EndTime}</td>
+                  <td>{lecture.SubjectName}</td>
+                  <td>{lecture.Faculty_Name}</td>
+                  <td>{lecture.RoomNumber}</td>
+                  <td>{status}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
 
   return (
     <div className="dashboard">
