@@ -65,6 +65,29 @@ app.get("/api/totalattendence", (req, res) => {
     res.json(results);
   });
 });
+//Per subject attendence
+app.get("/api/subjectattendance", (req, res) => {
+  const { RollNO } = req.query;
+
+  // Update the SQL query to join with the Subject table and include SubjectName
+  db.query(`
+    SELECT 
+      s.SubjectName,
+      COUNT(a.LectureNumber) AS TotalLectures, 
+      SUM(CASE WHEN a.AttendanceStatus = 1 THEN 1 ELSE 0 END) AS PresentLectures 
+    FROM 
+      Attendance a
+    JOIN 
+      Subject s ON a.SubjectID = s.SubjectID  -- Join with the Subject table
+    WHERE 
+      a.RollNO = ? 
+    GROUP BY 
+      s.SubjectName;  -- Group by SubjectName to get attendance per subject
+  `, [RollNO], (err, results) => {
+    if (err) throw err;
+    res.json(results);
+  });
+});
 
 //Time Table of current date
 app.get("/api/todaystimetable", (req, res) => {
