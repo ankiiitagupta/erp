@@ -71,20 +71,27 @@ app.get("/api/todaystimetable", (req, res) => {
   const { RollNO } = req.query;
   const today = new Date();
   const dayOfWeek = today.toLocaleString("en-US", { weekday: "long" });
+  const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
   db.query(
-    `SELECT DISTINCT t.TimetableID, t.SubjectID, s.SubjectName, f.Faculty_Name, t.DayOfWeek, t.StartTime, t.EndTime, t.RoomNumber, t.LectureNumber, s.SubjectID AS SubjectCode 
-     FROM Student AS st 
-     JOIN Enrollment AS e ON st.RollNO = e.RollNO 
-     JOIN Course AS c ON e.CourseID = c.CourseID 
-     JOIN Timetable AS t ON c.DepartmentID = t.DepartmentID 
-        AND t.YearOfStudy = st.Stud_YearOfStudy 
-        AND t.Section = st.Section 
-     JOIN Subject AS s ON t.SubjectID = s.SubjectID 
-     JOIN Faculty AS f ON s.FacultyID = f.FacultyID 
-     WHERE st.RollNO = ? AND t.DayOfWeek = ? 
-     ORDER BY t.StartTime;`,
-    [RollNO, dayOfWeek],
+    `SELECT DISTINCT t.TimetableID, t.SubjectID, s.SubjectName, f.Faculty_Name, t.DayOfWeek, t.StartTime, t.EndTime, t.RoomNumber, t.LectureNumber, s.SubjectID AS SubjectCode, 
+       a.AttendanceStatus
+    FROM Student AS st
+    JOIN Enrollment AS e ON st.RollNO = e.RollNO
+    JOIN Course AS c ON e.CourseID = c.CourseID
+    JOIN Timetable AS t ON c.DepartmentID = t.DepartmentID
+       AND t.YearOfStudy = st.Stud_YearOfStudy
+       AND t.Section = st.Section
+    JOIN Subject AS s ON t.SubjectID = s.SubjectID
+    JOIN Faculty AS f ON s.FacultyID = f.FacultyID
+    LEFT JOIN Attendance AS a ON st.RollNO = a.RollNO 
+       AND t.SubjectID = a.SubjectID 
+       AND t.LectureNumber = a.LectureNumber 
+       AND a.AttendanceDate = ?
+    WHERE st.RollNO = ? 
+    AND t.DayOfWeek = ?
+    ORDER BY t.StartTime;`,
+    [formattedDate, RollNO, dayOfWeek],
     (err, results) => {
       if (err) {
         res.status(500).send("Database query failed");
@@ -94,6 +101,7 @@ app.get("/api/todaystimetable", (req, res) => {
     }
   );
 });
+
 
 
 
