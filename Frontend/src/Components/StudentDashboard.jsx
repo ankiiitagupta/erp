@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
-// import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { API_URL } from "../axios.js";
 import Header from "./Header.jsx";
 import PieChart from "./PieChart.jsx";
 import Sidebar from "./Sidebar.jsx";
+import WeeksTimeTable from "./WeeksTimeTable.jsx";
+import TodaysTimeTable from "./TodaysTimeTable.jsx";
 
 const StudentDashboard = () => {
   const { RollNO } = useParams(); // Get Roll number from URL
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
   const [timetable, setTimetable] = useState([]);
-
   const [error, setError] = useState(null);
+  const [tFlag, setTFlag] = useState(false); // Use useState to manage tFlag
 
   useEffect(() => {
     // Fetch student data using the Roll number
@@ -28,20 +29,19 @@ const StudentDashboard = () => {
         setError("Failed to fetch student data");
         console.error(error);
       });
-    //fetch attendance data
-    console.log(attendance.TotalLectures);
+
+    // Fetch attendance data
     axios
       .get(`${API_URL}/api/totalattendence?RollNO=${RollNO}`)
       .then((response) => {
         setAttendance(response.data);
       })
       .catch((error) => {
-        setError("Failed to fetch attendence");
+        setError("Failed to fetch attendance data");
         console.error(error);
       });
 
-    //fetch timetable data
-    console.log(timetable);
+    // Fetch timetable data
     axios
       .get(`${API_URL}/api/todaystimetable?RollNO=${RollNO}`)
       .then((response) => {
@@ -49,12 +49,10 @@ const StudentDashboard = () => {
         setTimetable(response.data);
       })
       .catch((error) => {
-        setError("Failed to fetch attendence");
+        setError("Failed to fetch timetable data");
         console.error(error);
       });
   }, [RollNO]);
-
-  const COLORS = ["#0088FE", "#FF8042"]; // Colors for the pie chart
 
   const renderStudentDetails = () => {
     return students.map((student) => (
@@ -65,7 +63,6 @@ const StudentDashboard = () => {
             alt={`${student.Stud_name} profile`}
             className="profile-pic"
           />
-
           <div className="name-box">
             <p className="left-section">
               <h3>{student.Stud_name}</h3>
@@ -85,7 +82,6 @@ const StudentDashboard = () => {
               Department: {student.DepartmentName}
             </p>
           </div>
-
           {error && <p>{error}</p>}
         </div>
       </div>
@@ -94,10 +90,9 @@ const StudentDashboard = () => {
 
   const renderPieChart = () => {
     return attendance.map((attend) => (
-      <div className="piechart">
+      <div className="piechart" key={attend.RollNO}>
         <h4>Attendance Details</h4>
-
-        <div key={attend.RollNO} className="attendance-data">
+        <div className="attendance-data">
           <div className="piechartrow">
             <PieChart
               total={attend.TotalLectures}
@@ -111,7 +106,11 @@ const StudentDashboard = () => {
               <li>Absent: {attend.TotalLectures - attend.PresentLectures}</li>
               <li>
                 Percentage:{" "}
-                {(attend.PresentLectures / attend.TotalLectures) * 100}
+                {(
+                  (attend.PresentLectures / attend.TotalLectures) *
+                  100
+                ).toFixed(2)}
+                %
               </li>
             </ul>
           </div>
@@ -119,119 +118,29 @@ const StudentDashboard = () => {
       </div>
     ));
   };
+
   const renderTimetable = () => {
     return (
       <div className="timetable">
-        
-        <div className="ttbtn" onClick={renderFullTimetable}>
-         <h4>Timetable</h4>
-          <button className="btnshowmore" >Show More</button>
+        <div className="ttbtn" onClick={() => setTFlag(!tFlag)}>
+          {" "}
+          {/* Fixing the onClick event */}
+          <h4>Timetable</h4>
+          <button className="btnshowmore">Show More</button>
         </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Period</th>
-              <th>From</th>
-              <th>Till</th>
-              <th>Subjects</th>
-              <th>Faculty</th>
-              <th>Room Number</th>
-              <th>Attendance Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {timetable.map((lecture) => {
-              let status = "Not Marked";
-              let backgroundColor = ""; // For styling purposes
-
-              if (lecture.AttendanceStatus === null) {
-                status = "Not Marked";
-                backgroundColor = "#fffacd"; // No specific color
-              } else if (lecture.AttendanceStatus === 1) {
-                status = "Present";
-                backgroundColor = "rgba(75, 192, 192, 0.5)"; // Green
-              } else {
-                status = "Absent";
-                backgroundColor = "rgba(255, 99, 132, 1)"; // Red
-              }
-
-              return (
-                <tr key={lecture.TimetableID} style={{ backgroundColor }}>
-                  <td>Period {lecture.LectureNumber}</td>
-                  <td>{lecture.StartTime}</td>
-                  <td>{lecture.EndTime}</td>
-                  <td>{lecture.SubjectName}</td>
-                  <td>{lecture.Faculty_Name}</td>
-                  <td>{lecture.RoomNumber}</td>
-                  <td>{status}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        {/* Toggle between Today's Timetable and Weekly Timetable */}
+        {tFlag ? (
+          <WeeksTimeTable ttpass={timetable} />
+        ) : (
+          <TodaysTimeTable ttpass={timetable} />
+        )}
       </div>
     );
   };
-
-  const renderFullTimetable = () => {
-    return (
-      <div className="timetable">
-        
-        <div className="ttbtn">
-         <h4>Timetable</h4>
-          <button className="btnshowmore" >Show More</button>
-        </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Days</th>
-            
-              
-            </tr>
-          </thead>
-          <tbody>
-            {timetable.map((lecture) => {
-              let status = "Not Marked";
-              let backgroundColor = ""; // For styling purposes
-
-              if (lecture.AttendanceStatus === null) {
-                status = "Not Marked";
-                backgroundColor = "#fffacd"; // No specific color
-              } else if (lecture.AttendanceStatus === 1) {
-                status = "Present";
-                backgroundColor = "rgba(75, 192, 192, 0.5)"; // Green
-              } else {
-                status = "Absent";
-                backgroundColor = "rgba(255, 99, 132, 1)"; // Red
-              }
-
-              return (
-                <tr key={lecture.TimetableID} style={{ backgroundColor }}>
-                  <th>{lecture.StartTime + "-" + lecture.EndTime}</th>
-                  <td>Period {lecture.LectureNumber}</td>
-                  <td>{lecture.StartTime}</td>
-                  <td>{lecture.EndTime}</td>
-                  <td>{lecture.SubjectName}</td>
-                  <td>{lecture.Faculty_Name}</td>
-                  <td>{lecture.RoomNumber}</td>
-                  <td>{status}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    );
-  };
-
 
   return (
     <div className="dashboard">
-      {/* Sidebar */}
       <Sidebar />
-
       <Header />
       {/* Main Content */}
       <div className="main-content">
