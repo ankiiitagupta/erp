@@ -1,1 +1,1 @@
-/api/todaystimetable
+/api/weekstimetable

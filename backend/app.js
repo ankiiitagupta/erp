@@ -87,7 +87,7 @@ app.get("/api/todaystimetable", (req, res) => {
     LEFT JOIN Attendance AS a ON st.RollNO = a.RollNO 
        AND t.SubjectID = a.SubjectID 
        AND t.LectureNumber = a.LectureNumber 
-       AND a.AttendanceDate = ?
+       AND a.LectureDate = ?
     WHERE st.RollNO = ? 
     AND t.DayOfWeek = ?
     ORDER BY t.StartTime;`,
@@ -101,6 +101,59 @@ app.get("/api/todaystimetable", (req, res) => {
     }
   );
 });
+
+//Time Table of current Week
+app.get("/api/weekstimetable", (req, res) => {
+  const { RollNO } = req.query;
+  const today = new Date();
+  const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+  db.query(
+    `SELECT DISTINCT 
+            t.TimetableID, 
+            t.SubjectID, 
+            s.SubjectName, 
+            f.Faculty_Name, 
+            t.DayOfWeek, 
+            t.StartTime, 
+            t.EndTime, 
+            t.RoomNumber, 
+            t.LectureNumber, 
+            s.SubjectID AS SubjectCode,
+            t.LectureDate  
+        FROM 
+            Student AS st 
+        JOIN 
+            Enrollment AS e ON st.RollNO = e.RollNO 
+        JOIN 
+            Course AS c ON e.CourseID = c.CourseID 
+        JOIN 
+            Timetable AS t ON c.DepartmentID = t.DepartmentID 
+                          AND t.YearOfStudy = st.Stud_YearOfStudy 
+                          AND t.Section = st.Section 
+        JOIN 
+            Subject AS s ON t.SubjectID = s.SubjectID 
+        JOIN 
+            Faculty AS f ON s.FacultyID = f.FacultyID  
+        WHERE 
+            st.RollNO = ? 
+            AND t.LectureDate BETWEEN 
+                DATE_SUB(?, INTERVAL WEEKDAY(?) DAY)  
+                AND DATE_ADD(DATE_SUB(?, INTERVAL WEEKDAY(?) DAY), INTERVAL 6 DAY) 
+        ORDER BY 
+            t.LectureDate, t.StartTime;`,
+    [RollNO, formattedDate, formattedDate, formattedDate, formattedDate],
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Database query failed");
+        return;
+      }
+      res.json(results);
+    }
+  );
+});
+
+
 
 
 
