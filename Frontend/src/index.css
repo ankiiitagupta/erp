@@ -183,36 +183,87 @@ body {
   height: 100vh; /* Full height of the viewport */
 
 }
-
-.sidebar {
-  width: 13rem; /* Width of the sidebar */
-  background-color: #001f54; /* Dark background for the sidebar */
-  padding: 1rem;
-  color: white;
+.sidebar-container {
+  display: flex;
 }
 
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 2rem;
+.mini-sidebar {
+  width: 60px;
+  height: 100vh;
+  background-color: #0d0a3f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  position: fixed;
+  z-index: 2000;
+  
 }
 
-.sidebar ul {
-  list-style-type: none; /* Remove default list styles */
+
+
+.mini-sidebar ul {
+  list-style-type: none;
   padding: 0;
 }
 
+.mini-sidebar ul li {
+  margin: 20px 0;
+  color: #fff;
+  font-size: 24px;
+}
+
+.burger-icon {
+  cursor: pointer;
+  font-size: 28px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.sidebar {
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: -250px; /* Initially hide the full sidebar */
+  background-color: #0d0a3f;
+  transition: left 0.3s ease-in-out;
+  padding-top: 60px;
+  z-index: 1000;
+}
+
+.sidebar.open {
+  left: 60px; /* Full sidebar will open next to the mini sidebar */
+  padding-top: 20px;
+  color:#fff;
+}
+
+.sidebar.open h3{
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  padding-top:13px;
+}
+
 .sidebar ul li {
-  margin: 1rem 0; /* Margin between sidebar items */
+  padding: 13px 10px;
+  text-align: left;
 }
 
 .sidebar ul li a {
-  color: white; /* Link color */
-  text-decoration: none; /* Remove underline from links */
+  color: #fff;
+  text-decoration: none;
+  display: block;
 }
 
-.sidebar ul li a:hover {
-  text-decoration: underline; /* Underline on hover */
+.sidebar h2 {
+  color: #fff;
+  padding-left: 10px;
 }
+
 
 .main-content {
   flex-grow: 1; /* Take remaining space after sidebar */
@@ -220,6 +271,13 @@ body {
   background-color: #f9f9f9; /* Light background for main content */
   overflow-y: auto; /* Enable scrolling if content overflows */
   margin-top:5rem;
+  margin-left: 60px;
+  transition: margin-left 0.3s ease;
+}
+
+
+.sidebar.open + .main-content {
+  margin-left: 310px; /* Adjust when full sidebar is open */
 }
 
 .top-section {
@@ -232,7 +290,7 @@ body {
   align-items: center; /* Center items vertically */
   background-color: white; /* White background for details */
   border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  box-shadow: 0 2px 4px rgba(22, 15, 73, 0.1); /* Subtle shadow */
 }
 
 .profile-section {

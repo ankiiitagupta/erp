@@ -1,1 +1,1 @@
-/api/weekstimetable
+/api/subjectattendance

@@ -141,10 +141,10 @@ const StudentDashboard = () => {
 
   return (
     <div className="dashboard">
-      <Sidebar />
+      <Sidebar  />
       <Header />
       {/* Main Content */}
-      <div className="main-content">
+      <div className="main-content"  >
         <div className="top-section">{renderStudentDetails()}</div>
         <div className="middle-section">
           <div className="pie-chart-section">{renderPieChart()}</div>
