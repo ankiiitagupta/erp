@@ -1,1 +1,1 @@
-/api/subjectattendance
+/api/data

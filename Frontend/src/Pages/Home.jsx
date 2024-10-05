@@ -3,10 +3,13 @@ import "../index.css";
 import "../assets/students.svg";
 import Login from "../Components/Login.jsx";
 import Header from "../Components/Header.jsx";
+import AttendenceDetails from "../Components/AttendenceDetails.jsx";
 
 const Home = () => {
   return (
     <>
+    {/* <AttendenceDetails/> */}
+
       <div className="main">
         <Header />
 
@@ -14,6 +17,9 @@ const Home = () => {
 
             <Login />
          
+
+          
+          
         </div>
       </div>
     </>

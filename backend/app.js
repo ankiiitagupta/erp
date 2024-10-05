@@ -8,9 +8,9 @@ const port = 3006; // Make sure to use the same port here
 app.use(cors());
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "admin",
+  host: "mpgierp.c7iaoikio1yt.ap-northeast-1.rds.amazonaws.com",
+  user: "admin",
+  password: "mpgiroot",
   database: "erp",
 });
 
@@ -60,7 +60,7 @@ app.get("/api/data", (req, res) => {
 //Total attendence of student
 app.get("/api/totalattendence", (req, res) => {
   const { RollNO } = req.query;
-  db.query("SELECT COUNT(LectureNumber) AS TotalLectures, SUM(CASE WHEN AttendanceStatus = 1 THEN 1 ELSE 0 END) AS PresentLectures FROM Attendance WHERE RollNO = ? GROUP BY ?;", [RollNO, RollNO], (err, results) => {
+  db.query("SELECT COUNT(LectureNumber) AS TotalLectures, SUM(CASE WHEN AttendanceStatus = 1 THEN 1 ELSE 0 END) AS PresentLectures FROM attendance WHERE RollNO = ? GROUP BY ?;", [RollNO, RollNO], (err, results) => {
     if (err) throw err;
     res.json(results);
   });
@@ -76,13 +76,13 @@ app.get("/api/subjectattendance", (req, res) => {
       COUNT(a.LectureNumber) AS TotalLectures, 
       SUM(CASE WHEN a.AttendanceStatus = 1 THEN 1 ELSE 0 END) AS PresentLectures 
     FROM 
-      Attendance a
+      attendance a
     JOIN 
-      Subject s ON a.SubjectID = s.SubjectID  -- Join with the Subject table
+      subject s ON a.SubjectID = s.SubjectID  
     WHERE 
       a.RollNO = ? 
     GROUP BY 
-      s.SubjectName;  -- Group by SubjectName to get attendance per subject
+      s.SubjectName;
   `, [RollNO], (err, results) => {
     if (err) throw err;
     res.json(results);
@@ -99,15 +99,15 @@ app.get("/api/todaystimetable", (req, res) => {
   db.query(
     `SELECT DISTINCT t.TimetableID, t.SubjectID, s.SubjectName, f.Faculty_Name, t.DayOfWeek, t.StartTime, t.EndTime, t.RoomNumber, t.LectureNumber, s.SubjectID AS SubjectCode, 
        a.AttendanceStatus
-    FROM Student AS st
-    JOIN Enrollment AS e ON st.RollNO = e.RollNO
-    JOIN Course AS c ON e.CourseID = c.CourseID
-    JOIN Timetable AS t ON c.DepartmentID = t.DepartmentID
+    FROM student AS st
+    JOIN enrollment AS e ON st.RollNO = e.RollNO
+    JOIN course AS c ON e.CourseID = c.CourseID
+    JOIN timetable AS t ON c.DepartmentID = t.DepartmentID
        AND t.YearOfStudy = st.Stud_YearOfStudy
        AND t.Section = st.Section
-    JOIN Subject AS s ON t.SubjectID = s.SubjectID
-    JOIN Faculty AS f ON s.FacultyID = f.FacultyID
-    LEFT JOIN Attendance AS a ON st.RollNO = a.RollNO 
+    JOIN subject AS s ON t.SubjectID = s.SubjectID
+    JOIN faculty AS f ON s.FacultyID = f.FacultyID
+    LEFT JOIN attendance AS a ON st.RollNO = a.RollNO 
        AND t.SubjectID = a.SubjectID 
        AND t.LectureNumber = a.LectureNumber 
        AND a.LectureDate = ?
@@ -145,19 +145,19 @@ app.get("/api/weekstimetable", (req, res) => {
             s.SubjectID AS SubjectCode,
             t.LectureDate  
         FROM 
-            Student AS st 
+            student AS st 
         JOIN 
-            Enrollment AS e ON st.RollNO = e.RollNO 
+            enrollment AS e ON st.RollNO = e.RollNO 
         JOIN 
-            Course AS c ON e.CourseID = c.CourseID 
+            course AS c ON e.CourseID = c.CourseID 
         JOIN 
-            Timetable AS t ON c.DepartmentID = t.DepartmentID 
+            timetable AS t ON c.DepartmentID = t.DepartmentID 
                           AND t.YearOfStudy = st.Stud_YearOfStudy 
                           AND t.Section = st.Section 
         JOIN 
-            Subject AS s ON t.SubjectID = s.SubjectID 
+            subject AS s ON t.SubjectID = s.SubjectID 
         JOIN 
-            Faculty AS f ON s.FacultyID = f.FacultyID  
+            faculty AS f ON s.FacultyID = f.FacultyID  
         WHERE 
             st.RollNO = ? 
             AND t.LectureDate BETWEEN 

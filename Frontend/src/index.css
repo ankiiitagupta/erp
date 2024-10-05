@@ -395,3 +395,32 @@ th {
   background-color: #001f54; /* Dark background for table headers */
   color: white; /* White text for headers */
 }
+
+/* attendencedetails component css */
+.attbox{
+ display: flex;
+ flex-direction: row;
+ justify-content: space-evenly;
+ margin-top: 3rem;
+
+}
+
+.attbox .box{
+  
+ padding: 1rem;
+  border: 2px solid black;
+}
+.attbox .box .attboxdata{
+  display: flex;
+  flex-direction: row ;
+  justify-content: flex-start;
+
+  
+}
+.attbox .box .attboxdata h4{
+  margin: 0.8rem;
+} 
+.attbox .box .attboxdata img{
+  height: 3rem;
+  width: 3rem;
+}
