@@ -91,7 +91,6 @@ body {
 .navbar {
   background-color: transparent;
   height: 4.5rem;
-  width: 100vw; /* Full viewport width */
   padding: 1rem;
   display: flex;
   justify-content: space-between;
@@ -267,11 +266,9 @@ body {
 
 .main-content {
   flex-grow: 1; /* Take remaining space after sidebar */
-  padding: 20px; /* Padding for the main content */
+
   background-color: #f9f9f9; /* Light background for main content */
   overflow-y: auto; /* Enable scrolling if content overflows */
-  margin-top:5rem;
-  margin-left: 60px;
   transition: margin-left 0.3s ease;
 }
 

@@ -1,40 +1,81 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaHome, FaUser, FaCalendarAlt, FaCog, FaBars } from 'react-icons/fa'; // Ensure react-icons is installed
+import { NavLink } from 'react-router-dom';
+import {
+  CDBSidebar,
+  CDBSidebarContent,
+  CDBSidebarFooter,
+  CDBSidebarHeader,
+  CDBSidebarMenu,
+  CDBSidebarMenuItem,
+} from 'cdbreact';
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
-    console.log("Sidebar toggled!"); 
-    setIsOpen(!isOpen); 
-    
+    setIsCollapsed(!isCollapsed);
   };
 
   return (
-    <div className="sidebar-container">
-      {/* Mini sidebar with icons */}
-      <div className="mini-sidebar">
-        <FaBars className="burger-icon" onClick={toggleSidebar} />
-        <ul>
-          <li><FaHome /></li>
-          <li><FaUser /></li>
-          <li><FaCalendarAlt /></li>
-          <li><FaCog /></li>
-        </ul>
-      </div>
+    <div
+      style={{ display: 'flex', height: '100vh', overflow: 'scroll initial' }}
+    >
+      <CDBSidebar
+        textColor="#fff"
+        backgroundColor="#333"
+        toggled={!isCollapsed}
+        collapse={isCollapsed}
+      >
+        <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large" onClick={toggleSidebar}></i>}>
+          <a
+            href="/"
+            className="text-decoration-none"
+            style={{ color: 'inherit' }}
+          >
+            Sidebar
+          </a>
+        </CDBSidebarHeader>
 
-      {/* Full sidebar */}
-      <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-        <h3>MPGI Dashboard</h3>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/profile">Profile</Link></li>
-          <li><Link to="/attendance">Attendance</Link></li>
-          <li><Link to="/timetable">Timetable</Link></li>
-          <li><Link to="/settings">Settings</Link></li>
-        </ul>
-      </div>
+        <CDBSidebarContent className="sidebar-content">
+          <CDBSidebarMenu>
+            <NavLink exact to="/" activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
+            </NavLink>
+            <NavLink exact to="/tables" activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="table">Tables</CDBSidebarMenuItem>
+            </NavLink>
+            <NavLink exact to="/profile" activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="user">Profile page</CDBSidebarMenuItem>
+            </NavLink>
+            <NavLink exact to="/analytics" activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="chart-line">
+                Analytics
+              </CDBSidebarMenuItem>
+            </NavLink>
+
+            <NavLink
+              exact
+              to="/hero404"
+              target="_blank"
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="exclamation-circle">
+                404 page
+              </CDBSidebarMenuItem>
+            </NavLink>
+          </CDBSidebarMenu>
+        </CDBSidebarContent>
+
+        <CDBSidebarFooter style={{ textAlign: 'center' }}>
+          <div
+            style={{
+              padding: '20px 5px',
+            }}
+          >
+            Sidebar Footer
+          </div>
+        </CDBSidebarFooter>
+      </CDBSidebar>
     </div>
   );
 };

@@ -59,8 +59,8 @@ const WeeksTimeTable = ({ RollNO }) => {
     <div className="timetable">
       <table>
         <thead>
-          <tr>
-            <th>Day</th>
+          <tr style={{ border: "1px solid #000"  }}>
+            <th >Day</th>
             {timeSlots.map((slot, index) => (
               <th key={index}>{slot}</th>
             ))}
@@ -80,12 +80,12 @@ const WeeksTimeTable = ({ RollNO }) => {
             });
 
             return (
-              <tr key={day}>
+              <tr key={day} style={{ border: "1px solid #000"  }}>
                 <td>{day}</td>
                 {lecturePeriods.map((lecture, index) => (
                   <td
                     key={index}
-                    style={{ backgroundColor: lecture ? "#f0f8ff" : "#fff" }}
+                    style={{ backgroundColor: lecture ? "#f0f8ff" : "#fff" , border: "1px solid #000"  }}
                   >
                     {lecture ? (
                       <>

@@ -31,14 +31,14 @@ const TodaysTimeTable = (props) => {
               }
 
               return (
-                <tr key={lecture.TimetableID} style={{ backgroundColor }}>
+                <tr key={lecture.TimetableID} style={{ backgroundColor , border: "1px solid #000" }}>
                   <td>Period {lecture.LectureNumber}</td>
-                  <td>{lecture.StartTime}</td>
-                  <td>{lecture.EndTime}</td>
-                  <td>{lecture.SubjectName}</td>
-                  <td>{lecture.Faculty_Name}</td>
-                  <td>{lecture.RoomNumber}</td>
-                  <td>{status}</td>
+                  <td style ={ { border: "1px solid #000"}}>{lecture.StartTime}</td>
+                  <td style ={ { border: "1px solid #000"}}>{lecture.EndTime}</td>
+                  <td style ={ { border: "1px solid #000"}}>{lecture.SubjectName}</td>
+                  <td style ={ { border: "1px solid #000"}}>{lecture.Faculty_Name}</td>
+                  <td style ={ { border: "1px solid #000"}}>{lecture.RoomNumber}</td>
+                  <td style ={ { border: "1px solid #000"}}>{status}</td>
                 </tr>
               );
             })}
