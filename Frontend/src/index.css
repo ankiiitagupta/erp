@@ -70,6 +70,10 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-image: none !important; /* Ensure no background image */
 }
+.loginbox{
+  display: flex;
+  flex-direction: column;
+}
 
 .gradient-custom-2 {
   background: linear-gradient(45deg, #001f54, #006f9b); /* Example gradient */
@@ -90,6 +94,7 @@ body {
 /* navbar */
 .navbar {
   background-color: transparent;
+  width:100%;
   height: 4.5rem;
   padding: 1rem;
   display: flex;

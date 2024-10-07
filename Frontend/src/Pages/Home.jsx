@@ -8,18 +8,14 @@ import AttendenceDetails from "../Components/AttendenceDetails.jsx";
 const Home = () => {
   return (
     <>
-    {/* <AttendenceDetails/> */}
+      {/* <AttendenceDetails/> */}
 
       <div className="main">
-        <Header />
-
-        <div className="container poppins-regular">
-
+        <div className="loginbox">
+          <Header />
+          <div className="container poppins-regular">
             <Login />
-         
-
-          
-          
+          </div>
         </div>
       </div>
     </>
