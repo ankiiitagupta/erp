@@ -22,7 +22,7 @@ const Sidebar = () => {
     >
       <CDBSidebar
         textColor="#fff"
-        backgroundColor="#333"
+        backgroundColor="#001F54"
         toggled={!isCollapsed}
         collapse={isCollapsed}
       >

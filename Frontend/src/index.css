@@ -267,7 +267,7 @@ body {
 .main-content {
   flex-grow: 1; /* Take remaining space after sidebar */
 
-  background-color: #f9f9f9; /* Light background for main content */
+  background-color: #EEF1FF; /* Light background for main content */
   overflow-y: auto; /* Enable scrolling if content overflows */
   transition: margin-left 0.3s ease;
 }
