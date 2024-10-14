@@ -138,13 +138,7 @@ const StudentDashboard = () => {
     );
   };
 
-  // Update rendering logic based on attendance flag
-  const renderAttendanceDetails = () => {
-    if (attFlag) {
-      return <AttendanceDetails RollNO={RollNO} />;
-    }
-    return null;
-  };
+  
 
   return (
     <div className="dashboard">
