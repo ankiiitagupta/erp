@@ -22,8 +22,8 @@ body {
 
 .main{
   display: flex;
+  flex-direction: column;
   text-align: center;
-  justify-content: center;
   width: 100vw; /* Full viewport width */
   height: 100vh; /* Full viewport height */
   background: url('./assets/bg.jpg');
@@ -34,6 +34,7 @@ body {
 
 
 .container {
+
   width: 100%; /* Make sure the container takes the full width */
   height: 100%; /* Make sure the container takes the full height */
   display: flex;
@@ -41,10 +42,6 @@ body {
   align-items: center; /* Center content inside the container */
   background: transparent;
 }
-
-
-
-
 
 .link-underline {
   text-decoration: none !important;
@@ -73,6 +70,7 @@ body {
 .loginbox{
   display: flex;
   flex-direction: column;
+  margin-top:7rem;
 }
 
 .gradient-custom-2 {

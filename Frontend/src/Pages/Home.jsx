@@ -11,8 +11,9 @@ const Home = () => {
       {/* <AttendenceDetails/> */}
 
       <div className="main">
+      <Header />
         <div className="loginbox">
-          <Header />
+          
           <div className="container poppins-regular">
             <Login />
           </div>
