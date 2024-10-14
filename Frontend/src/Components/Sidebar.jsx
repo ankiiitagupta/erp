@@ -9,7 +9,7 @@ import {
   CDBSidebarMenuItem,
 } from 'cdbreact';
 
-const Sidebar = () => {
+const Sidebar = ({ setAttFlag }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -17,22 +17,18 @@ const Sidebar = () => {
   };
 
   return (
-    <div
-      style={{ display: 'flex', height: '100vh', overflow: 'scroll initial' }}
-    >
+    <div style={{ display: 'flex', height: '100vh', overflow: 'scroll initial' }}>
       <CDBSidebar
         textColor="#fff"
         backgroundColor="#001F54"
         toggled={!isCollapsed}
         collapse={isCollapsed}
       >
-        <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large" onClick={toggleSidebar}></i>}>
-          <a
-            href="/"
-            className="text-decoration-none"
-            style={{ color: 'inherit' }}
-          >
-            Sidebar
+        <CDBSidebarHeader
+          prefix={<i className="fa fa-bars fa-large" onClick={toggleSidebar}></i>}
+        >
+          <a href="/" className="text-decoration-none" style={{ color: 'inherit' }}>
+            MPGI
           </a>
         </CDBSidebarHeader>
 
@@ -41,39 +37,27 @@ const Sidebar = () => {
             <NavLink exact to="/" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/tables" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="table">Tables</CDBSidebarMenuItem>
+            <NavLink
+              to="#"
+              onClick={() => setAttFlag(true)} // Set attendance flag to true
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="table">Attendance Detail</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/profile" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="user">Profile page</CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="/analytics" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="chart-line">
-                Analytics
-              </CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="chart-line">Analytics</CDBSidebarMenuItem>
             </NavLink>
-
-            <NavLink
-              exact
-              to="/hero404"
-              target="_blank"
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="exclamation-circle">
-                404 page
-              </CDBSidebarMenuItem>
+            <NavLink exact to="/hero404" target="_blank" activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="exclamation-circle">404 page</CDBSidebarMenuItem>
             </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>
 
         <CDBSidebarFooter style={{ textAlign: 'center' }}>
-          <div
-            style={{
-              padding: '20px 5px',
-            }}
-          >
-            Sidebar Footer
-          </div>
+          <div style={{ padding: '20px 5px' }}>Sidebar Footer</div>
         </CDBSidebarFooter>
       </CDBSidebar>
     </div>

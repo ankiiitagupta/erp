@@ -7,6 +7,7 @@ import PieChart from "./PieChart.jsx";
 import Sidebar from "./Sidebar.jsx";
 import WeeksTimeTable from "./WeeksTimeTable.jsx";
 import TodaysTimeTable from "./TodaysTimeTable.jsx";
+import AttendanceDetails from "./AttendanceDetails.jsx"; // Ensure to import your AttendanceDetails component
 
 const StudentDashboard = () => {
   const { RollNO } = useParams(); // Get Roll number from URL
@@ -14,7 +15,8 @@ const StudentDashboard = () => {
   const [attendance, setAttendance] = useState([]);
   const [timetable, setTimetable] = useState([]);
   const [error, setError] = useState(null);
-  const [tFlag, setTFlag] = useState(false); // Use useState to manage tFlag
+  const [tFlag, setTFlag] = useState(false); // Manage timetable flag
+  const [attFlag, setAttFlag] = useState(false); // Manage attendance flag
 
   useEffect(() => {
     // Fetch student data using the Roll number
@@ -40,7 +42,6 @@ const StudentDashboard = () => {
         setError("Failed to fetch attendance data");
         console.error(error);
       });
-
 
     // Fetch timetable data
     axios
@@ -124,12 +125,10 @@ const StudentDashboard = () => {
     return (
       <div className="timetable">
         <div className="ttbtn" onClick={() => setTFlag(!tFlag)}>
-          {" "}
-          {/* Fixing the onClick event */}
           <h4>Timetable</h4>
           <button className="btnshowmore">Show More</button>
         </div>
-        {/* Toggle between Today's Timetable and Weekly Timetable */}
+
         {tFlag ? (
           <WeeksTimeTable RollNO={RollNO} />
         ) : (
@@ -139,23 +138,36 @@ const StudentDashboard = () => {
     );
   };
 
+  // Update rendering logic based on attendance flag
+  const renderAttendanceDetails = () => {
+    if (attFlag) {
+      return <AttendanceDetails RollNO={RollNO} />;
+    }
+    return null;
+  };
+
   return (
     <div className="dashboard">
-      <Sidebar />
-      <div className="main-content"  >
-      <Header />
-        <div className="top-section">{renderStudentDetails()}</div>
-        <div className="middle-section">
-          <div className="pie-chart-section">{renderPieChart()}</div>
-        </div>
-        <div className="timetable-section">{renderTimetable()}</div>
+      <Sidebar setAttFlag={setAttFlag} />
+      <div className="main-content">
+        <Header />
+        
+        {attFlag ? (
+          <div className="attendance-section">
+            <AttendanceDetails RollNO={RollNO} />
+          </div>
+        ) : (<>
+          <div className="top-section">{renderStudentDetails()}</div>
+          <div className="middle-section">
+            <div className="pie-chart-section">{renderPieChart()}</div>
+            <div className="timetable-section">{renderTimetable()}</div>
+          </div>
+          </>
+        )}
       </div>
-
-      
-      {/* Main Content */}
-      
     </div>
   );
 };
+
 
 export default StudentDashboard;
