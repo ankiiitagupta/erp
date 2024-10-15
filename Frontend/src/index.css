@@ -1,651 +1,644 @@
 /* styles.css */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600&display=swap");
 
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600&display=swap");
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  /* font-family: "Poppins"; */
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* font-family: "Poppins"; */
 }
 
 .poppins-regular {
-  font-family: "Poppins", sans-serif;
-  font-weight: 300;
-  font-style: normal;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-style: normal;
 }
 
 body {
-  background-color: #fcfdfd;
-  width: 100vw;
-  font-family: Roboto, Helvetica, Arial, sans-serif;
+    background-color: #fcfdfd;
+    width: 100vw;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  width: 100vw;
-  /* Full viewport width */
-  height: 100vh;
-  /* Full viewport height */
-  background: url('./assets/bg.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 100vw;
+    /* Full viewport width */
+    height: 100vh;
+    /* Full viewport height */
+    background: url('./assets/bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
-
 .container {
-
-  width: 100%;
-  /* Make sure the container takes the full width */
-  height: 100%;
-  /* Make sure the container takes the full height */
-  display: flex;
-  justify-content: center;
-  /* Center content inside the container */
-  align-items: center;
-  /* Center content inside the container */
-  background: transparent;
+    width: 100%;
+    /* Make sure the container takes the full width */
+    height: 100%;
+    /* Make sure the container takes the full height */
+    display: flex;
+    justify-content: center;
+    /* Center content inside the container */
+    align-items: center;
+    /* Center content inside the container */
+    background: transparent;
 }
 
 .link-underline {
-  text-decoration: none !important;
-  color: #f8f9fa;
+    text-decoration: none !important;
+    color: #f8f9fa;
 }
 
 .link-underline:hover {
-  text-decoration: none !important;
-  color: #259496;
+    text-decoration: none !important;
+    color: #259496;
 }
 
-
 .login-container {
-  background-color: rgba(255, 255, 255, 0.3);
-  /* Semi-transparent white background */
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  /* Light border */
-  border-radius: 10px;
-  padding: 2rem;
-  max-width: 500px;
-  color: #090909;
-  width: 100%;
-  backdrop-filter: blur(10px);
-  /* Apply blur effect */
-  -webkit-backdrop-filter: blur(10px);
-  /* For Safari */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-image: none !important;
-  /* Ensure no background image */
+    background-color: rgba(255, 255, 255, 0.3);
+    /* Semi-transparent white background */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* Light border */
+    border-radius: 10px;
+    padding: 2rem;
+    max-width: 500px;
+    color: #090909;
+    width: 100%;
+    backdrop-filter: blur(10px);
+    /* Apply blur effect */
+    -webkit-backdrop-filter: blur(10px);
+    /* For Safari */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-image: none !important;
+    /* Ensure no background image */
 }
 
 .loginbox {
-  display: flex;
-  flex-direction: column;
-  margin-top: 7rem;
+    display: flex;
+    flex-direction: column;
+    margin-top: 7rem;
 }
 
 .gradient-custom-2 {
-  background: linear-gradient(45deg, #001f54, #006f9b);
-  /* Example gradient */
-  color: white;
+    background: linear-gradient(45deg, #001f54, #006f9b);
+    /* Example gradient */
+    color: white;
 }
 
 @media (min-width: 768px) {
-  .gradient-form {
-    height: 100vh !important;
-  }
+    .gradient-form {
+        height: 100vh !important;
+    }
 }
 
 @media (min-width: 769px) {
-  .gradient-custom-2 {
-    border-top-right-radius: .3rem;
-    border-bottom-right-radius: .3rem;
-  }
+    .gradient-custom-2 {
+        border-top-right-radius: .3rem;
+        border-bottom-right-radius: .3rem;
+    }
 }
 
+
 /* navbar */
+
 .navbar {
-  background-color: transparent;
-  width: 100%;
-  height: 4.5rem;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  /* Ensures the navbar stays at the top and spans full width */
-  top: 0;
-  /* Sticks the navbar to the top of the screen */
-  left: 0;
-  /* Ensures it starts at the far left */
-  box-sizing: border-box;
-  /* Ensures padding is considered in width */
-  z-index: 1000;
-  /* Keeps navbar on top of other content */
+    background-color: transparent;
+    width: 100%;
+    height: 4.5rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    /* Ensures the navbar stays at the top and spans full width */
+    top: 0;
+    /* Sticks the navbar to the top of the screen */
+    left: 0;
+    /* Ensures it starts at the far left */
+    box-sizing: border-box;
+    /* Ensures padding is considered in width */
+    z-index: 1000;
+    /* Keeps navbar on top of other content */
 }
 
 .navbar-brand {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-brand img {
-  width: 8rem;
-  height: 4rem;
-  margin-left: 2rem;
+    width: 8rem;
+    height: 4rem;
+    margin-left: 2rem;
 }
 
 .navbar-menu {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .navbar-start {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-end {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .navbar-item {
-  margin-right: 40px;
-  font-size: 20px;
-  color: #090909;
-  font-weight: 600;
-  text-decoration: none;
+    margin-right: 40px;
+    font-size: 20px;
+    color: #090909;
+    font-weight: 600;
+    text-decoration: none;
 }
 
 .navbar-item:hover {
-  color: #6b6767;
+    color: #6b6767;
 }
 
 .navbar-burger {
-  display: none;
+    display: none;
 }
 
 @media (max-width: 768px) {
-  .navbar-burger {
-    display: block;
-    cursor: pointer;
-  }
-
-  .navbar-menu {
-    display: none;
-  }
-
-  .navbar-menu.is-active {
-    display: block;
-    position: absolute;
-    top: 50px;
-    left: 0;
-    width: 100%;
-    background-color: #2f1044;
-    padding: 1rem;
-  }
-
-  .navbar-start {
-    flex-direction: column;
-  }
-
-  .navbar-end {
-    flex-direction: column;
-  }
-
-  .navbar-item {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
+    .navbar-burger {
+        display: block;
+        cursor: pointer;
+    }
+    .navbar-menu {
+        display: none;
+    }
+    .navbar-menu.is-active {
+        display: block;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        background-color: #2f1044;
+        padding: 1rem;
+    }
+    .navbar-start {
+        flex-direction: column;
+    }
+    .navbar-end {
+        flex-direction: column;
+    }
+    .navbar-item {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
 }
+
 
 /* StudentDashboard.css */
 
 .dashboard {
-  display: flex;
-  /* Use flexbox to create a sidebar and main content layout */
-  height: 100vh;
-  /* Full height of the viewport */
-
+    display: flex;
+    /* Use flexbox to create a sidebar and main content layout */
+    height: 100vh;
+    /* Full height of the viewport */
 }
 
 .sidebar-container {
-  display: flex;
+    display: flex;
 }
 
 .mini-sidebar {
-  width: 60px;
-  height: 100vh;
-  background-color: #0d0a3f;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 20px;
-  position: fixed;
-  z-index: 2000;
-
+    width: 60px;
+    height: 100vh;
+    background-color: #0d0a3f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    position: fixed;
+    z-index: 2000;
 }
 
-
-
 .mini-sidebar ul {
-  list-style-type: none;
-  padding: 0;
+    list-style-type: none;
+    padding: 0;
 }
 
 .mini-sidebar ul li {
-  margin: 20px 0;
-  color: #fff;
-  font-size: 24px;
+    margin: 20px 0;
+    color: #fff;
+    font-size: 24px;
 }
 
 .burger-icon {
-  cursor: pointer;
-  font-size: 28px;
-  color: #fff;
-  margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 28px;
+    color: #fff;
+    margin-bottom: 20px;
 }
 
 .sidebar {
-  width: 250px;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: -250px;
-  /* Initially hide the full sidebar */
-  background-color: #0d0a3f;
-  transition: left 0.3s ease-in-out;
-  padding-top: 60px;
-  z-index: 1000;
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    /* Initially hide the full sidebar */
+    background-color: #0d0a3f;
+    transition: left 0.3s ease-in-out;
+    padding-top: 60px;
+    z-index: 1000;
 }
 
 .sidebar.open {
-  left: 60px;
-  /* Full sidebar will open next to the mini sidebar */
-  padding-top: 20px;
-  color: #fff;
+    left: 60px;
+    /* Full sidebar will open next to the mini sidebar */
+    padding-top: 20px;
+    color: #fff;
 }
 
 .sidebar.open h3 {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .sidebar ul {
-  list-style-type: none;
-  padding: 0;
-  padding-top: 13px;
+    list-style-type: none;
+    padding: 0;
+    padding-top: 13px;
 }
 
 .sidebar ul li {
-  padding: 13px 10px;
-  text-align: left;
+    padding: 13px 10px;
+    text-align: left;
 }
 
 .sidebar ul li a {
-  color: #fff;
-  text-decoration: none;
-  display: block;
+    color: #fff;
+    text-decoration: none;
+    display: block;
 }
 
 .sidebar h2 {
-  color: #fff;
-  padding-left: 10px;
+    color: #fff;
+    padding-left: 10px;
 }
-
 
 .main-content {
-  flex-grow: 1;
-  /* Take remaining space after sidebar */
-
-  background-color: #EEF1FF;
-  /* Light background for main content */
-  overflow-y: auto;
-  /* Enable scrolling if content overflows */
-  transition: margin-left 0.3s ease;
+    flex-grow: 1;
+    /* Take remaining space after sidebar */
+    background-color: #EEF1FF;
+    /* Light background for main content */
+    overflow-y: auto;
+    /* Enable scrolling if content overflows */
+    transition: margin-left 0.3s ease;
 }
 
-
 .sidebar.open+.main-content {
-  margin-left: 310px;
-  /* Adjust when full sidebar is open */
+    margin-left: 310px;
+    /* Adjust when full sidebar is open */
 }
 
 .top-section {
-  margin-bottom: 20px;
-  /* Margin below the student details */
-
+    margin-bottom: 20px;
+    width: 100%;
+    /* Margin below the student details */
 }
 
 .student-detail {
-  display: flex;
-  /* Flexbox for profile section */
-  align-items: center;
-  /* Center items vertically */
-  background-color: white;
-  /* White background for details */
-  border-radius: 8px;
-  /* Rounded corners */
-  box-shadow: 0 2px 4px rgba(22, 15, 73, 0.1);
-  /* Subtle shadow */
+    display: flex;
+    /* Flexbox for profile section */
+    align-items: center;
+    /* Center items vertically */
+    background-color: white;
+    /* White background for details */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(22, 15, 73, 0.1);
+    /* Subtle shadow */
 }
 
 .profile-section {
-  display: flex;
-  /* Flexbox for profile image and details */
-  align-items: center;
-  /* Center items vertically */
-  margin: 1rem 0;
-
+    display: flex;
+    /* Flexbox for profile image and details */
+    align-items: center;
+    /* Center items vertically */
+    margin: 1rem 0;
 }
 
 .profile-pic {
-  border-radius: 60%;
-  /* Circular profile picture */
-  margin: 0 4rem;
-  /* Space between image and text */
+    border-radius: 60%;
+    /* Circular profile picture */
+    margin: 0 4rem;
+    /* Space between image and text */
 }
 
 .name-box {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 2;
-  flex-grow: 1;
-  /* Allow name box to grow */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2;
+    flex-grow: 1;
+    /* Allow name box to grow */
 }
 
 .right-section {
-  margin-left: 8rem;
-  margin-top: 2.6rem;
+    margin-left: 8rem;
+    margin-top: 2.6rem;
 }
 
 .ttbtn {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 0px 0.5rem;
-
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0px 0.5rem;
 }
 
 .btnshowmore {
-  border: none;
-
-  padding-top: 0.7rem;
-  background-color: white;
-
+    border: none;
+    padding-top: 0.7rem;
+    background-color: white;
 }
 
 .btnshowmore:hover {
-  color: rgb(98, 98, 224);
-  text-decoration: underline;
+    color: rgb(98, 98, 224);
+    text-decoration: underline;
 }
 
 .pie-chart-section {
-  margin: 20px 0;
-  /* Margin for pie chart */
+    margin: 20px 0;
+    /* Margin for pie chart */
 }
 
 .pgraphcircle {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 .piechart {
-  background-color: white;
-  /* White background for pie chart */
-  border-radius: 8px;
-  /* Rounded corners */
-  padding: 20px;
-  /* Padding for pie chart */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* Subtle shadow */
+    background-color: white;
+    /* White background for pie chart */
+    border-radius: 8px;
+    /* Rounded corners */
+    padding: 20px;
+    /* Padding for pie chart */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
 }
 
 .piechartrow {
-  height: 17rem;
-  width: 40%;
+    height: 17rem;
+    width: 40%;
 }
 
 .attdetail {
-  display: flex;
-  flex-direction: row-reverse;
-  flex-wrap: wrap;
-  justify-content: space-between;
-
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .attendance-data {
-  display: flex;
-  flex-direction: row;
-  margin-top: 1rem;
-  /* Margin above attendance details */
-  justify-content: space-between;
-  margin-left: 6rem;
-  margin-right: 12rem;
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    /* Margin above attendance details */
+    justify-content: space-between;
+    margin-left: 6rem;
+    margin-right: 12rem;
 }
 
 .timetable {
-  margin-top: 20px;
-  /* Margin above timetable */
-  background-color: white;
-  /* White background for timetable */
-  border-radius: 8px;
-  /* Rounded corners */
-  padding: 15px;
-  /* Padding for timetable */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* Subtle shadow */
+    margin-top: 20px;
+    /* Margin above timetable */
+    background-color: white;
+    /* White background for timetable */
+    border-radius: 8px;
+    /* Rounded corners */
+    padding: 15px;
+    /* Padding for timetable */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
 }
 
 table {
-  width: 100%;
-  /* Full width for table */
-  border-collapse: collapse;
-  /* Remove space between borders */
+    width: 100%;
+    /* Full width for table */
+    border-collapse: collapse;
+    /* Remove space between borders */
 }
 
 th,
 td {
-  border: 1px solid #ddd;
-  /* Border for table cells */
-  padding: 8px;
-  /* Padding for cells */
-  text-align: left;
-  /* Align text to the left */
+    border: 1px solid #ddd;
+    /* Border for table cells */
+    padding: 8px;
+    /* Padding for cells */
+    text-align: left;
+    /* Align text to the left */
 }
 
 th {
-  background-color: #001f54;
-  /* Dark background for table headers */
-  color: white;
-  /* White text for headers */
+    background-color: #001f54;
+    /* Dark background for table headers */
+    color: white;
+    /* White text for headers */
 }
+
 
 /* attendencedetails component css */
+
 .attbox {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  margin-top: 14rem;
-  align-items: stretch;
-  /* Ensure all boxes have the same height */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 14rem;
+    align-items: stretch;
+    /* Ensure all boxes have the same height */
 }
 
-
-
 .attbox .box {
-  flex-grow: 1;
-  flex-basis: 0;
-  max-width: 300px;
-  padding: 2rem;
-  border: 2px solid black;
-  border-radius: 00%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: content-box;
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 300px;
+    padding: 2rem;
+    border: 2px solid black;
+    border-radius: 00%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: content-box;
 }
 
 .attbox .box:hover {
-  border-color: rgb(98, 98, 224);
-  border-style: calc(2px + 1%);
-  box-shadow: #761e1e;
-  background-color: rgba(0, 31, 84, 255);
-  color: #FFFFFF;
-  transition: 0.5ms;
+    border-color: rgb(98, 98, 224);
+    border-style: calc(2px + 1%);
+    box-shadow: #761e1e;
+    background-color: rgba(0, 31, 84, 255);
+    color: #FFFFFF;
+    transition: 0.5ms;
 }
 
-
-
 .attbox .box .attboxdata {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 .attbox .box .attboxdata h4 {
-  margin-top: 0.7rem;
-  text-decoration: none;
-
+    margin-top: 0.7rem;
+    text-decoration: none;
 }
 
-
 .attbox .box .attboxdata img {
-  height: 3rem;
-  width: 3rem;
+    height: 3rem;
+    width: 3rem;
 }
 
 .attbox .box p {
-  margin-top: auto;
-  padding-left: 2rem;
-  /* Push the paragraph to the bottom */
+    margin-top: auto;
+    padding-left: 2rem;
+    /* Push the paragraph to the bottom */
 }
 
+
 /* Add these styles */
+
 .top-left {
-  position: fixed;
-  margin-left: 5rem; 
-  margin-top: 4rem;/* Fixed position for top-left */
-  top: 2em; /* Distance from the top */
-  left: 20px; /* Distance from the left */
-  z-index: 1000; /* Ensure it stays on top */
-  background-color: none;
-   /* Adjust height as needed */
+    position: fixed;
+    margin-left: 5rem;
+    margin-top: 4rem;
+    top: 2em;
+    left: 20px;
+    z-index: 1000;
+    background-color: none;
 }
 
 .box-active {
-  background-color: none; /* Change background color on click */
-  color: black; /* Change text color */
-  border-color: rgb(98, 98, 224); /* Adjust border */
-   /* Add a subtle shadow */
-  transition: background-color 0.5s, border-color 0.5s, color 0.5s; /* Smooth transition */
+    background-color: none;
+    /* Change background color on click */
+    color: black;
+    /* Change text color */
+    border-color: rgb(98, 98, 224);
+    /* Adjust border */
+    /* Add a subtle shadow */
+    transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+    width: 100%;
+    margin-right: 10rem;
+    /* Smooth transition */
 }
 
-
-.top-left .attpie{
-  height: 8rem;
-  width: 8rem;
+.top-left .attpie {
+    height: 8rem;
+    width: 8rem;
 }
 
-.top-left .attboxdata{
-  display: flex;
-  flex-direction: row;
-  
+.top-left .attboxdata {
+    display: flex;
+    flex-direction: row;
 }
 
-.top-left .attboxdata h6{
-  margin-top: 3rem;
-  font-size: 2rem; /* Increase the font size */
-  font-weight: 700; /* Make the text bold */
-  text-decoration: underline; /* Add underline */
-  color: #090909; 
-  /* Adjust the color if needed */
+.top-left .attboxdata h6 {
+    margin-top: 3rem;
+    font-size: 2rem;
+    /* Increase the font size */
+    font-weight: 700;
+    /* Make the text bold */
+    text-decoration: underline;
+    /* Add underline */
+    color: #090909;
+    /* Adjust the color if needed */
 }
 
 .student-detail-myatt {
-  margin-top: 1rem; /* Space between student details */
-  margin-left: 8rem; /* Indentation for the student detail */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between; /* Distribute children to edges */
+    margin-top: 1rem;
+    margin: 0 12rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .name-box-myatt {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between; /* Evenly distribute name and details */
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 6;
+    /* Evenly distribute name and details */
 }
 
 .right-section-myatt {
-  font-size: large;
-  font-weight: 500;
-  margin-left: 3rem; 
-  margin-top: 1.6rem; 
+    font-size: large;
+    font-weight: 500;
+    margin-left: 3rem;
+    margin-top: 1.6rem;
 }
 
-.left-section-myatt{
-  font-size: large;
-  font-weight: 500;
-  
+.left-section-myatt {
+    font-size: large;
+    font-weight: 500;
+    margin-left: 3rem;
+    margin-top: 1.6rem;
 }
 
 .label {
-  margin-right: 1rem; /* Adjust space between label and value */
-  font-weight: bold; /* Make the label bold if needed */
-  }
-  
-  .value {
+    margin-right: 1rem;
+    /* Adjust space between label and value */
+    font-weight: bold;
+    /* Make the label bold if needed */
+}
+
+.value {
     font-weight: 400;
-  margin-left: 20rem;
-  padding: 2rem; /* Optional: Fine-tune spacing */
-  }
-  
-  .subform{
+    /* margin-left: 20rem; */
+    padding: 2rem;
+    /* Optional: Fine-tune spacing */
+}
+
+.subform {
     display: flex;
     flex-direction: row;
-    align-items: ; /* Vertically align items */
+    /* Vertically align items */
     gap: 1rem;
+}
 
-  }
-
-  .form-label {
+.form-label {
     font-weight: bold;
     margin-right: 0.rem;
     color: #090909;
-  }
+}
 
-    .form-value {
-      flex-grow: 1; /* Allow select to grow and take available space */
-      min-width: 200px;
-    
-    
-    
-    }
+.form-value {
+    flex-grow: 1;
+    /* Allow select to grow and take available space */
+    min-width: 200px;
+    margin-left: 3.5rem;
+}
 
-   
-    .form-button{
-      margin-left: 8rem;
-      
-    }
-    
-    .myatt-button{
-      margin: 1rem;
-      padding: 0.2rem;
-      border-radius: .4rem;
-      width: 5rem;
-      background-color: rgba(0, 31, 84, 255);
-      color: white;
-    }
-    
+.form-button {
+    margin-left: 15rem;
+}
 
-    .myatt-button:hover{
-      color: rgb(0, 0, 0);
-      background-color: rgb(255, 255, 255);
-      animation: infinite;
-      border-color: rgba(0, 31, 84, 255);
-      
-    }
+.myatt-button {
+    margin: 1rem;
+    padding: 0.2rem;
+    border-radius: .4rem;
+    width: 5rem;
+    background-color: rgba(0, 31, 84, 255);
+    color: white;
+}
+
+.formsub {
+    display: flex;
+    flex-direction: row;
+}
+
+.myatt-button:hover {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    animation: infinite;
+    border-color: rgba(0, 31, 84, 255);
+}
