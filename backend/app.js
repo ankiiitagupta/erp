@@ -177,6 +177,120 @@ app.get("/api/weekstimetable", (req, res) => {
 });
 
 
+// Timetable and attendance of a student for a specific date
+app.get("/api/timetablebydate", (req, res) => {
+  const { RollNO, LectureDate } = req.query;
+
+  db.query(
+    ` 
+          SELECT 
+              t.TimetableID, 
+              t.SubjectID, 
+              s.SubjectName, 
+              f.Faculty_Name, 
+              t.DayOfWeek, 
+              t.StartTime, 
+              t.EndTime, 
+              t.RoomNumber, 
+              t.LectureNumber, 
+              t.LectureDate,
+              s.SubjectID AS SubjectCode, 
+              a.AttendanceStatus
+          FROM 
+              student AS st
+          JOIN 
+              enrollment AS e ON st.RollNO = e.RollNO
+          JOIN 
+              course AS c ON e.CourseID = c.CourseID
+          JOIN 
+              timetable AS t ON c.DepartmentID = t.DepartmentID
+                AND t.YearOfStudy = st.Stud_YearOfStudy
+                AND t.Section = st.Section
+          JOIN 
+              subject AS s ON t.SubjectID = s.SubjectID
+          JOIN 
+              faculty AS f ON s.FacultyID = f.FacultyID
+          LEFT JOIN 
+              attendance AS a ON st.RollNO = a.RollNO 
+                AND t.SubjectID = a.SubjectID 
+                AND t.LectureNumber = a.LectureNumber 
+                AND t.LectureDate = a.LectureDate  -- Ensure the date matches the attendance record
+          WHERE 
+              st.RollNO = ? 
+              AND t.LectureDate = ?  
+              AND a.AttendanceStatus IS NOT NULL  -- This filters out any lectures without attendance records
+          ORDER BY 
+              t.StartTime;`,
+    [RollNO,LectureDate],
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Database query failed");
+        return;
+      }
+      res.json(results);
+    }
+  );
+});
+
+
+//fetechs the student attendence by month and if 0 then for all month
+app.get("/api/attendencebymonthforsub", (req, res) => {
+  const { RollNO, MonthNumber, SubjectName } = req.query;
+
+  let monthCondition = '';
+  let queryParams = [RollNO, SubjectName];
+
+  // Add the month condition if MonthNumber is not 0
+  if (MonthNumber != 0) {
+    monthCondition = 'AND MONTH(t.LectureDate) = ?';
+    queryParams.push(MonthNumber);
+  }
+
+  const query = `
+        SELECT 
+            s.SubjectName, 
+            MONTH(t.LectureDate) AS MonthNumber,  
+            COUNT(*) AS TotalLectures,  
+            SUM(CASE WHEN a.AttendanceStatus = 1 THEN 1 ELSE 0 END) AS TotalPresent  
+        FROM 
+            student AS st
+        JOIN 
+            enrollment AS e ON st.RollNO = e.RollNO
+        JOIN 
+            course AS c ON e.CourseID = c.CourseID
+        JOIN 
+            timetable AS t ON c.DepartmentID = t.DepartmentID
+              AND t.YearOfStudy = st.Stud_YearOfStudy
+              AND t.Section = st.Section
+        JOIN 
+            subject AS s ON t.SubjectID = s.SubjectID
+        LEFT JOIN 
+            attendance AS a ON st.RollNO = a.RollNO 
+              AND t.SubjectID = a.SubjectID 
+              AND t.LectureNumber = a.LectureNumber 
+              AND t.LectureDate = a.LectureDate
+        WHERE 
+            st.RollNO = ? 
+            AND s.SubjectName = ?
+            ${monthCondition}   -- Month filter will be applied only if MonthNumber is not 0
+        GROUP BY 
+            MONTH(t.LectureDate)  
+        ORDER BY 
+            s.SubjectName, 
+            MonthNumber;
+  `;
+
+  db.query(query, queryParams, (err, results) => {
+    if (err) {
+      res.status(500).send("Database query failed");
+      return;
+    }
+    res.json(results);
+  });
+});
+
+
+
 
 
 
