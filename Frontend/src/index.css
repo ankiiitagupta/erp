@@ -642,3 +642,55 @@ th {
     animation: infinite;
     border-color: rgba(0, 31, 84, 255);
 }
+.attpiechart {
+  position: fixed;
+  border: 2px solid rgb(10, 9, 9);
+  box-shadow: 2px 4px 6px gray;
+  display: flex;
+  margin: 8rem;
+  margin-top: 15rem;
+}
+
+.my-att-piechart {
+  margin-left: 3rem;
+  margin-top: 1.6rem;
+  width: 40%;
+}
+
+.my-att-details {
+  margin-left: 3rem;
+  margin-top: 1.6rem;
+}
+.performance-container {
+  margin: 1rem 0;
+  font-family: Arial, sans-serif;
+  display:flex;
+  flex-direction: column;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.performance-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0;
+}
+
+.performance-table th, .performance-table td {
+  border: 1px solid #000;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.performance-table th {
+  
+    background-color: rgba(0, 31, 84, 255);
+
+}
+
+.performance-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}

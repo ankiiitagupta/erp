@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import pieClip from "../assets/pieclip.png";
+import PieChart from "./PieChart.jsx";
 
 const AttendanceDetails = ({ RollNO, students = [], error }) => {
   const [activeBox, setActiveBox] = useState(null);
@@ -72,7 +73,7 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
             <span className="value">{student.Stud_Gender}</span>
             <form className="formsub">
               <label htmlFor="month" className="form-label">
-                Month:
+                Subject:
               </label>
               <Select
                   className="form-value"
@@ -110,6 +111,8 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
             </form>
           </p>
         </div>
+
+
       </div>
     ));
   };
@@ -189,6 +192,14 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
             </div>
           </>
         )}
+      </div>
+      <div className="attpiechart">
+        <p>Attendance</p>
+        <div className="my-att-piechart">
+          <PieChart total="10"
+              present="7" />
+        </div>
+        <div className="my-att-details"></div>
       </div>
     </div>
   );

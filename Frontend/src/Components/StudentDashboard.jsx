@@ -8,6 +8,7 @@ import Sidebar from "./Sidebar.jsx";
 import WeeksTimeTable from "./WeeksTimeTable.jsx";
 import TodaysTimeTable from "./TodaysTimeTable.jsx";
 import AttendanceDetails from "./AttendanceDetails.jsx"; // Ensure to import your AttendanceDetails component
+import MarkingTimeTable from "./markingTimetable.jsx";
 
 const StudentDashboard = () => {
   const { RollNO } = useParams(); // Get Roll number from URL
@@ -121,7 +122,7 @@ const StudentDashboard = () => {
     ));
   };
 
-  const renderTimetable = () => {
+  const renderTimetable= () => {
     return (
       <div className="timetable">
         <div className="ttbtn" onClick={() => setTFlag(!tFlag)}>
@@ -137,6 +138,16 @@ const StudentDashboard = () => {
       </div>
     );
   };
+  const renderMarkingTimeTable = () => {
+    return (
+      <div className="timetable">
+        
+        <MarkingTimeTable/>
+
+      </div>
+    );
+  };
+
 
   
 
@@ -155,6 +166,7 @@ const StudentDashboard = () => {
           <div className="middle-section">
             <div className="pie-chart-section">{renderPieChart()}</div>
             <div className="timetable-section">{renderTimetable()}</div>
+            <div classname="markingTimetable">{renderMarkingTimeTable()}</div>
           </div>
           </>
         )}
