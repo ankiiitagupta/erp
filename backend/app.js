@@ -97,23 +97,39 @@ app.get("/api/todaystimetable", (req, res) => {
     const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
     db.query(
-        `SELECT DISTINCT t.TimetableID, t.SubjectID, s.SubjectName, f.Faculty_Name, t.DayOfWeek, t.StartTime, t.EndTime, t.RoomNumber, t.LectureNumber, s.SubjectID AS SubjectCode, 
-       a.AttendanceStatus
-    FROM student AS st
-    JOIN enrollment AS e ON st.RollNO = e.RollNO
-    JOIN course AS c ON e.CourseID = c.CourseID
-    JOIN timetable AS t ON c.DepartmentID = t.DepartmentID
-       AND t.YearOfStudy = st.Stud_YearOfStudy
-       AND t.Section = st.Section
-    JOIN subject AS s ON t.SubjectID = s.SubjectID
-    JOIN faculty AS f ON s.FacultyID = f.FacultyID
-    LEFT JOIN attendance AS a ON st.RollNO = a.RollNO 
-       AND t.SubjectID = a.SubjectID 
-       AND t.LectureNumber = a.LectureNumber 
-       AND a.LectureDate = ?
-    WHERE st.RollNO = ? 
-    AND t.DayOfWeek = ?
-    ORDER BY t.StartTime;`, [formattedDate, RollNO, dayOfWeek],
+        `SELECT 
+    t.TimetableID,
+    s.SubjectName, 
+    f.Faculty_Name, 
+    t.StartTime, 
+    t.EndTime, 
+    t.RoomNumber, 
+    t.LectureNumber,
+    COALESCE(a.AttendanceStatus, 'Not Marked') AS AttendanceStatus
+FROM 
+    student AS st
+JOIN 
+    enrollment AS e ON st.RollNO = e.RollNO
+JOIN 
+    course AS c ON e.CourseID = c.CourseID
+JOIN 
+    timetable AS t ON t.CourseID = c.CourseID
+        AND t.YearOfStudy = st.Stud_YearOfStudy
+        AND t.Section = st.Section
+        AND t.DepartmentID = c.DepartmentID
+LEFT JOIN 
+    subject AS s ON t.SubjectID = s.SubjectID
+LEFT JOIN 
+    faculty AS f ON s.FacultyID = f.FacultyID
+LEFT JOIN 
+    attendance AS a ON a.RollNo = st.RollNO
+        AND a.LectureNumber = t.LectureNumber
+        AND a.LectureDate = t.LectureDate
+WHERE 
+    st.RollNO = ? -- Replace with dynamic input from API
+    AND t.LectureDate = ? -- Replace with dynamic date input
+ORDER BY 
+    t.StartTime;`, [ RollNO, formattedDate],
         (err, results) => {
             if (err) {
                 res.status(500).send("Database query failed");
