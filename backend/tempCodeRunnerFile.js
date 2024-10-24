@@ -1,1 +1,1 @@
-/api/attendencebymonthforsub
+/api/subjectofStud

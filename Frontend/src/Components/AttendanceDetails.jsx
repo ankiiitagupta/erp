@@ -5,14 +5,16 @@ import PieChart from "./PieChart.jsx";
 import TodaysTimeTable from "./TodaysTimeTable";
 
 
-const AttendanceDetails = ({ rollNo, students = [], error }) => {
+const AttendanceDetails = ({ RollNO, students = [], error }) => {
   const [activeBox, setActiveBox] = useState(null);
   const [currentMonth, setCurrentMonth] = useState("");
   const [subject, setSubject] = useState("");
+
   const [selectedDate, setSelectedDate] = useState(""); // Renamed from Date to selectedDate
   const [showPieChart, setShowPieChart] = useState(false);
+  const [subjectOptions, setSubjectOptions] = useState([]);
 
-  // Sample mock data for testing
+
   const mockStudents = [
     {
       rollNo: "001",
@@ -26,14 +28,33 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
     },
   ];
 
-  // Mock subjects for the select dropdown
-  const subjectOptions = [
-    { value: "Mathematics", label: "Mathematics" },
-    { value: "Physics", label: "Physics" },
-    { value: "Chemistry", label: "Chemistry" },
-    { value: "Computer Science", label: "Computer Science" },
-    { value: "Biology", label: "Biology" },
-  ];
+  useEffect(() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    setCurrentMonth(`${year}-${month}`);
+  }, []);
+
+  useEffect(() => {
+    // Fetch subjects from the API
+    const fetchSubjects = async () => {
+      try {
+        const response = await fetch(`/api/subjectofStud?RollNO=${RollNO}`);
+        const data = await response.json();
+        console.log("Fetched subjects:", data); // Check if the data is being fetched correctly
+
+        const options = data.map((item) => ({
+          value: item.SubjectName,
+          label: item.SubjectName,
+        }));
+        setSubjectOptions(options);
+      } catch (error) {
+        console.error("Error fetching subjects:", error);
+      }
+    };
+
+    fetchSubjects();
+  }, [RollNO]);
 
   useEffect(() => {
     const now = new Date();
@@ -75,18 +96,16 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
   const renderAttendanceDetails = () => {
     const studentList = students.length > 0 ? students : mockStudents;
 
-    return studentList.map((student) => (
+    return students.map((student) => (
       <div key={student.rollNo} className="student-detail-myatt">
         <div className="name-box-myatt">
           <p className="left-section-myatt">
             <span className="label">Roll No:</span>{" "}
-            <span className="value">{student.rollNo}</span>
+            <span className="value">{student.RollNO}</span>
             <br />
-            <span className="label">Course:</span>{" "}
-            <span className="value">{student.courseName}</span>
-            <br />
+            
             <span className="label">Gender:</span>{" "}
-            <span className="value">{student.studGender}</span>
+            <span className="value">{student.Stud_Gender}</span>
             <form className="formsub">
 
               <label htmlFor="month" className="form-label"></label>
@@ -109,10 +128,10 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
 
           <p className="right-section-myatt">
             <span className="label">Course:</span>
-            <span className="value">{student.courseName}</span>
+            <span className="value">{student.CourseName}</span>
             <br />
             <span className="label">Section:</span>
-            <span className="value">{student.section}</span>
+            <span className="value">{student.Section}</span>
             <form>
               <label htmlFor="month" className="form-label">
                 Month:

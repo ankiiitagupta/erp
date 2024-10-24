@@ -159,6 +159,7 @@ const StudentDashboard = () => {
       <div className="main-content">
         <Header />
         
+
         {/* Conditional rendering based on noticeFlag */}
         {noticeFlag ? (
           <div className="notice-section">
@@ -168,7 +169,7 @@ const StudentDashboard = () => {
           <>
             {attFlag ? (
               <div className="attendance-section">
-                <AttendanceDetails RollNO={RollNO} />
+                <AttendanceDetails RollNO={RollNO} students={students}/>
               </div>
             ) : (
               <>
