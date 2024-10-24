@@ -57,6 +57,23 @@ app.get("/api/data", (req, res) => {
     });
 });
 
+//Api for Subject of a Student
+app.get("/api/subjectofStud", (req, res) => {
+    const { RollNO } = req.query;
+    db.query(`
+          SELECT s.RollNO, subj.SubjectName
+            FROM student s
+            JOIN enrollment e ON s.RollNO = e.RollNO
+            JOIN course c ON e.CourseID = c.CourseID
+            JOIN subject subj ON c.CourseID = subj.CourseID
+            WHERE s.RollNO = ?;
+
+      `, [RollNO], (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
+});
+
 //Total attendence of student
 app.get("/api/totalattendence", (req, res) => {
     const { RollNO } = req.query;

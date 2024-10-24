@@ -9,6 +9,7 @@ import FacultyDashboard from './Components/FacultyDashboard.jsx';
 import Header from './Components/Header.jsx';
 import StudentDashboard from './Components/StudentDashboard.jsx';
 
+
 function App() {
   const [count, setCount] = useState(0)
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/admindashboard" element={<AdminDashboard/>}></Route>
         <Route path="/facultydashboard" element={<FacultyDashboard/>}></Route>
         <Route path="/studentdashboard/:RollNO" element={<StudentDashboard/>}></Route>
+        
       </Routes>
     
     </BrowserRouter>

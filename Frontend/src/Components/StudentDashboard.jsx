@@ -9,6 +9,7 @@ import WeeksTimeTable from "./WeeksTimeTable.jsx";
 import TodaysTimeTable from "./TodaysTimeTable.jsx";
 import AttendanceDetails from "./AttendanceDetails.jsx"; // Ensure to import your AttendanceDetails component
 import MarkingTimeTable from "./markingTimetable.jsx";
+import Notices from "./Notices.jsx";
 
 const StudentDashboard = () => {
   const { RollNO } = useParams(); // Get Roll number from URL
@@ -18,6 +19,7 @@ const StudentDashboard = () => {
   const [error, setError] = useState(null);
   const [tFlag, setTFlag] = useState(false); // Manage timetable flag
   const [attFlag, setAttFlag] = useState(false); // Manage attendance flag
+  const [noticeFlag, setNoticeFlag]= useState(false);
 
   useEffect(() => {
     // Fetch student data using the Roll number
@@ -153,23 +155,38 @@ const StudentDashboard = () => {
 
   return (
     <div className="dashboard">
-      <Sidebar setAttFlag={setAttFlag} />
+      <Sidebar setAttFlag={setAttFlag}  setNoticeFlag={setNoticeFlag}/>
       <div className="main-content">
         <Header />
         
-        {attFlag ? (
-          <div className="attendance-section">
-            <AttendanceDetails RollNO={RollNO} />
+        {/* Conditional rendering based on noticeFlag */}
+        {noticeFlag ? (
+          <div className="notice-section">
+            <Notices />
           </div>
-        ) : (<>
-          <div className="top-section">{renderStudentDetails()}</div>
-          <div className="middle-section">
-            <div className="pie-chart-section">{renderPieChart()}</div>
-            <div className="timetable-section">{renderTimetable()}</div>
-            <div classname="markingTimetable">{renderMarkingTimeTable()}</div>
-          </div>
+        ) : (
+          <>
+            {attFlag ? (
+              <div className="attendance-section">
+                <AttendanceDetails RollNO={RollNO} />
+              </div>
+            ) : (
+              <>
+                <div className="top-section">{renderStudentDetails()}</div>
+                <div className="middle-section">
+                  <div className="pie-chart-section">{renderPieChart()}</div>
+                  <div className="timetable-section">{renderTimetable()}</div>
+                  <div className="markingTimetable">
+                    {renderMarkingTimeTable()}
+                  </div>
+                </div>
+              </>
+            )}
           </>
         )}
+
+      
+       
       </div>
     </div>
   );
