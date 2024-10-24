@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
@@ -9,7 +10,7 @@ import {
   CDBSidebarMenuItem,
 } from 'cdbreact';
 
-const Sidebar = ({ setAttFlag }) => {
+const Sidebar = ({ setAttFlag , setNoticeFlag}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -53,6 +54,11 @@ const Sidebar = ({ setAttFlag }) => {
             <NavLink exact to="/hero404" target="_blank" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="exclamation-circle">404 page</CDBSidebarMenuItem>
             </NavLink>
+            <NavLink to="#"
+              onClick={() => setNoticeFlag(true)} // Set attendance flag to true
+              activeClassName="activeClicked"> {/* Notice link */}
+              <CDBSidebarMenuItem icon="bell">Notices</CDBSidebarMenuItem> {/* Notice icon */}
+            </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>
 
@@ -65,3 +71,4 @@ const Sidebar = ({ setAttFlag }) => {
 };
 
 export default Sidebar;
+

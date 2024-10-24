@@ -737,3 +737,182 @@ h1 {
   gap: 1rem; /* Space between the buttons */
 
 }
+/* .notice-board {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    text-align: left;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  
+  .notice-list {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .notice-item {
+    display: flex;
+    justify-content: space-between;
+    background-color: #ddd;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    align-items: center;
+  }
+  
+  .notice-item span {
+    font-weight: bold;
+    color: #001f54;
+  }
+  
+  .notice-item a {
+    text-decoration: none;
+    color: #007bff;
+    margin-right: 20px;
+  }
+  
+  .notice-item .date {
+    margin-left: auto;
+    color:  #001f54;
+    font-weight: normal;
+  }
+  
+  .notice-details {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .notice-details h2 {
+    margin-bottom: 10px;
+  }
+  
+  .notice-details p {
+    margin-bottom: 10px;
+  }
+  
+  .notice-details button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .notice-details button:hover {
+    background-color: #0056b3;
+  } 
+   */
+   .notice-board {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #001f54; /* Lighter background for better contrast */
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  }
+  
+  h1 {
+    text-align: left;
+    color: #eaedf2; /* Dark blue for heading */
+    margin-bottom: 20px;
+    font-size: 1.75rem; /* Larger font for heading */
+    
+    
+  }
+  
+  .notice-list {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .notice-item {
+    display: flex;
+    justify-content: space-between;
+    background-color: #e9ecef; /* Subtle background color */
+    padding: 15px 25px; /* Increase padding for more space */
+    margin-bottom: 15px; /* Spacing between notices */
+    border-radius: 5px;
+    align-items: center;
+    transition: background-color 0.3s ease; /* Add transition effect */
+  }
+  
+  .notice-item:hover {
+    background-color: #0f457e; /* Slight hover effect */
+  }
+  
+  .notice-item span {
+    font-weight: bold;
+    color: #001f54; /* Dark blue for text */
+  }
+  
+  .notice-item a {
+    text-decoration: none;
+    color: #007bff; /* Blue for links */
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  
+  .notice-item a:hover {
+    color: #4e7197; /* Darker blue on hover */
+  }
+  
+  .notice-item .date {
+    margin-left: auto;
+    color: #001f54;
+    font-weight: normal;
+    font-size: 0.9rem; /* Slightly smaller for the date */
+  }
+  
+  .notice-details {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Add a shadow for depth */
+  }
+  
+  .notice-details h2 {
+    margin-bottom: 10px;
+    color: #edf0f4;
+    font-size: 1.5rem;
+  }
+
+  .notice-board h1{
+    color:#fff;
+  }
+  
+  .notice-details p {
+    margin-bottom: 10px;
+    color: #333; /* Dark grey for readability */
+  }
+  
+  .notice-details button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .notice-details button:hover {
+    background-color: #4e7197;
+  }
+  
+  
