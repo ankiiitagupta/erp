@@ -9,24 +9,10 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
   const [activeBox, setActiveBox] = useState(null);
   const [currentMonth, setCurrentMonth] = useState("");
   const [subject, setSubject] = useState("");
-
+  const [attendanceData, setAttendanceData] = useState("");
   const [selectedDate, setSelectedDate] = useState(""); // Renamed from Date to selectedDate
   const [showPieChart, setShowPieChart] = useState(false);
   const [subjectOptions, setSubjectOptions] = useState([]);
-
-
-  const mockStudents = [
-    {
-      rollNo: "001",
-      studName: "Alice Smith",
-      section: "A",
-      enrollmentID: "EN12345",
-      studGender: "Female",
-      studDOB: "2001-05-15",
-      courseName: "Computer Science",
-      program: "B.tech",
-    },
-  ];
 
   useEffect(() => {
     const now = new Date();
@@ -39,7 +25,9 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
     // Fetch subjects from the API
     const fetchSubjects = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/subjectofStud?RollNO=${RollNO}`);
+        const response = await fetch(
+          `${API_URL}/api/subjectofStud?RollNO=${RollNO}`
+        );
         const data = await response.json();
         console.log("Fetched subjects:", data); // Check if the data is being fetched correctly
 
@@ -71,31 +59,45 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
     setActiveBox(activeBox === "daily" ? null : "daily");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Submitted: Subject - ${subject}, Month - ${currentMonth}`);
+    try {
+      // Fetch attendance data from the API
+      const response = await fetch(
+        `${API_URL}/api/attendencebymonthforsub?RollNO=${RollNO}&SubjectName=${subject}&MonthNumber=${
+          new Date(currentMonth).getMonth() + 1
+        }`
+      );
+      const data = await response.json();
+      console.log("Fetched attendance data:", data); // Log to check the response
+
+      // Set the fetched data into state
+      setAttendanceData(data[0]); // Assuming only one result per subject and month
+      setShowPieChart(true); // Show the pie chart after fetching data
+    } catch (error) {
+      console.error("Error fetching attendance data:", error);
+    }
   };
 
   const handleReset = () => {
     setCurrentMonth(new Date().toISOString().slice(0, 7));
     setSubject("");
+    setShowPieChart(false);
+    setAttendanceData(null);
   };
 
   const handledailySubmit = (e) => {
     e.preventDefault();
-    setShowPieChart(true); // Show pie chart on submit
-    alert(`Submitted: Subject - ${subject}, Date - ${selectedDate}`);
+    // Show pie chart on submit
   };
 
   const handledailyReset = () => {
     setCurrentMonth(new Date().toISOString().slice(0, 7));
     setSubject("");
-    setShowPieChart(false); 
+    setShowPieChart(false);
   };
 
   const renderAttendanceDetails = () => {
-    const studentList = students.length > 0 ? students : mockStudents;
-
     return students.map((student) => (
       <div key={student.rollNo} className="student-detail-myatt">
         <div className="name-box-myatt">
@@ -103,24 +105,22 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
             <span className="label">Roll No:</span>{" "}
             <span className="value">{student.RollNO}</span>
             <br />
-            
             <span className="label">Gender:</span>{" "}
             <span className="value">{student.Stud_Gender}</span>
             <form className="formsub">
-
               <label htmlFor="month" className="form-label"></label>
 
               <label htmlFor="Subject" className="form-label">
-
                 Subject:
               </label>
               <Select
                 className="form-value"
                 options={subjectOptions}
                 placeholder="Select"
-                value={subjectOptions.find(
-                  (option) => option.value === subject
-                )}
+                value={
+                  subjectOptions.find((option) => option.value === subject) ||
+                  null
+                } // Add || null to handle empty state
                 onChange={(selectedOption) => setSubject(selectedOption.value)}
               />
             </form>
@@ -148,8 +148,6 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
             </form>
           </p>
         </div>
-
-
       </div>
     ));
   };
@@ -160,26 +158,28 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
     return students.map((student) => (
       <div key={student.rollNo} className="student-detail-dailyatt">
         <div className="dailyatt">
-            <span className="label">Roll No:</span>{" "}
-            <span className="value">{student.RollNO}</span>
-            <br />
-            <form>
-              <label htmlFor="Subject" className="form-label">
+          <span className="label">Roll No:</span>{" "}
+          <span className="value">{student.RollNO}</span>
+          <br />
+          <form>
+            <label htmlFor="Subject" className="form-label">
               Date:
-              </label>
-              <input
-                type="date"
-                className="form-value"
-                onChange={(e) => setSelectedDate(e.target.value)}
-              />
-            </form>
+            </label>
+            <input
+              type="date"
+              className="form-value"
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
+          </form>
         </div>
         <div className="daily-att-buttons">
-                <button className="daily-att-submit" onClick={handledailySubmit}>Submit</button>
-                <button className="daily-att-reset" onClick={handledailyReset}>Reset</button>
+          <button className="daily-att-submit" onClick={handledailySubmit}>
+            Submit
+          </button>
+          <button className="daily-att-reset" onClick={handledailyReset}>
+            Reset
+          </button>
         </div>
-
-
       </div>
     ));
   };
@@ -229,6 +229,40 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
                 Reset
               </button>
             </div>
+            <div className="dailyattpiechartcontainer">
+              <div className="mydailyattchart">
+                {showPieChart && (
+                  <>
+                    <div className="dailyattpiechart">
+                      <PieChart
+                        total={attendanceData.TotalLectures}
+                        present={attendanceData.TotalLectures}
+                      />
+                    </div>
+                    <div className="dailyattdetail">
+                      <ul>
+                        <li>Total lectures: {attendanceData.TotalLectures}</li>
+                        <li>Present:{attendanceData.TotalPresent}</li>
+                        <li>
+                          Absent:
+                          {attendanceData.TotalLectures -
+                            attendanceData.TotalPresent}
+                        </li>
+                        <li>
+                          Percentage:{" "}
+                          {(
+                            (attendanceData.TotalPresent /
+                              attendanceData.TotalLectures) *
+                            100
+                          ).toFixed(2)}
+                          %
+                        </li>
+                      </ul>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
@@ -248,44 +282,11 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
               </div>
             </div>
             <div className="dailyattcontainer">
-            <div className="daily-topsection">{renderDailyAttendance()}</div>
-            <div className="dailyattpiechartcontainer">
-              <div className="mydailyattchart">
-              {showPieChart && (
-                <>
-                <div className="dailyattpiechart">
-                <PieChart total="50" present="30" />
-              </div>
-              <div className="dailyattdetail">
-            <ul>
-              <li>Total lectures: 50</li>
-              <li>Present:30</li>
-              <li>Absent:20</li>
-              <li>
-                Percentage:{" "}
-                {(
-                  (30 / 50) *
-                  100
-                ).toFixed(2)}
-                %
-              </li>
-            </ul>
-          </div>
-              </>
-              
-              
-            )}
-              </div>
-            
+              <div className="daily-topsection">{renderDailyAttendance()}</div>
             </div>
-            </div>
-            
-           
-            
           </>
         )}
       </div>
-      
     </div>
   );
 };
