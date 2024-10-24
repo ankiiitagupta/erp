@@ -18,6 +18,7 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
     {
       rollNo: "001",
       studName: "Alice Smith",
+      section: "A",
       enrollmentID: "EN12345",
       studGender: "Female",
       studDOB: "2001-05-15",
