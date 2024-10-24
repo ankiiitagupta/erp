@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import pieClip from "../assets/pieclip.png";
-
 import PieChart from "./PieChart.jsx";
-
 import TodaysTimeTable from "./TodaysTimeTable";
 
 
@@ -12,6 +10,7 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
   const [currentMonth, setCurrentMonth] = useState("");
   const [subject, setSubject] = useState("");
   const [selectedDate, setSelectedDate] = useState(""); // Renamed from Date to selectedDate
+  const [showPieChart, setShowPieChart] = useState(false);
 
   // Sample mock data for testing
   const mockStudents = [
@@ -63,12 +62,14 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
 
   const handledailySubmit = (e) => {
     e.preventDefault();
-    alert(`Submitted: Subject - ${subject}, Month - ${currentMonth}`);
+    setShowPieChart(true); // Show pie chart on submit
+    alert(`Submitted: Subject - ${subject}, Date - ${selectedDate}`);
   };
 
   const handledailyReset = () => {
     setCurrentMonth(new Date().toISOString().slice(0, 7));
     setSubject("");
+    setShowPieChart(false); 
   };
 
   const renderAttendanceDetails = () => {
@@ -135,30 +136,34 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
   };
 
   const renderDailyAttendance = () => {
-    return (
-        <div className="daily-att">
-            <div className="dailyatt-form">
-                <form>
-                    <label htmlFor="Subject" className="form-label">
-                        Date:
-                    </label>
-                    <input
-                        type="date"
-                        className="form-value"
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                    />
-                </form>
-            </div>
+    const studentList = students.length > 0 ? students : mockStudents;
 
-            {/* Buttons below the form */}
-            <div className="daily-att-buttons">
+    return studentList.map((student) => (
+      <div key={student.rollNo} className="student-detail-dailyatt">
+        <div className="dailyatt">
+            <span className="label">Roll No:</span>{" "}
+            <span className="value">{student.rollNo}</span>
+            <br />
+            <form>
+              <label htmlFor="Subject" className="form-label">
+              Date:
+              </label>
+              <input
+                type="date"
+                className="form-value"
+                onChange={(e) => setSelectedDate(e.target.value)}
+              />
+            </form>
+        </div>
+        <div className="daily-att-buttons">
                 <button className="daily-att-submit" onClick={handledailySubmit}>Submit</button>
                 <button className="daily-att-reset" onClick={handledailyReset}>Reset</button>
-            </div>
         </div>
-    );
-};
 
+
+      </div>
+    ));
+  };
 
   return (
     <div className="attddetex">
@@ -223,10 +228,41 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
                 <h6>My Daily Attendance</h6>
               </div>
             </div>
-            <div className=".daily-topsection">{renderDailyAttendance()}</div>
-           
+            <div className="dailyattcontainer">
+            <div className="daily-topsection">{renderDailyAttendance()}</div>
+            <div className="dailyattpiechartcontainer">
+              <div className="mydailyattchart">
+              {showPieChart && (
+                <>
+                <div className="dailyattpiechart">
+                <PieChart total="50" present="30" />
+              </div>
+              <div className="dailyattdetail">
+            <ul>
+              <li>Total lectures: 50</li>
+              <li>Present:30</li>
+              <li>Absent:20</li>
+              <li>
+                Percentage:{" "}
+                {(
+                  (30 / 50) *
+                  100
+                ).toFixed(2)}
+                %
+              </li>
+            </ul>
+          </div>
+              </>
+              
+              
+            )}
+              </div>
+            
+            </div>
+            </div>
             
            
+            
           </>
         )}
       </div>

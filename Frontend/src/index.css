@@ -482,7 +482,7 @@ th {
     transition: 0.5ms;
 }
 
-.attbox .box .attboxdata {
+.attboxdata {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -644,96 +644,138 @@ th {
 }
 
 .attpiechart {
-  position: fixed;
-  border: 2px solid rgb(10, 9, 9);
-  box-shadow: 2px 4px 6px gray;
-  display: flex;
-  margin: 8rem;
-  margin-top: 15rem;
+    position: fixed;
+    border: 2px solid rgb(10, 9, 9);
+    box-shadow: 2px 4px 6px gray;
+    display: flex;
+    margin: 8rem;
+    margin-top: 15rem;
 }
 
 .my-att-piechart {
-  margin-left: 3rem;
-  margin-top: 1.6rem;
-  width: 40%;
+    margin-left: 3rem;
+    margin-top: 1.6rem;
+    width: 40%;
 }
 
 .my-att-details {
-  margin-left: 3rem;
-  margin-top: 1.6rem;
+    margin-left: 3rem;
+    margin-top: 1.6rem;
 }
+
 .performance-container {
-  margin: 1rem 0;
-  font-family: Arial, sans-serif;
-  display:flex;
-  flex-direction: column;
+    margin: 1rem 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .performance-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 0;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0;
 }
 
-.performance-table th, .performance-table td {
-  border: 1px solid #000;
-  padding: 8px 12px;
-  text-align: center;
+.performance-table th,
+.performance-table td {
+    border: 1px solid #000;
+    padding: 8px 12px;
+    text-align: center;
 }
 
 .performance-table th {
-  
     background-color: rgba(0, 31, 84, 255);
-
 }
 
 .performance-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+    background-color: #f9f9f9;
 }
-.daily-att {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  border: 2px solid;
-  margin-top: 2rem; /* Adjust as needed for spacing from the top */
-  padding: 2rem;
+
+.student-detail-dailyatt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* Adjust as needed for spacing from the top */
+    padding: 2rem;
 }
 
 .dailyatt-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
-.daily-att-submit, .daily-att-reset {
-  margin: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.4rem;
-  width: 7rem;
-  background-color: rgba(0, 31, 84, 255);
-  color: white;
-  border: none;
-  cursor: pointer;
+.daily-att-submit,
+.daily-att-reset {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    width: 7rem;
+    background-color: rgba(0, 31, 84, 255);
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 
-.daily-att-submit:hover, .daily-att-reset:hover {
-  background-color: white;
-  color: rgba(0, 31, 84, 255);
-  border: 1px solid rgba(0, 31, 84, 255);
+.daily-att-submit:hover,
+.daily-att-reset:hover {
+    background-color: white;
+    color: rgba(0, 31, 84, 255);
+    border: 1px solid rgba(0, 31, 84, 255);
+}
+
+.dailyattpiechartconatiner {
+    position: relative;
+    box-shadow: 2px 4px 6px gray;
+    display: flex;
+}
+
+.dailyattpiechart {
+    margin-top: 4rem;
+}
+
+.dailyattcontainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.daily-topsection {
+    position: relative;
+    margin-top: 0;
+}
+
+.dailyattpiechartcontainer {
+    display: flex;
+}
+
+.mydailyattchart {
+    display: flex;
+    flex-direction: row;
+    width: 70vw;
+    justify-content: space-evenly;
+    margin: 2rem;
+    margin-top: 0;
+}
+
+.dailyattdetail {
+    margin-top: 8rem;
 }
 
 .daily-att-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem; /* Space between the buttons */
-
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    /* Space between the buttons */
 }
+
+
+/* Space between the buttons */
