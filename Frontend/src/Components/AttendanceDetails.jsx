@@ -236,7 +236,7 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
                     <div className="dailyattpiechart">
                       <PieChart
                         total={attendanceData.TotalLectures}
-                        present={attendanceData.TotalLectures}
+                        present={attendanceData.TotalPresent}
                       />
                     </div>
                     <div className="dailyattdetail">

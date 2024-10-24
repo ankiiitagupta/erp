@@ -485,7 +485,13 @@ th {
 .attboxdata {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: left;
+    /* margin-top: 4rem; */
+    /* margin-left: 10rem; */
+}
+
+.attboxdata .active {
+    margin-left: 10rem;
 }
 
 .attbox .box .attboxdata h4 {

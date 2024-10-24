@@ -41,7 +41,8 @@ const Sidebar = ({ setAttFlag , setNoticeFlag}) => {
             <NavLink
               to="#"
               onClick={() => setAttFlag(true)} // Set attendance flag to true
-              activeClassName="activeClicked"
+              activeClassName="activeClicked" 
+              toggled={!isCollapsed}
             >
               <CDBSidebarMenuItem icon="table">Attendance Detail</CDBSidebarMenuItem>
             </NavLink>
