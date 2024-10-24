@@ -3,7 +3,7 @@ import Select from "react-select";
 import pieClip from "../assets/pieclip.png";
 import PieChart from "./PieChart.jsx";
 import TodaysTimeTable from "./TodaysTimeTable";
-
+import { API_URL } from "../axios.js";
 
 const AttendanceDetails = ({ RollNO, students = [], error }) => {
   const [activeBox, setActiveBox] = useState(null);
@@ -39,7 +39,7 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
     // Fetch subjects from the API
     const fetchSubjects = async () => {
       try {
-        const response = await fetch(`/api/subjectofStud?RollNO=${RollNO}`);
+        const response = await fetch(`${API_URL}/api/subjectofStud?RollNO=${RollNO}`);
         const data = await response.json();
         console.log("Fetched subjects:", data); // Check if the data is being fetched correctly
 
@@ -157,11 +157,11 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
   const renderDailyAttendance = () => {
     const studentList = students.length > 0 ? students : mockStudents;
 
-    return studentList.map((student) => (
+    return students.map((student) => (
       <div key={student.rollNo} className="student-detail-dailyatt">
         <div className="dailyatt">
             <span className="label">Roll No:</span>{" "}
-            <span className="value">{student.rollNo}</span>
+            <span className="value">{student.RollNO}</span>
             <br />
             <form>
               <label htmlFor="Subject" className="form-label">
