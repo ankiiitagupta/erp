@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import pieClip from "../assets/pieclip.png";
+<<<<<<< Updated upstream
 import PieChart from "./PieChart.jsx";
+=======
+import TodaysTimeTable from "./TodaysTimeTable";
+>>>>>>> Stashed changes
 
-const AttendanceDetails = ({ RollNO, students = [], error }) => {
+const AttendanceDetails = ({ rollNo, students = [], error }) => {
   const [activeBox, setActiveBox] = useState(null);
   const [currentMonth, setCurrentMonth] = useState("");
   const [subject, setSubject] = useState("");
+  const [selectedDate, setSelectedDate] = useState(""); // Renamed from Date to selectedDate
 
   // Sample mock data for testing
   const mockStudents = [
     {
-      RollNO: "001",
-      Stud_name: "Alice Smith",
-      Section: "A",
-      EnrollmentID: "EN12345",
-      Stud_Gender: "Female",
-      Stud_DOB: "2001-05-15",
-      CourseName: "Computer Science",
-      Program: "B.tech",
+      rollNo: "001",
+      studName: "Alice Smith",
+      enrollmentID: "EN12345",
+      studGender: "Female",
+      studDOB: "2001-05-15",
+      courseName: "Computer Science",
+      program: "B.tech",
     },
   ];
 
@@ -56,45 +60,57 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
     setSubject("");
   };
 
+  const handledailySubmit = (e) => {
+    e.preventDefault();
+    alert(`Submitted: Subject - ${subject}, Month - ${currentMonth}`);
+  };
+
+  const handledailyReset = () => {
+    setCurrentMonth(new Date().toISOString().slice(0, 7));
+    setSubject("");
+  };
+
   const renderStudentDetails = () => {
     const studentList = students.length > 0 ? students : mockStudents;
 
     return studentList.map((student) => (
-      <div key={student.RollNO} className="student-detail-myatt">
+      <div key={student.rollNo} className="student-detail-myatt">
         <div className="name-box-myatt">
           <p className="left-section-myatt">
-            <span className="label">RollNO:</span>{" "}
-            <span className="value">{student.RollNO}</span>
+            <span className="label">Roll No:</span>{" "}
+            <span className="value">{student.rollNo}</span>
             <br />
             <span className="label">Course:</span>{" "}
-            <span className="value">{student.CourseName}</span>
+            <span className="value">{student.courseName}</span>
             <br />
             <span className="label">Gender:</span>{" "}
-            <span className="value">{student.Stud_Gender}</span>
+            <span className="value">{student.studGender}</span>
             <form className="formsub">
+<<<<<<< Updated upstream
               <label htmlFor="month" className="form-label">
+=======
+              <label htmlFor="Subject" className="form-label">
+>>>>>>> Stashed changes
                 Subject:
               </label>
               <Select
-                  className="form-value"
-                  options={subjectOptions} // Updated with mock subjects
-                  placeholder="Selected"
-                  value={subjectOptions.find(
-                    (option) => option.value === subject
-                  )}
-                  onChange={(selectedOption) =>
-                    setSubject(selectedOption.value)
-                  }
-                />
+                className="form-value"
+                options={subjectOptions}
+                placeholder="Select"
+                value={subjectOptions.find(
+                  (option) => option.value === subject
+                )}
+                onChange={(selectedOption) => setSubject(selectedOption.value)}
+              />
             </form>
           </p>
 
           <p className="right-section-myatt">
             <span className="label">Course:</span>{" "}
-            <span className="value">{student.CourseName}</span>
+            <span className="value">{student.courseName}</span>
             <br />
             <span className="label">Section:</span>{" "}
-            <span className="value">{student.Section}</span>
+            <span className="value">{student.section}</span>
             <form>
               <label htmlFor="month" className="form-label">
                 Month:
@@ -116,6 +132,32 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
       </div>
     ));
   };
+
+  const renderDailyAttendance = () => {
+    return (
+        <div className="daily-att">
+            <div className="dailyatt-form">
+                <form>
+                    <label htmlFor="Subject" className="form-label">
+                        Date:
+                    </label>
+                    <input
+                        type="date"
+                        className="form-value"
+                        onChange={(e) => setSelectedDate(e.target.value)}
+                    />
+                </form>
+            </div>
+
+            {/* Buttons below the form */}
+            <div className="daily-att-buttons">
+                <button className="daily-att-submit" onClick={handledailySubmit}>Submit</button>
+                <button className="daily-att-reset" onClick={handledailyReset}>Reset</button>
+            </div>
+        </div>
+    );
+};
+
 
   return (
     <div className="attddetex">
@@ -180,16 +222,11 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
                 <h6>My Daily Attendance</h6>
               </div>
             </div>
-            <div className="top-section">{renderStudentDetails()}</div>
+            <div className=".daily-topsection">{renderDailyAttendance()}</div>
             {error && <p className="error-message">{error}</p>}
-            <div className="form-button">
-              <button className="myatt-button" onClick={handleSubmit}>
-                Submit
-              </button>
-              <button className="myatt-button" onClick={handleReset}>
-                Reset
-              </button>
-            </div>
+            <TodaysTimeTable/>
+            
+           
           </>
         )}
       </div>

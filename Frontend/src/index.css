@@ -642,6 +642,7 @@ th {
     animation: infinite;
     border-color: rgba(0, 31, 84, 255);
 }
+<<<<<<< Updated upstream
 .attpiechart {
   position: fixed;
   border: 2px solid rgb(10, 9, 9);
@@ -693,4 +694,47 @@ h1 {
 
 .performance-table tbody tr:nth-child(even) {
   background-color: #f9f9f9;
+=======
+
+.daily-att {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 2px solid;
+  margin-top: 2rem; /* Adjust as needed for spacing from the top */
+  padding: 2rem;
+}
+
+.dailyatt-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.daily-att-submit, .daily-att-reset {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  width: 7rem;
+  background-color: rgba(0, 31, 84, 255);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.daily-att-submit:hover, .daily-att-reset:hover {
+  background-color: white;
+  color: rgba(0, 31, 84, 255);
+  border: 1px solid rgba(0, 31, 84, 255);
+}
+
+.daily-att-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* Space between the buttons */
+>>>>>>> Stashed changes
 }
