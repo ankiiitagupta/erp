@@ -642,7 +642,7 @@ th {
     animation: infinite;
     border-color: rgba(0, 31, 84, 255);
 }
-<<<<<<< Updated upstream
+
 .attpiechart {
   position: fixed;
   border: 2px solid rgb(10, 9, 9);
@@ -694,8 +694,7 @@ h1 {
 
 .performance-table tbody tr:nth-child(even) {
   background-color: #f9f9f9;
-=======
-
+}
 .daily-att {
   display: flex;
   justify-content: center;
@@ -736,5 +735,5 @@ h1 {
   display: flex;
   justify-content: center;
   gap: 1rem; /* Space between the buttons */
->>>>>>> Stashed changes
+
 }

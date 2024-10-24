@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import pieClip from "../assets/pieclip.png";
-<<<<<<< Updated upstream
+
 import PieChart from "./PieChart.jsx";
-=======
+
 import TodaysTimeTable from "./TodaysTimeTable";
->>>>>>> Stashed changes
+
 
 const AttendanceDetails = ({ rollNo, students = [], error }) => {
   const [activeBox, setActiveBox] = useState(null);
@@ -87,11 +87,11 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
             <span className="label">Gender:</span>{" "}
             <span className="value">{student.studGender}</span>
             <form className="formsub">
-<<<<<<< Updated upstream
-              <label htmlFor="month" className="form-label">
-=======
+
+              <label htmlFor="month" className="form-label">Month:</label>
+
               <label htmlFor="Subject" className="form-label">
->>>>>>> Stashed changes
+
                 Subject:
               </label>
               <Select
@@ -107,10 +107,10 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
           </p>
 
           <p className="right-section-myatt">
-            <span className="label">Course:</span>{" "}
+            <span className="label">Course:</span>
             <span className="value">{student.courseName}</span>
             <br />
-            <span className="label">Section:</span>{" "}
+            <span className="label">Section:</span>
             <span className="value">{student.section}</span>
             <form>
               <label htmlFor="month" className="form-label">
