@@ -71,7 +71,7 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
     setSubject("");
   };
 
-  const renderStudentDetails = () => {
+  const renderAttendanceDetails = () => {
     const studentList = students.length > 0 ? students : mockStudents;
 
     return studentList.map((student) => (
@@ -88,7 +88,7 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
             <span className="value">{student.studGender}</span>
             <form className="formsub">
 
-              <label htmlFor="month" className="form-label">Month:</label>
+              <label htmlFor="month" className="form-label"></label>
 
               <label htmlFor="Subject" className="form-label">
 
@@ -195,7 +195,7 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
               <img src={pieClip} alt="My Attendance" className="attpie" />
               <h6>My Attendance</h6>
             </div>
-            <div className="top-section">{renderStudentDetails()}</div>
+            <div className="top-section">{renderAttendanceDetails()}</div>
             {error && <p className="error-message">{error}</p>}
             <div className="form-button">
               <button className="myatt-button" onClick={handleSubmit}>
@@ -224,21 +224,13 @@ const AttendanceDetails = ({ rollNo, students = [], error }) => {
               </div>
             </div>
             <div className=".daily-topsection">{renderDailyAttendance()}</div>
-            {error && <p className="error-message">{error}</p>}
-            <TodaysTimeTable/>
+           
             
            
           </>
         )}
       </div>
-      <div className="attpiechart">
-        <p>Attendance</p>
-        <div className="my-att-piechart">
-          <PieChart total="10"
-              present="7" />
-        </div>
-        <div className="my-att-details"></div>
-      </div>
+      
     </div>
   );
 };
