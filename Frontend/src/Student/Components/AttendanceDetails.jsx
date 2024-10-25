@@ -2,8 +2,13 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import pieClip from "../assets/pieclip.png";
 import PieChart from "./PieChart.jsx";
+<<<<<<< Updated upstream:Frontend/src/Components/AttendanceDetails.jsx
 import TodaysTimeTable from "./TodaysTimeTable";
 import { API_URL } from "../axios.js";
+=======
+
+import TodaysTimeTable from "./TodaysTimeTable.jsx";
+>>>>>>> Stashed changes:Frontend/src/Student/Components/AttendanceDetails.jsx
 
 const AttendanceDetails = ({ RollNO, students = [], error }) => {
   const [activeBox, setActiveBox] = useState(null);

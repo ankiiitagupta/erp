@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {API_URL} from "../axios"; // Add this import
+import {API_URL} from "../../axios"; // Add this import
 import axios from "axios";
 
 const WeeksTimeTable = ({ RollNO }) => {
