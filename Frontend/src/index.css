@@ -903,7 +903,6 @@ h1 {
     /* Spacing between notices */
     border-radius: 5px;
     align-items: center;
-<<<<<<< Updated upstream
     transition: background-color 0.3s ease;
     /* Add transition effect */
 }
@@ -914,16 +913,6 @@ h1 {
 }
 
 .notice-item span {
-=======
-    transition: background-color 0.3s ease; /* Add transition effect */
-  }
-  
-  .notice-item:hover {
-    background-color: #77a6da; /* Slight hover effect */
-  }
-  
-  .notice-item span {
->>>>>>> Stashed changes
     font-weight: bold;
     color: #001f54;
     /* Dark blue for text */
@@ -935,7 +924,6 @@ h1 {
     /* Blue for links */
     font-weight: bold;
     transition: color 0.3s;
-<<<<<<< Updated upstream
 }
 
 .notice-item a:hover {
@@ -944,15 +932,6 @@ h1 {
 }
 
 .notice-item .date {
-=======
-  }
-  
-  .notice-item a:hover {
-    color: #96b9de; /* Darker blue on hover */
-  }
-  
-  .notice-item .date {
->>>>>>> Stashed changes
     margin-left: auto;
     color: #001f54;
     font-weight: normal;
@@ -994,18 +973,8 @@ h1 {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-<<<<<<< Updated upstream
 }
 
 .notice-details button:hover {
     background-color: #4e7197;
 }
-=======
-  }
-  
-  .notice-details button:hover {
-    background-color: #97bce4;
-  }
-  
-  
->>>>>>> Stashed changes

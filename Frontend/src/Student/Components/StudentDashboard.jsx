@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { API_URL } from "../axios.js";
+import { API_URL } from "../../axios";
 import Header from "./Header.jsx";
 import PieChart from "./PieChart.jsx";
 import Sidebar from "./Sidebar.jsx";

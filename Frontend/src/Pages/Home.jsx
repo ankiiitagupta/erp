@@ -1,8 +1,8 @@
 import React from "react";
 import "../index.css";
 import "../assets/students.svg";
-import Login from "../Components/Login.jsx";
-import Header from "../Components/Header.jsx";
+import Login from "../Student/Components/Login.jsx";
+import Header from "../Student/Components/Header.jsx";
 
 
 const Home = () => {
