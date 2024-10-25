@@ -10,9 +10,10 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
   const [currentMonth, setCurrentMonth] = useState("");
   const [subject, setSubject] = useState("");
   const [attendanceData, setAttendanceData] = useState("");
-  const [selectedDate, setSelectedDate] = useState(""); // Renamed from Date to selectedDate
+  const [selectedDate, setSelectedDate] = useState(""); 
   const [showPieChart, setShowPieChart] = useState(false);
   const [subjectOptions, setSubjectOptions] = useState([]);
+  const [timetableData, setTimetableData] = useState([]);
 
   useEffect(() => {
     const now = new Date();
@@ -86,15 +87,23 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
     setAttendanceData(null);
   };
 
-  const handledailySubmit = (e) => {
+  const handledailySubmit = async (e) => {
     e.preventDefault();
-    // Show pie chart on submit
+    try {
+      const response = await fetch(
+        `${API_URL}/api/timetablebydate?RollNO=${RollNO}&LectureDate=${selectedDate}`
+      );
+      const data = await response.json();
+      setTimetableData(data); // Store fetched timetable data in state
+      console.log("Fetched timetable data:", data);
+    } catch (error) {
+      console.error("Error fetching timetable:", error);
+    }
   };
 
   const handledailyReset = () => {
-    setCurrentMonth(new Date().toISOString().slice(0, 7));
-    setSubject("");
-    setShowPieChart(false);
+    setSelectedDate("");
+    setTimetableData([]); // Reset timetable data
   };
 
   const renderAttendanceDetails = () => {
@@ -153,8 +162,6 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
   };
 
   const renderDailyAttendance = () => {
-    const studentList = students.length > 0 ? students : mockStudents;
-
     return students.map((student) => (
       <div key={student.rollNo} className="student-detail-dailyatt">
         <div className="dailyatt">
@@ -169,6 +176,7 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
               type="date"
               className="form-value"
               onChange={(e) => setSelectedDate(e.target.value)}
+              value={selectedDate} // Bind the selected date value
             />
           </form>
         </div>
@@ -266,12 +274,9 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
           </div>
         )}
 
-        {activeBox === "daily" && (
+{activeBox === "daily" && (
           <>
-            <div
-              className="box-active top-left main-content"
-              onClick={toggleDailyAtt}
-            >
+            <div className="box-active top-left main-content">
               <div className="attboxdata">
                 <img
                   src={pieClip}
@@ -283,6 +288,10 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
             </div>
             <div className="dailyattcontainer">
               <div className="daily-topsection">{renderDailyAttendance()}</div>
+              {/* Render timetable once it's fetched */}
+              {timetableData.length > 0 && (
+                <TodaysTimeTable ttpass={timetableData} />
+              )}
             </div>
           </>
         )}
