@@ -150,7 +150,71 @@ const StudentDashboard = () => {
     );
   };
 
+  const renderFaculty = () => {
+    const faculty = [
+      { name: "Dr. Smith", subject: "Mathematics" },
+      { name: "Prof. Johnson", subject: "Physics" },
+    ];
+  
+    return (
+      <div className="info-container faculty-container">
+        <h4>Faculty Teaching</h4>
+        <ul>
+          {faculty.map((teacher, index) => (
+            <li key={index} id="faccontainer">
+              <strong>Name:</strong> {teacher.name}
+              <br />
+              <strong>Subject:</strong> {teacher.subject}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
 
+  const renderClassmates = () => {
+    const classmates = [
+      { name: "Alice", rollNo: "01" },
+      { name: "Bob", rollNo: "02" },
+    ];
+  
+    return (
+      <div className="info-container classmates-container">
+        <h4>Classmates</h4>
+        <ul >
+          {classmates.map((classmate, index) => (
+            <li key={index} id="matecontainer">
+              <strong>Name:</strong> {classmate.name}
+              <br />
+              <strong>Roll No:</strong> {classmate.rollNo}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+  
+  const renderSubjects = () => {
+    const subjects = [
+      { name: "Mathematics", code: "MATH101" },
+      { name: "Physics", code: "PHY102" },
+    ];
+  
+    return (
+      <div className="info-container subjects-container">
+        <h4>Subjects</h4>
+        <ul>
+          {subjects.map((subject, index) => (
+            <li key={index} id="subcontainer">
+              <strong>Subject Name:</strong> {subject.name}
+              <br />
+              <strong>Code:</strong> {subject.code}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
   
 
   return (
@@ -179,7 +243,13 @@ const StudentDashboard = () => {
                   <div className="timetable-section">{renderTimetable()}</div>
                   <div className="markingTimetable">
                     {renderMarkingTimeTable()}
+
                   </div>
+                  <div className="additional-info">
+                  {renderFaculty()}
+                  {renderClassmates()}
+                  {renderSubjects()}
+                </div>
                 </div>
               </>
             )}

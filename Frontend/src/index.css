@@ -978,3 +978,60 @@ h1 {
 .notice-details button:hover {
     background-color: #4e7197;
 }
+
+
+/* additonal info */
+
+.info-container {
+    flex: 1;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color:#001f54;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 1rem;
+    
+    color: white;
+    /* box-shadow: 4rem #051a3e; */
+}
+
+.additional-info {
+    display: flex;
+    gap: 3rem;
+    margin-top: 1.5rem;
+    border: 1rem solid white;
+    background-color: white;
+}
+
+.classmates-container #matecontainer{
+    border:2px solid #001f54;
+    background-color: white;
+    color:#001f54;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    padding:1rem;
+    margin-right:1.5rem;
+}
+
+.faculty-container #faccontainer{
+    border:2px solid #001f54;
+    background-color: white;
+    color:#001f54;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    padding:1rem;
+    margin-right:1.5rem;
+}
+
+.subjects-container #subcontainer{
+    border:2px solid #001f54;
+    background-color: white;
+    color:#001f54;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    padding:1rem;
+    margin-right:1.5rem;
+}
