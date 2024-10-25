@@ -106,6 +106,11 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
     setTimetableData([]); // Reset timetable data
   };
 
+  const handleSubjectChange = (selectedOption) => {
+    setSubject(selectedOption.value);
+    setShowPieChart(false); // Hide pie chart temporarily until new data is fetched
+  };
+
   const renderAttendanceDetails = () => {
     return students.map((student) => (
       <div key={student.rollNo} className="student-detail-myatt">
@@ -130,7 +135,7 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
                   subjectOptions.find((option) => option.value === subject) ||
                   null
                 } // Add || null to handle empty state
-                onChange={(selectedOption) => setSubject(selectedOption.value)}
+                onChange={handleSubjectChange}
               />
             </form>
           </p>
