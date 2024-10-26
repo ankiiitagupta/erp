@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; 
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -10,7 +11,7 @@ import {
   CDBSidebarMenuItem,
 } from 'cdbreact';
 
-const Sidebar = ({ setAttFlag , setNoticeFlag}) => {
+const Sidebar = ({ setAttFlag , setNoticeFlag, resetFlags}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -35,9 +36,15 @@ const Sidebar = ({ setAttFlag , setNoticeFlag}) => {
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
-            <NavLink exact to="/" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
-            </NavLink>
+          <CDBSidebarMenuItem
+              icon="columns"
+              onClick={() => {
+                resetFlags();
+                navigate(`/studentdashboard/${RollNO}`);
+              }}
+            >
+              Dashboard
+            </CDBSidebarMenuItem>
             <NavLink
               to="#"
               onClick={() => setAttFlag(true)} // Set attendance flag to true

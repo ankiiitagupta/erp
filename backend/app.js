@@ -318,14 +318,6 @@ app.get("/api/attendencebymonthforsub", (req, res) => {
         res.json(results);
     });
 });
-
-
-
-
-
-
-
-
 // Start the server on the specified port
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);

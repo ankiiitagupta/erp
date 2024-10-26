@@ -21,6 +21,11 @@ const StudentDashboard = () => {
   const [attFlag, setAttFlag] = useState(false); // Manage attendance flag
   const [noticeFlag, setNoticeFlag]= useState(false);
 
+  const resetFlags = () => {
+    setAttFlag(false);
+    setNoticeFlag(false);
+  };
+
   useEffect(() => {
     // Fetch student data using the Roll number
     console.log("roll no is =" + RollNO);
@@ -219,7 +224,7 @@ const StudentDashboard = () => {
 
   return (
     <div className="dashboard">
-      <Sidebar setAttFlag={setAttFlag}  setNoticeFlag={setNoticeFlag}/>
+      <Sidebar setAttFlag={setAttFlag}  setNoticeFlag={setNoticeFlag} resetFlags={resetFlags}/>
       <div className="main-content">
         <Header />
         
