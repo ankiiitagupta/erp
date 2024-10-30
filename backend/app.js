@@ -1,17 +1,19 @@
 const express = require("express");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const port = 3006; // Make sure to use the same port here
 
 app.use(cors());
 
+
 const db = mysql.createConnection({
-    host: "mpgierp.c7iaoikio1yt.ap-northeast-1.rds.amazonaws.com",
-    user: "admin",
-    password: "mpgiroot",
-    database: "erp",
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
 });
 
 db.connect((err) => {
