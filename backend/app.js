@@ -10,10 +10,10 @@ app.use(cors());
 
 
 const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+    host: "mpgierp.c7iaoikio1yt.ap-northeast-1.rds.amazonaws.com",
+    user: "admin",
+    password: "mpgiroot",
+    database: 'erp',
 });
 
 db.connect((err) => {
