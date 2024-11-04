@@ -10,9 +10,9 @@ app.use(cors());
 
 
 const db = mysql.createConnection({
-    host: "mpgierp.c7iaoikio1yt.ap-northeast-1.rds.amazonaws.com",
-    user: "admin",
-    password: "mpgiroot",
+    host: "localhost",
+    user: "root",
+    password: "admin",
     database: 'erp',
 });
 
@@ -23,10 +23,23 @@ db.connect((err) => {
     }
     console.log("Connected to MySQL DB");
 });
-//login Login
+//student Login
 app.get("/api/login", (req, res) => {
     const { LoginID, PasswordHash } = req.query;
     db.query("SELECT * FROM student WHERE LoginID = ? AND PasswordHash = ?", [LoginID, PasswordHash], (err, results) => {
+        if (err) throw err;
+        if (results.length > 0) {
+            res.json({ success: true, student: results[0] });
+        } else {
+            res.json({ success: false });
+        }
+    });
+});
+
+//faculty Login
+app.get("/api/facultylogin", (req, res) => {
+    const { LoginID, PasswordHash } = req.query;
+    db.query("SELECT * FROM faculty WHERE LoginID = ? AND PasswordHash = ?", [LoginID, PasswordHash], (err, results) => {
         if (err) throw err;
         if (results.length > 0) {
             res.json({ success: true, student: results[0] });
