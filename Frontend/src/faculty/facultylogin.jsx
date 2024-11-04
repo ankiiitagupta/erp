@@ -6,7 +6,8 @@ import {
   MDBRow,
   MDBCol,
   MDBInput
-} from 'mdb-react-ui-kit';
+}
+from 'mdb-react-ui-kit';
 import { API_URL } from '../../axios.js';
 
 function Login() {
@@ -21,25 +22,20 @@ function Login() {
   };
 
   const handleLogin = async (event) => {
-    event.preventDefault();
-
+    event.preventDefault(); 
+  
     if (!username || !password) {
       setError('Please enter both username and password.');
       return;
     }
-
+  
     try {
       const response = await fetch(`${API_URL}/api/login?LoginID=${username}&PasswordHash=${password}`);
       const result = await response.json();
-
       if (result.success) {
-        const RollNO = result.student?.RollNO; // Check if RollNO exists
-
-        if (RollNO) {
-          navigate(`/studentdashboard/${RollNO}`); // Navigate to student dashboard
-        } else {
-          navigate(`/facultydashboard/${result.faculty?.FacultyID}`); // Navigate to faculty dashboard
-        }
+        
+        const RollNO = result.student.RollNO; 
+        navigate(`/studentdashboard/${RollNO}`); 
       } else {
         setError('Invalid username or password');
       }
@@ -60,28 +56,17 @@ function Login() {
 
             <p>Please login to your account</p>
 
-            <MDBInput
-              wrapperClass='mb-4'
-              label='Username'
-              id='form1'
-              type='text'
-              value={username}
-              onChange={handleUsernameChange}
-            />
-            <MDBInput
-              wrapperClass='mb-4'
-              label='Password'
-              id='form2'
-              type='password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <MDBInput wrapperClass='mb-4' label='Username' id='form1' type='text' value={username} onChange={handleUsernameChange} />
+            <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p style={{color: 'red'}}>{error}</p>}
 
             <div className="text-center pt-1 mb-5 pb-1">
               <MDBBtn className="mb-4 w-100 gradient-custom-2" onClick={handleLogin}>Login</MDBBtn>
+              
             </div>
+
+           
           </div>
         </MDBCol>
       </MDBRow>
