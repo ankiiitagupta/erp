@@ -5,7 +5,7 @@ import Home from './Pages/Home';
 // import SelectProfile from './Components/SelectProfile';
 import Login from '../src/Pages/Login.jsx';
 // AdminDashboard from './Student/Components/AdminDashboard.jsx';
-import FacultyDashboard from './faculty/facultyDashboard.jsx';
+import FacultyDashboard from './faculty/components/facultyDashboard.jsx';
 
 import StudentDashboard from './Student/Components/StudentDashboard.jsx';
 

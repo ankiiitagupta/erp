@@ -36,6 +36,7 @@ function Login() {
           const RollNO = result.student.RollNO;
           navigate(`/studentdashboard/${RollNO}`);
         } else if (result.userType === "faculty") {
+          const FacultyID = result.faculty.FacultyID;
           navigate(`/facultydashboard/${FacultyID}`);
         }
       } else {

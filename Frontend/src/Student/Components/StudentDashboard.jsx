@@ -145,6 +145,7 @@ const StudentDashboard = () => {
       </div>
     );
   };
+  
   const renderMarkingTimeTable = () => {
     return (
       <div className="timetable">

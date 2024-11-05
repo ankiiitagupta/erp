@@ -7,63 +7,72 @@ const port = 3006; // Make sure to use the same port here
 
 app.use(cors());
 
-
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "admin",
-    database: 'erp',
+  host: "localhost",
+  user: "root",
+  password: "admin",
+  database: "erp",
 });
 
-
-
 db.connect((err) => {
-    if (err) {
-        console.error("DB connection error:", err);
-        return;
-    }
-    console.log("Connected to MySQL DB");
+  if (err) {
+    console.error("DB connection error:", err);
+    return;
+  }
+  console.log("Connected to MySQL DB");
 });
 //Login
 app.get("/api/login", (req, res) => {
-    const { LoginID, PasswordHash } = req.query;
-    const isFaculty = LoginID.startsWith("f1");
-    const isStudent = LoginID.startsWith("al");
+  const { LoginID, PasswordHash } = req.query;
+  const isFaculty = LoginID.startsWith("f1");
+  const isStudent = LoginID.startsWith("al");
 
-    if (isFaculty) {
-        db.query("SELECT * FROM faculty WHERE LoginID = ? AND PasswordHash = ?", [LoginID, PasswordHash], (err, results) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ success: false, error: "Server error" });
-            }
-            if (results.length > 0) {
-                res.json({ success: true, userType: "faculty", faculty: results[0] });
-            } else {
-                res.json({ success: false });
-            }
-        });
-    } else if (isStudent) {
-        db.query("SELECT * FROM student WHERE LoginID = ? AND PasswordHash = ?", [LoginID, PasswordHash], (err, results) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ success: false, error: "Server error" });
-            }
-            if (results.length > 0) {
-                res.json({ success: true, userType: "student", student: results[0] });
-            } else {
-                res.json({ success: false });
-            }
-        });
-    } else {
-        res.json({ success: false, error: "Invalid LoginID prefix" });
-    }
+  if (isFaculty) {
+    db.query(
+      "SELECT * FROM faculty WHERE LoginID = ? AND PasswordHash = ?",
+      [LoginID, PasswordHash],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res
+            .status(500)
+            .json({ success: false, error: "Server error" });
+        }
+        if (results.length > 0) {
+          res.json({ success: true, userType: "faculty", faculty: results[0] });
+        } else {
+          res.json({ success: false });
+        }
+      }
+    );
+  } else if (isStudent) {
+    db.query(
+      "SELECT * FROM student WHERE LoginID = ? AND PasswordHash = ?",
+      [LoginID, PasswordHash],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res
+            .status(500)
+            .json({ success: false, error: "Server error" });
+        }
+        if (results.length > 0) {
+          res.json({ success: true, userType: "student", student: results[0] });
+        } else {
+          res.json({ success: false });
+        }
+      }
+    );
+  } else {
+    res.json({ success: false, error: "Invalid LoginID prefix" });
+  }
 });
-
 
 //Student data
 app.get("/api/data", (req, res) => {
-    const { RollNO } = req.query;
-    db.query(`
+  const { RollNO } = req.query;
+  db.query(
+    `
           SELECT student.RollNO, 
             student.Stud_name,
             student.Stud_Gender, 
@@ -77,16 +86,20 @@ app.get("/api/data", (req, res) => {
       JOIN course ON enrollment.CourseID = course.CourseID
       JOIN department ON course.DepartmentID = department.DepartmentID
       WHERE student.RollNO = ?;
-      `, [RollNO], (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
+      `,
+    [RollNO],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
 });
 
 //Api for Subject of a Student
 app.get("/api/subjectofStud", (req, res) => {
-    const { RollNO } = req.query;
-    db.query(`
+  const { RollNO } = req.query;
+  db.query(
+    `
           SELECT s.RollNO, subj.SubjectName
             FROM student s
             JOIN enrollment e ON s.RollNO = e.RollNO
@@ -94,26 +107,34 @@ app.get("/api/subjectofStud", (req, res) => {
             JOIN subject subj ON c.CourseID = subj.CourseID
             WHERE s.RollNO = ?;
 
-      `, [RollNO], (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
+      `,
+    [RollNO],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
 });
 
 //Total attendence of student
 app.get("/api/totalattendence", (req, res) => {
-    const { RollNO } = req.query;
-    db.query("SELECT COUNT(LectureNumber) AS TotalLectures, SUM(CASE WHEN AttendanceStatus = 1 THEN 1 ELSE 0 END) AS PresentLectures FROM attendance WHERE RollNO = ? GROUP BY ?;", [RollNO, RollNO], (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
+  const { RollNO } = req.query;
+  db.query(
+    "SELECT COUNT(LectureNumber) AS TotalLectures, SUM(CASE WHEN AttendanceStatus = 1 THEN 1 ELSE 0 END) AS PresentLectures FROM attendance WHERE RollNO = ? GROUP BY ?;",
+    [RollNO, RollNO],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
 });
 //Per subject attendence
 app.get("/api/subjectattendance", (req, res) => {
-    const { RollNO } = req.query;
+  const { RollNO } = req.query;
 
-    // Update the SQL query to join with the Subject table and include SubjectName
-    db.query(`
+  // Update the SQL query to join with the Subject table and include SubjectName
+  db.query(
+    `
     SELECT 
       s.SubjectName,
       COUNT(a.LectureNumber) AS TotalLectures, 
@@ -126,21 +147,24 @@ app.get("/api/subjectattendance", (req, res) => {
       a.RollNO = ? 
     GROUP BY 
       s.SubjectName;
-  `, [RollNO], (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
+  `,
+    [RollNO],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
 });
 
 //Time Table of current date
 app.get("/api/todaystimetable", (req, res) => {
-    const { RollNO } = req.query;
-    const today = new Date();
-    const dayOfWeek = today.toLocaleString("en-US", { weekday: "long" });
-    const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  const { RollNO } = req.query;
+  const today = new Date();
+  const dayOfWeek = today.toLocaleString("en-US", { weekday: "long" });
+  const formattedDate = today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
 
-    db.query(
-        `SELECT 
+  db.query(
+    `SELECT 
     t.TimetableID,
     s.SubjectName, 
     f.Faculty_Name, 
@@ -172,25 +196,26 @@ WHERE
     st.RollNO = ? -- Replace with dynamic input from API
     AND t.LectureDate = ? -- Replace with dynamic date input
 ORDER BY 
-    t.StartTime;`, [RollNO, formattedDate],
-        (err, results) => {
-            if (err) {
-                res.status(500).send("Database query failed");
-                return;
-            }
-            res.json(results);
-        }
-    );
+    t.StartTime;`,
+    [RollNO, formattedDate],
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Database query failed");
+        return;
+      }
+      res.json(results);
+    }
+  );
 });
 
 //Time Table of current Week
 app.get("/api/weekstimetable", (req, res) => {
-    const { RollNO } = req.query;
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  const { RollNO } = req.query;
+  const today = new Date();
+  const formattedDate = today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
 
-    db.query(
-        `SELECT DISTINCT 
+  db.query(
+    `SELECT DISTINCT 
             t.TimetableID, 
             t.SubjectID, 
             s.SubjectName, 
@@ -222,24 +247,24 @@ app.get("/api/weekstimetable", (req, res) => {
                 DATE_SUB(?, INTERVAL WEEKDAY(?) DAY)  
                 AND DATE_ADD(DATE_SUB(?, INTERVAL WEEKDAY(?) DAY), INTERVAL 6 DAY) 
         ORDER BY 
-            t.LectureDate, t.StartTime;`, [RollNO, formattedDate, formattedDate, formattedDate, formattedDate],
-        (err, results) => {
-            if (err) {
-                res.status(500).send("Database query failed");
-                return;
-            }
-            res.json(results);
-        }
-    );
+            t.LectureDate, t.StartTime;`,
+    [RollNO, formattedDate, formattedDate, formattedDate, formattedDate],
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Database query failed");
+        return;
+      }
+      res.json(results);
+    }
+  );
 });
-
 
 // Timetable and attendance of a student for a specific date
 app.get("/api/timetablebydate", (req, res) => {
-    const { RollNO, LectureDate } = req.query;
+  const { RollNO, LectureDate } = req.query;
 
-    db.query(
-        ` 
+  db.query(
+    ` 
           SELECT 
               t.TimetableID, 
               t.SubjectID, 
@@ -277,32 +302,32 @@ app.get("/api/timetablebydate", (req, res) => {
               AND t.LectureDate = ?  
               AND a.AttendanceStatus IS NOT NULL  -- This filters out any lectures without attendance records
           ORDER BY 
-              t.StartTime;`, [RollNO, LectureDate],
-        (err, results) => {
-            if (err) {
-                res.status(500).send("Database query failed");
-                return;
-            }
-            res.json(results);
-        }
-    );
+              t.StartTime;`,
+    [RollNO, LectureDate],
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Database query failed");
+        return;
+      }
+      res.json(results);
+    }
+  );
 });
-
 
 //fetechs the student attendence by subject and month and if 0 then for all month
 app.get("/api/attendencebymonthforsub", (req, res) => {
-    const { RollNO, MonthNumber, SubjectName } = req.query;
+  const { RollNO, MonthNumber, SubjectName } = req.query;
 
-    let monthCondition = '';
-    let queryParams = [RollNO, SubjectName];
+  let monthCondition = "";
+  let queryParams = [RollNO, SubjectName];
 
-    // Add the month condition if MonthNumber is not 0
-    if (MonthNumber != 0) {
-        monthCondition = 'AND MONTH(t.LectureDate) = ?';
-        queryParams.push(MonthNumber);
-    }
+  // Add the month condition if MonthNumber is not 0
+  if (MonthNumber != 0) {
+    monthCondition = "AND MONTH(t.LectureDate) = ?";
+    queryParams.push(MonthNumber);
+  }
 
-    const query = `
+  const query = `
         SELECT 
             s.SubjectName, 
             MONTH(t.LectureDate) AS MonthNumber,  
@@ -336,27 +361,25 @@ app.get("/api/attendencebymonthforsub", (req, res) => {
             MonthNumber;
   `;
 
-    db.query(query, queryParams, (err, results) => {
-        if (err) {
-            res.status(500).send("Database query failed");
-            return;
-        }
-        res.json(results);
-    });
+  db.query(query, queryParams, (err, results) => {
+    if (err) {
+      res.status(500).send("Database query failed");
+      return;
+    }
+    res.json(results);
+  });
 });
-
 
 /*
  * ********************************************************************
  *                             FACULTY API                             *
  * ********************************************************************/
 
-
-
 //Faculty data
 app.get("/api/facultyDetails", (req, res) => {
-    const { FacultyID } = req.query;
-    db.query(`
+  const { FacultyID } = req.query;
+  db.query(
+    `
                 SELECT 
             faculty.FacultyID, 
             faculty.Faculty_Name, 
@@ -370,17 +393,78 @@ app.get("/api/facultyDetails", (req, res) => {
         WHERE 
             faculty.FacultyID = ?;  
 
-      `, [FacultyID], (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
+      `,
+    [FacultyID],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
 });
-
-
-
-
 
 // Start the server on the specified port
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
+
+// Faculty Timetable
+
+app.get("/api/facultytimetable", (req, res) => {
+  const { facultyID } = req.query;
+
+  // Query to get timetable details for the specific faculty
+  const query = `
+ SELECT 
+    tt.LectureDate, 
+    tt.LectureNumber, 
+    s.SubjectName, 
+    c.CourseName AS ClassName, 
+    tt.RoomNumber, 
+    DAYNAME(tt.LectureDate) AS DayOfWeek
+FROM 
+    timetable tt
+JOIN 
+    subject s ON s.SubjectID = tt.SubjectID
+JOIN 
+    faculty f ON f.FacultyID = s.FacultyID
+JOIN 
+    course c ON c.CourseID = s.CourseID
+WHERE 
+    f.FacultyID = 1
+ORDER BY 
+    tt.LectureDate, tt.LectureNumber;
+
+`;
+
+  db.query(query, [facultyID], (err, results) => {
+    if (err) {
+      console.error("Error fetching timetable data:", err);
+      return res.status(500).json({ error: "Failed to fetch timetable data" });
+    }
+
+    // Send the timetable data to the frontend
+    res.json(results);
+  });
+});
+
+
+/*
+ * ********************************************************************
+ *                             Common                             *
+ * ********************************************************************/
+
+// Endpoint to fetch all faculty names
+app.get('/api/faculty', (req, res) => {
+    const sqlQuery = 'SELECT FacultyID,Faculty_Name FROM faculty';
+  
+    db.query(sqlQuery, (err, results) => {
+      if (err) {
+        console.error('Error executing query:', err);
+        return res.status(500).json({ error: 'Database query error' });
+      }
+  
+      // Map the results to an array of names
+      const facultyNames = results.map((row) => row.name);
+      res.json(facultyNames);
+    });
+  });
