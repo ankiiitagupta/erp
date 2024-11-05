@@ -11,7 +11,7 @@ app.use(cors());
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "admin",
     database: 'erp',
 });
 
@@ -172,7 +172,7 @@ WHERE
     st.RollNO = ? -- Replace with dynamic input from API
     AND t.LectureDate = ? -- Replace with dynamic date input
 ORDER BY 
-    t.StartTime;`, [ RollNO, formattedDate],
+    t.StartTime;`, [RollNO, formattedDate],
         (err, results) => {
             if (err) {
                 res.status(500).send("Database query failed");
@@ -344,6 +344,42 @@ app.get("/api/attendencebymonthforsub", (req, res) => {
         res.json(results);
     });
 });
+
+
+/*
+ * ********************************************************************
+ *                             FACULTY API                             *
+ * ********************************************************************/
+
+
+
+//Faculty data
+app.get("/api/facultyDetails", (req, res) => {
+    const { FacultyID } = req.query;
+    db.query(`
+                SELECT 
+            faculty.FacultyID, 
+            faculty.Faculty_Name, 
+            faculty.Faculty_Email, 
+            department.DepartmentName,  
+            faculty.Faculty_Designation
+        FROM 
+            faculty
+        JOIN 
+            department ON faculty.Faculty_DepartmentID = department.DepartmentID
+        WHERE 
+            faculty.FacultyID = ?;  
+
+      `, [FacultyID], (err, results) => {
+        if (err) throw err;
+        res.json(results);
+    });
+});
+
+
+
+
+
 // Start the server on the specified port
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
