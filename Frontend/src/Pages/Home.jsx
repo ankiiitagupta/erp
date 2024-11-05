@@ -1,7 +1,7 @@
 import React from "react";
 import "../index.css";
 import "../assets/students.svg";
-import Login from "../Student/Components/Login.jsx";
+import Login from "./Login.jsx";
 import Header from "../Student/Components/Header.jsx";
 
 

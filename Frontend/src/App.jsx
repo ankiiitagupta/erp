@@ -3,10 +3,10 @@ import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home';
 // import SelectProfile from './Components/SelectProfile';
-import Login from './Student/Components/Login.jsx';
+import Login from '../src/Pages/Login.jsx';
 // AdminDashboard from './Student/Components/AdminDashboard.jsx';
-//import FacultyDashboard from './Student/Components/FacultyDashboard.jsx';
-import Header from './Student/Components/Header.jsx';
+import FacultyDashboard from './faculty/facultyDashboard.jsx';
+
 import StudentDashboard from './Student/Components/StudentDashboard.jsx';
 
 
@@ -22,8 +22,8 @@ function App() {
         <Route path="/" element={<Home/>}></Route>
         <Route path="/login" element={<Login/>}></Route>
 
-        {/* <Route path="/admindashboard" element={<AdminDashboard/>}></Route>
-        <Route path="/facultydashboard" element={<FacultyDashboard/>}></Route> */}
+        {/* <Route path="/admindashboard" element={<AdminDashboard/>}></Route>*/}
+        <Route path="/facultydashboard/:FacultyID" element={<FacultyDashboard/>}></Route> 
         <Route path="/studentdashboard/:RollNO" element={<StudentDashboard/>}></Route>
         
       </Routes>
