@@ -62,23 +62,42 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // Fetch attendance data from the API
-      const response = await fetch(
-        `${API_URL}/api/attendencebymonthforsub?RollNO=${RollNO}&SubjectName=${subject}&MonthNumber=${
-          new Date(currentMonth).getMonth() + 1
-        }`
-      );
-      const data = await response.json();
-      console.log("Fetched attendance data:", data); // Log to check the response
+    
+    console.log("Submitting form with:", { RollNO, subject, currentMonth }); // Log variables for debugging
 
-      // Set the fetched data into state
-      setAttendanceData(data[0]); // Assuming only one result per subject and month
-      setShowPieChart(true); // Show the pie chart after fetching data
+    try {
+        // Construct the API URL
+        const monthNumber = new Date(currentMonth).getMonth() + 1;
+        const url = `${API_URL}/api/attendencebymonthforsub?RollNO=${RollNO}&SubjectName=${subject}&MonthNumber=${monthNumber}`;
+        console.log("Request URL:", url); // Log constructed URL
+
+        // Fetch attendance data
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch data: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Fetched attendance data:", data); // Log response data
+
+        // Check if data is empty and alert "No data found"
+        if (!data || data.length === 0) {
+            alert("No data found for the specified criteria.");
+            return;
+        }
+
+        // Set the fetched data into state
+        setAttendanceData(data[0]); // Access the first result
+        setShowPieChart(true); // Show the pie chart after fetching data
+
     } catch (error) {
-      console.error("Error fetching attendance data:", error);
+        console.error("Error fetching attendance data:", error);
+        alert("Failed to fetch attendance data. Please check console for details.");
     }
-  };
+};
+
+
 
   const handleReset = () => {
     setCurrentMonth(new Date().toISOString().slice(0, 7));
@@ -90,16 +109,32 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
   const handledailySubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `${API_URL}/api/timetablebydate?RollNO=${RollNO}&LectureDate=${selectedDate}`
-      );
-      const data = await response.json();
-      setTimetableData(data); // Store fetched timetable data in state
-      console.log("Fetched timetable data:", data);
+        const response = await fetch(
+            `${API_URL}/api/timetablebydate?RollNO=${RollNO}&LectureDate=${selectedDate}`
+        );
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch data: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Fetched timetable data:", data);
+
+        // Check if data is empty and alert "No data found"
+        if (!data || data.length === 0) {
+            alert("No timetable data found for the selected date.");
+            return;
+        }
+
+        // Store fetched timetable data in state
+        setTimetableData(data);
+
     } catch (error) {
-      console.error("Error fetching timetable:", error);
+        console.error("Error fetching timetable:", error);
+        alert("Failed to fetch timetable data. Please check console for details.");
     }
-  };
+};
+
 
   const handledailyReset = () => {
     setSelectedDate("");
