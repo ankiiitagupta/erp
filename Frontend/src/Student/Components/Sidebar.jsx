@@ -1,7 +1,5 @@
-
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useNavigate, useLocation } from 'react-router-dom'; 
+import { NavLink, useNavigate } from 'react-router-dom'; 
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -11,9 +9,10 @@ import {
   CDBSidebarMenuItem,
 } from 'cdbreact';
 
-const Sidebar = ({ setAttFlag , setNoticeFlag, resetFlags}) => {
+const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-
+  const navigate = useNavigate(); // Declare the navigate function
+  
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -29,14 +28,22 @@ const Sidebar = ({ setAttFlag , setNoticeFlag, resetFlags}) => {
         <CDBSidebarHeader
           prefix={<i className="fa fa-bars fa-large" onClick={toggleSidebar}></i>}
         >
-          <a href="/" className="text-decoration-none" style={{ color: 'inherit' }}>
+          <a
+            href="/"
+            className="text-decoration-none"
+            style={{ color: 'inherit' }}
+            onClick={() => {
+              resetFlags();
+              navigate(`/studentdashboard/${RollNO}`); // Navigate correctly
+            }}
+          >
             MPGI
           </a>
         </CDBSidebarHeader>
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
-          <CDBSidebarMenuItem
+            <CDBSidebarMenuItem
               icon="columns"
               onClick={() => {
                 resetFlags();
@@ -48,24 +55,36 @@ const Sidebar = ({ setAttFlag , setNoticeFlag, resetFlags}) => {
             <NavLink
               to="#"
               onClick={() => setAttFlag(true)} // Set attendance flag to true
-              activeClassName="activeClicked" 
-              toggled={!isCollapsed}
+              className={({ isActive }) => (isActive ? 'activeClicked' : '')}
             >
               <CDBSidebarMenuItem icon="table">Attendance Detail</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/profile" activeClassName="activeClicked">
+            <NavLink
+              to="/profile"
+              className={({ isActive }) => (isActive ? 'activeClicked' : '')}
+            >
+              
               <CDBSidebarMenuItem icon="user">Profile page</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/analytics" activeClassName="activeClicked">
+            <NavLink
+              to="/analytics"
+              className={({ isActive }) => (isActive ? 'activeClicked' : '')}
+            >
               <CDBSidebarMenuItem icon="chart-line">Analytics</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/hero404" target="_blank" activeClassName="activeClicked">
+            <NavLink
+              to="/hero404"
+              target="_blank"
+              className={({ isActive }) => (isActive ? 'activeClicked' : '')}
+            >
               <CDBSidebarMenuItem icon="exclamation-circle">404 page</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink to="#"
-              onClick={() => setNoticeFlag(true)} // Set attendance flag to true
-              activeClassName="activeClicked"> {/* Notice link */}
-              <CDBSidebarMenuItem icon="bell">Notices</CDBSidebarMenuItem> {/* Notice icon */}
+            <NavLink
+              to="#"
+              onClick={() => setNoticeFlag(true)} // Set notice flag to true
+              className={({ isActive }) => (isActive ? 'activeClicked' : '')}
+            >
+              <CDBSidebarMenuItem icon="bell">Notices</CDBSidebarMenuItem>
             </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>
@@ -79,4 +98,3 @@ const Sidebar = ({ setAttFlag , setNoticeFlag, resetFlags}) => {
 };
 
 export default Sidebar;
-

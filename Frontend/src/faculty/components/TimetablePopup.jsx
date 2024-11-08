@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../TimetablePopup.css';
+import '../stylesheets/TimetablePopup.css';
 
 const TimetablePopup = ({ timetable, onClose }) => {
   const dummyTimetable = [
@@ -13,22 +13,8 @@ const TimetablePopup = ({ timetable, onClose }) => {
 
   const [nextClassIndex, setNextClassIndex] = useState(null);
 
-  useEffect(() => {
-    const fetchFacultyNames = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/faculty');
-        if (!response.ok) {
-          throw new Error('Failed to fetch faculty names');
-        }
-        const data = await response.json();
-        setFacultyNames(data.map((faculty) => faculty.name));
-      } catch (error) {
-        console.error('Error fetching faculty names:', error);
-      }
-    };
 
-    fetchFacultyNames();
-  }, []);
+  
 
   useEffect(() => {
     const now = new Date();
@@ -46,14 +32,8 @@ const TimetablePopup = ({ timetable, onClose }) => {
     setNextClassIndex(upcomingIndex);
   }, [currentTimetable]);
 
-  const handleAssignClick = (index) => {
-    setOpenDropdown(openDropdown === index ? null : index);
-  };
 
-  const handleSubstituteSelect = (index, name) => {
-    setAssignedSubstitute((prev) => ({ ...prev, [index]: name }));
-    setOpenDropdown(null);
-  };
+
 
   const handleOverlayClick = (event) => {
     if (event.target.className === 'popup-overlay') {

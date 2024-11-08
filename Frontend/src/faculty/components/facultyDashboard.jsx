@@ -7,6 +7,8 @@ import { API_URL } from "../../axios.js";
 import FacultyTimeTable from "./FacultyTimetable.jsx";
 import TimetablePopup from "./TimetablePopup.jsx"; // Import the TimetablePopup component
 
+import EmployeeDetail from "./EmployeeDetail.jsx";
+
 const namebox = {
   display: "flex",
   flexDirection: "row",
@@ -21,6 +23,8 @@ const FacultyDashboard = () => {
   const [todayTimetable, setTodayTimetable] = useState([]);
   const [error, setError] = useState(null);
   const [showPopup, setShowPopup] = useState(false); // State for pop-up visibility
+  const [EmpdetailFlag, setEmpdetailFlag] = useState(false); 
+
 
   useEffect(() => {
     // Fetch faculty basic details using Faculty ID
@@ -50,7 +54,7 @@ const FacultyDashboard = () => {
 
   const filterTodayTimetable = (data) => {
     const today = new Date().toLocaleString("en-us", { weekday: "long" });
-    const todayClasses = data.filter(slot => slot.Day === today);
+    const todayClasses = data.filter((slot) => slot.Day === today);
     setTodayTimetable(todayClasses);
   };
 
@@ -70,12 +74,12 @@ const FacultyDashboard = () => {
             className="profile-pic"
           />
           <div style={namebox}>
-            <div style={{ margin: '0', lineHeight: '1rem' }}>
+            <div style={{ margin: "0", lineHeight: "1rem" }}>
               <h3>{facultyMember.Faculty_Name}</h3>
-              <p style={{ marginTop: '0' }}>Faculty ID: {facultyMember.FacultyID}</p>
+              <p style={{ marginTop: "0" }}>Faculty ID: {facultyMember.FacultyID}</p>
               <p>Department: {facultyMember.DepartmentName}</p>
             </div>
-            <div style={{ marginTop: "2rem", lineHeight: '1rem' }}>
+            <div style={{ marginTop: "2rem", lineHeight: "1rem" }}>
               <p>Email: {facultyMember.Faculty_Email}</p>
               <p>Designation: {facultyMember.Faculty_Designation}</p>
             </div>
@@ -91,23 +95,27 @@ const FacultyDashboard = () => {
     return (
       <div className="timetable">
         <h4>Faculty Timetable</h4>
-        <FacultyTimeTable />
+        <FacultyTimeTable timetable={timetable} />
       </div>
     );
   };
 
   return (
     <div className="dashboard">
-      <FacultySidebar />
+      <FacultySidebar setEmpdetailFlag={setEmpdetailFlag} />
       <div className="main-content">
         <Header />
-        <div className="faculty-section">
-          {error && <p className="error">{error}</p>}
-          <div className="faculty-details-section">
-            {renderFacultyDetails()}
+        {EmpdetailFlag ? (
+          <div className="Employee-Detail">
+            <EmployeeDetail FacultyID={FacultyID} />
           </div>
-          <div className="timetable-section">{renderTimetable()}</div>
-        </div>
+        ) : (
+          <div className="faculty-section">
+            {error && <p className="error">{error}</p>}
+            <div className="faculty-details-section">{renderFacultyDetails()}</div>
+            <div className="timetable-section">{renderTimetable()}</div>
+          </div>
+        )}
       </div>
       {showPopup && (
         <TimetablePopup timetable={todayTimetable} onClose={closePopup} />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { API_URL } from "../../axios";
 import axios from "axios";
-import '../FacultyTimetable.css'; // Ensure the CSS file is imported
+import '../stylesheets/FacultyTimetable.css'; // Ensure the CSS file is imported
 
 const FacultyTimeTable = ({ facultyID }) => {
   const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];

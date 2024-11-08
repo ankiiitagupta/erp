@@ -1,0 +1,112 @@
+/* Container for the employee detail component */
+.employee-details-container {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  position: relative; /* Ensures absolute-positioned elements are contained */
+}
+
+/* Main card holding employee profile and details */
+.employee-card {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(22, 15, 73, 0.1);
+  padding: 2rem;
+  /* margin: auto; */
+  position: relative;
+}
+
+/* Section for profile picture and basic employee information */
+.employee-profile-section {
+  display: flex;
+  align-items: center;
+  margin-right: 5rem;
+}
+
+/* Styling for profile picture */
+.employee-profile-picture {
+  width: 10rem;
+  height: 10rem;
+  margin-left: 2rem;
+  border-radius: 50%;
+  margin-right: 1.5rem;
+  object-fit: cover;
+}
+
+/* Section for employee name and status */
+.employee-info-section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 1rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.employee-status {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-right: 2rem;
+ 
+}
+
+.employee-status-text {
+  font-size: 1rem;
+  color: #666;
+}
+
+.status-indicator {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.status-active .status-indicator {
+  background-color: green;
+}
+
+.status-inactive .status-indicator {
+  background-color: red;
+}
+
+/* Styling for employee full name */
+.employee-full-name {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* Basic information section */
+.employee-basic-info-details {
+  flex: 1;
+  font-size: 1rem;
+  line-height: 1.4;
+
+}
+
+/* Section for detailed employee information */
+.employee-info-details {
+  display: flex;
+  
+  gap: 35rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+  line-height: 1.9;
+  
+}
+
+/* Contact information section */
+.employee-contact-info p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.employee-contact-info strong {
+  font-weight: bold;
+}

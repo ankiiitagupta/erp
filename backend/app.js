@@ -135,7 +135,7 @@ app.get("/api/subjectattendance", (req, res) => {
   // Update the SQL query to join with the Subject table and include SubjectName
   db.query(
     `
-    SELECT 
+    SELECT z
       s.SubjectName,
       COUNT(a.LectureNumber) AS TotalLectures, 
       SUM(CASE WHEN a.AttendanceStatus = 1 THEN 1 ELSE 0 END) AS PresentLectures 
@@ -402,10 +402,39 @@ app.get("/api/facultyDetails", (req, res) => {
   );
 });
 
-// Start the server on the specified port
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+
+// Employee Detail api
+
+app.get("/api/EmployeeDetails", (req, res) => {
+  const { FacultyID } = req.query;
+  db.query(
+    `
+                SELECT 
+            faculty.FacultyID, 
+            faculty.Faculty_Name, 
+            faculty.Faculty_Email,
+            faculty.Faculty_Contact, 
+            faculty.Faculty_Salary,
+            faculty.Faculty_JoiningDate,
+            faculty.Faculty_EmployeeStatus,
+            department.DepartmentName,  
+            faculty.Faculty_Designation
+        FROM 
+            faculty
+        JOIN 
+            department ON faculty.Faculty_DepartmentID = department.DepartmentID
+        WHERE 
+            faculty.FacultyID = ?;  
+
+      `,
+    [FacultyID],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
 });
+
 
 // Faculty Timetable
 
@@ -447,6 +476,10 @@ ORDER BY
   });
 });
 
+// Start the server on the specified port
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
 
 /*
  * ********************************************************************
@@ -454,17 +487,19 @@ ORDER BY
  * ********************************************************************/
 
 // Endpoint to fetch all faculty names
-app.get('/api/faculty', (req, res) => {
-    const sqlQuery = 'SELECT FacultyID,Faculty_Name FROM faculty';
+// app.get('/api/faculty', (req, res) => {
+//     const sqlQuery = 'SELECT FacultyID,Faculty_Name FROM faculty';
   
-    db.query(sqlQuery, (err, results) => {
-      if (err) {
-        console.error('Error executing query:', err);
-        return res.status(500).json({ error: 'Database query error' });
-      }
+//     db.query(sqlQuery, (err, results) => {
+//       if (err) {
+//         console.error('Error executing query:', err);
+//         return res.status(500).json({ error: 'Database query error' });
+//       }
   
-      // Map the results to an array of names
-      const facultyNames = results.map((row) => row.name);
-      res.json(facultyNames);
-    });
-  });
+//       // Map the results to an array of names
+//       const facultyNames = results.map((row) => row.name);
+//       res.json(facultyNames);
+//     });
+//   });
+
+
