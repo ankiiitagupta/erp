@@ -45,17 +45,21 @@ function MarkingTimeTable({ RollNO }) {
       });
   }, [RollNO]);
 
+  const examColumnWidth = ExamTypes.length > 0 ? 70 / ExamTypes.length : 0;
+
   return (
     <div className="performance-container">
       <h4><b>Student Performance Record</b></h4>
-      <table className="performance-table">
+      <table className="performance-table" style={{ tableLayout: "fixed", width: "100%" }}>
         <thead>
           <tr>
-            <th rowSpan="2">SR NO.</th>
-            <th rowSpan="2">SUBJECT NAME</th>
-            <th rowSpan="2">ATTENDANCE (%)</th>
+            <th rowSpan="2" style={{ width: "3%" }}>SR NO.</th>
+            <th rowSpan="2" style={{ width: "10%" }}>SUBJECT NAME</th>
+            <th rowSpan="2" style={{ width:"5%" }}>ATTENDANCE (%)</th>
             {ExamTypes.map((ExamType, index) => (
-              <th key={index} colSpan="1">{ExamType.toUpperCase()}</th>
+              <th key={index} colSpan="1" style={{ width: `${examColumnWidth}%` }}>
+                {ExamType.toUpperCase()}
+              </th>
             ))}
           </tr>
           <tr>
