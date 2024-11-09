@@ -669,39 +669,59 @@ th {
     margin-top: 1.6rem;
 }
 
+
+ 
 .performance-container {
     margin: 1rem 0;
     font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-}
-
-h1 {
+  }
+  
+  h4 {
     text-align: center;
     margin-bottom: 20px;
-}
-
-.performance-table {
+    font-size: 18px;
+  }
+  
+  .performance-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 0;
-}
-
-.performance-table th,
-.performance-table td {
+    table-layout: fixed;
+  }
+  
+  .performance-table th,
+  .performance-table td {
     border: 1px solid #000;
     padding: 8px 12px;
     text-align: center;
-}
-
-.performance-table th {
-    background-color: rgba(0, 31, 84, 255);
-}
-
-.performance-table tbody tr:nth-child(even) {
+    vertical-align: middle;
+  }
+  
+  .performance-table th {
+    background-color: rgba(0, 31, 84, 1);
+    color: #fff;
+  }
+  
+  .fixed-width {
+    width: 10%;
+  }
+  
+  .dynamic-width {
+    width: auto;
+    word-wrap: break-word; /* Break words if they overflow */
+    white-space: normal; /* Allow wrapping */
+    min-width: 70px; /* Set a minimum width */
+  }
+  
+  .cell-content {
+    padding: 6px;
+    word-wrap: break-word; /* Wrap text if too long */
+    white-space: normal; /* Allow text to wrap */
+  }
+  
+  .performance-table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
-}
-
+  }
+  
 .student-detail-dailyatt {
     display: flex;
     justify-content: center;

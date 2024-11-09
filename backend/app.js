@@ -225,7 +225,7 @@ app.get("/api/weekstimetable", (req, res) => {
             t.EndTime, 
             t.RoomNumber, 
             t.LectureNumber, 
-            s.SubjectID AS SubjectCode,
+            s.SubjectID AS SubcdjectCode,
             t.LectureDate  
         FROM 
             student AS st 

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -6,7 +7,8 @@ function MarkingTimeTable({ RollNO }) {
   const [ExamTypes, setExamTypes] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3006/api/studentperformancerecord?RollNO=${RollNO}`)
+    axios
+      .get(`http://localhost:3006/api/studentperformancerecord?RollNO=${RollNO}`)
       .then(response => {
         const records = response.data;
         const subjects = {};
@@ -15,14 +17,13 @@ function MarkingTimeTable({ RollNO }) {
         records.forEach(record => {
           const { SubjectName, ExamType, MarksObtained, TotalMarks } = record;
 
-          // Track unique exam types
           uniqueExamTypes.add(ExamType);
 
           if (!subjects[SubjectName]) {
             subjects[SubjectName] = {
-              attendancePercentage: "", // Default value
-              exams: {}, // Store exam data dynamically
-              assignments: ["-", "-", "-", "-", "-"] // Default assignments
+              attendancePercentage: "",
+              exams: {},
+              assignments: ["-", "-", "-", "-", "-"]
             };
           }
 
@@ -33,40 +34,57 @@ function MarkingTimeTable({ RollNO }) {
           subjects[SubjectName].exams[ExamType] = { obtained: MarksObtained, max: TotalMarks };
         });
 
-        setExamTypes(Array.from(uniqueExamTypes)); // Set the unique exam types
-        setData(Object.entries(subjects).map(([subjectName, exams], index) => ({
-          id: index + 1,
-          subjectName,
-          ...exams
-        })));
+        setExamTypes(Array.from(uniqueExamTypes));
+        setData(
+          Object.entries(subjects).map(([subjectName, exams], index) => ({
+            id: index + 1,
+            subjectName,
+            ...exams
+          }))
+        );
       })
       .catch(error => {
         console.error("Error fetching data:", error);
       });
   }, [RollNO]);
 
-  const examColumnWidth = ExamTypes.length > 0 ? 70 / ExamTypes.length : 0;
+  // Calculate dynamic font size based on the number of exam columns
+  const baseFontSize = 14;
+  const minFontSize = 10;
+  const fontSize = ExamTypes.length > 6
+    ? `${Math.max(baseFontSize - (ExamTypes.length - 6), minFontSize)}px`
+    : `${baseFontSize}px`;
 
   return (
     <div className="performance-container">
-      <h4><b>Student Performance Record</b></h4>
-      <table className="performance-table" style={{ tableLayout: "fixed", width: "100%" }}>
+      <h4>
+        <b>Student Performance Record</b>
+      </h4>
+      <table className="performance-table">
         <thead>
           <tr>
-            <th rowSpan="2" style={{ width: "3%" }}>SR NO.</th>
-            <th rowSpan="2" style={{ width: "10%" }}>SUBJECT NAME</th>
-            <th rowSpan="2" style={{ width:"5%" }}>ATTENDANCE (%)</th>
+            <th rowSpan="2" className="fixed-width">SR NO.</th>
+            <th rowSpan="2" className="fixed-width">SUBJECT NAME</th>
+            <th rowSpan="2" className="fixed-width">ATTENDANCE (%)</th>
             {ExamTypes.map((ExamType, index) => (
-              <th key={index} colSpan="1" style={{ width: `${examColumnWidth}%` }}>
+              <th
+                key={index}
+                className="dynamic-width"
+                style={{ fontSize }}
+              >
                 {ExamType.toUpperCase()}
               </th>
             ))}
           </tr>
           <tr>
             {ExamTypes.map((ExamType, index) => (
-              <React.Fragment key={index}>
-                <th>OBTAIN MARKS</th>
-              </React.Fragment>
+              <th
+                key={index}
+                className="dynamic-width"
+                style={{ fontSize }}
+              >
+                OBTAIN MARKS
+              </th>
             ))}
           </tr>
         </thead>
@@ -77,9 +95,13 @@ function MarkingTimeTable({ RollNO }) {
               <td>{record.subjectName}</td>
               <td>{record.attendancePercentage || "-"}</td>
               {ExamTypes.map((ExamType, i) => (
-                <React.Fragment key={i}>
-                  <td>{record.exams[ExamType]?.obtained || "-"}</td>
-                </React.Fragment>
+                <td
+                  key={i}
+                  className="cell-content"
+                  style={{ fontSize }}
+                >
+                  {record.exams[ExamType]?.obtained || "-"}
+                </td>
               ))}
             </tr>
           ))}
@@ -90,3 +112,4 @@ function MarkingTimeTable({ RollNO }) {
 }
 
 export default MarkingTimeTable;
+
