@@ -225,7 +225,7 @@ const StudentDashboard = () => {
 
   return (
     <div className="dashboard">
-      <Sidebar setAttFlag={setAttFlag}  setNoticeFlag={setNoticeFlag} resetFlags={resetFlags}/>
+      <Sidebar setAttFlag={setAttFlag}  setNoticeFlag={setNoticeFlag} resetFlags={resetFlags} RollNO = {RollNO}/>
       <div className="main-content">
         <Header />
         

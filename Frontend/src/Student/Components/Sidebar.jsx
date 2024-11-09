@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom'; 
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -12,7 +12,7 @@ import {
 const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate(); // Declare the navigate function
-  
+
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -63,7 +63,7 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
               to="/profile"
               className={({ isActive }) => (isActive ? 'activeClicked' : '')}
             >
-              
+
               <CDBSidebarMenuItem icon="user">Profile page</CDBSidebarMenuItem>
             </NavLink>
             <NavLink
