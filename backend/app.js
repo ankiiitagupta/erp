@@ -370,37 +370,47 @@ app.get("/api/attendencebymonthforsub", (req, res) => {
   });
 });
 
-/*
- * ********************************************************************
- *                             FACULTY API                             *
- * ********************************************************************/
 
-//Faculty data
-app.get("/api/facultyDetails", (req, res) => {
-  const { FacultyID } = req.query;
+
+// Student Performance Record
+app.get("/api/studentperformancerecord", (req, res) => {
+  const { RollNO} = req.query;
+
   db.query(
     `
-                SELECT 
-            faculty.FacultyID, 
-            faculty.Faculty_Name, 
-            faculty.Faculty_Email, 
-            department.DepartmentName,  
-            faculty.Faculty_Designation
-        FROM 
-            faculty
-        JOIN 
-            department ON faculty.Faculty_DepartmentID = department.DepartmentID
-        WHERE 
-            faculty.FacultyID = ?;  
-
-      `,
-    [FacultyID],
+          SELECT 
+          result.ResultID,
+          result.StudentID AS RollNo,
+          result.SubjectID,
+          subject.SubjectName,  -- Include the subject name
+          exam.ExamType,
+          exam.ExamDate,
+          exam.TotalMarks,
+          result.MarksObtained,
+          result.ResultStatus
+      FROM 
+          result
+      JOIN 
+          exam ON result.ExamID = exam.ExamID
+      JOIN 
+          subject ON result.SubjectID = subject.SubjectID  -- Join with the subject table
+      WHERE 
+          result.StudentID = ?;
+`,
+    [RollNO],
     (err, results) => {
       if (err) throw err;
       res.json(results);
     }
   );
 });
+
+
+
+/*
+ * ********************************************************************
+ *                             Faculty                            *
+ * ********************************************************************/
 
 
 // Employee Detail api

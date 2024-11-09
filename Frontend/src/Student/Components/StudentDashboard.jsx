@@ -11,6 +11,7 @@ import AttendanceDetails from "./AttendanceDetails.jsx"; // Ensure to import you
 import MarkingTimeTable from "./markingTimetable.jsx";
 import Notices from "./Notices.jsx";
 
+
 const StudentDashboard = () => {
   const { RollNO } = useParams(); // Get Roll number from URL
   const [students, setStudents] = useState([]);
@@ -20,6 +21,18 @@ const StudentDashboard = () => {
   const [tFlag, setTFlag] = useState(false); // Manage timetable flag
   const [attFlag, setAttFlag] = useState(false); // Manage attendance flag
   const [noticeFlag, setNoticeFlag]= useState(false);
+
+  const performanceData = [
+    {
+      subjectName: "Mathematics",
+      attendancePercentage: 85,
+      midSem1: { obtained: 30, max: 50 },
+      midSem2: { obtained: 28, max: 50 },
+      put: { obtained: 40, max: 50 },
+      assignments: [9, 8, 10, 9, 7]
+    },
+    // Add more subjects as needed
+  ];
 
   const resetFlags = () => {
     setAttFlag(false);
@@ -150,7 +163,7 @@ const StudentDashboard = () => {
     return (
       <div className="timetable">
         
-        <MarkingTimeTable/>
+        <MarkingTimeTable RollNO={RollNO}/>
 
       </div>
     );

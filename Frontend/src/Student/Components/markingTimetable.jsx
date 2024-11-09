@@ -1,8 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
+function MarkingTimeTable({ RollNO }) {
+  const [data, setData] = useState([]);
+  const [ExamTypes, setExamTypes] = useState([]);
 
+  useEffect(() => {
+    axios.get(`http://localhost:3006/api/studentperformancerecord?RollNO=${RollNO}`)
+      .then(response => {
+        const records = response.data;
+        const subjects = {};
+        const uniqueExamTypes = new Set();
 
-function MarkingTimeTable() {
+        records.forEach(record => {
+          const { SubjectName, ExamType, MarksObtained, TotalMarks } = record;
+
+          // Track unique exam types
+          uniqueExamTypes.add(ExamType);
+
+          if (!subjects[SubjectName]) {
+            subjects[SubjectName] = {
+              attendancePercentage: "", // Default value
+              exams: {}, // Store exam data dynamically
+              assignments: ["-", "-", "-", "-", "-"] // Default assignments
+            };
+          }
+
+          if (!subjects[SubjectName].exams[ExamType]) {
+            subjects[SubjectName].exams[ExamType] = { obtained: "-", max: "-" };
+          }
+
+          subjects[SubjectName].exams[ExamType] = { obtained: MarksObtained, max: TotalMarks };
+        });
+
+        setExamTypes(Array.from(uniqueExamTypes)); // Set the unique exam types
+        setData(Object.entries(subjects).map(([subjectName, exams], index) => ({
+          id: index + 1,
+          subjectName,
+          ...exams
+        })));
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+      });
+  }, [RollNO]);
+
   return (
     <div className="performance-container">
       <h4><b>Student Performance Record</b></h4>
@@ -12,43 +54,31 @@ function MarkingTimeTable() {
             <th rowSpan="2">SR NO.</th>
             <th rowSpan="2">SUBJECT NAME</th>
             <th rowSpan="2">ATTENDANCE (%)</th>
-            <th colSpan="2">MID SEM 1</th>
-            <th colSpan="2">MID SEM 2</th>
-            <th colSpan="2">PUT</th>
-            <th colSpan="5">ASSIGNMENTS</th>
+            {ExamTypes.map((ExamType, index) => (
+              <th key={index} colSpan="1">{ExamType.toUpperCase()}</th>
+            ))}
           </tr>
           <tr>
-            <th>OBTAIN MARKS</th>
-            <th>MAX. MARKS</th>
-            <th>OBTAIN MARKS</th>
-            <th>MAX. MARKS</th>
-            <th>OBTAIN MARKS</th>
-            <th>MAX. MARKS</th>
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-            <th>5</th>
+            {ExamTypes.map((ExamType, index) => (
+              <React.Fragment key={index}>
+                <th>OBTAIN MARKS</th>
+              </React.Fragment>
+            ))}
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mathematics</td>
-            <td>85%</td>
-            <td>30</td>
-            <td>50</td>
-            <td>28</td>
-            <td>50</td>
-            <td>40</td>
-            <td>50</td>
-            <td>9</td>
-            <td>8</td>
-            <td>10</td>
-            <td>9</td>
-            <td>7</td>
-          </tr>
-          {/* Add more rows as necessary */}
+          {data.map((record, index) => (
+            <tr key={index}>
+              <td>{record.id}</td>
+              <td>{record.subjectName}</td>
+              <td>{record.attendancePercentage || "-"}</td>
+              {ExamTypes.map((ExamType, i) => (
+                <React.Fragment key={i}>
+                  <td>{record.exams[ExamType]?.obtained || "-"}</td>
+                </React.Fragment>
+              ))}
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
