@@ -11,10 +11,17 @@ import {
 
 const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const navigate = useNavigate(); // Declare the navigate function
+  const [selectedMenuItem, setSelectedMenuItem] = useState('Dashboard'); // Track selected menu item
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
+  };
+
+  const handleMenuClick = (menuItem, action) => {
+    setSelectedMenuItem(menuItem);
+    resetFlags();
+    action && action();
   };
 
   return (
@@ -32,10 +39,7 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
             href="/"
             className="text-decoration-none"
             style={{ color: 'inherit' }}
-            onClick={() => {
-              resetFlags();
-              navigate(`/studentdashboard/${RollNO}`); // Navigate correctly
-            }}
+            onClick={() => handleMenuClick('Dashboard', () => navigate(`/studentdashboard/${RollNO}`))}
           >
             MPGI
           </a>
@@ -45,53 +49,55 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
           <CDBSidebarMenu>
             <CDBSidebarMenuItem
               icon="columns"
-              onClick={() => {
-                resetFlags();
-                navigate(`/studentdashboard/${RollNO}`);
-              }}
+              className={selectedMenuItem === 'Dashboard' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('Dashboard', () => navigate(`/studentdashboard/${RollNO}`))}
             >
               Dashboard
             </CDBSidebarMenuItem>
-            <NavLink
-              to="#"
-              onClick={() => setAttFlag(true)} // Set attendance flag to true
-              className={({ isActive }) => (isActive ? 'activeClicked' : '')}
+            
+            <CDBSidebarMenuItem
+              icon="table"
+              className={selectedMenuItem === 'Attendance' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('Attendance', () => setAttFlag(true))}
             >
-              <CDBSidebarMenuItem icon="table">Attendance Detail</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink
-              to="/profile"
-              className={({ isActive }) => (isActive ? 'activeClicked' : '')}
-            >
+              Attendance Detail
+            </CDBSidebarMenuItem>
 
-              <CDBSidebarMenuItem icon="user">Profile page</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink
-              to="/analytics"
-              className={({ isActive }) => (isActive ? 'activeClicked' : '')}
+            <CDBSidebarMenuItem
+              icon="user"
+              className={selectedMenuItem === 'Profile' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('Profile', () => navigate('/profile'))}
             >
-              <CDBSidebarMenuItem icon="chart-line">Analytics</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink
-              to="/hero404"
-              target="_blank"
-              className={({ isActive }) => (isActive ? 'activeClicked' : '')}
+              Profile Page
+            </CDBSidebarMenuItem>
+            
+            <CDBSidebarMenuItem
+              icon="chart-line"
+              className={selectedMenuItem === 'Analytics' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('Analytics', () => navigate('/analytics'))}
             >
-              <CDBSidebarMenuItem icon="exclamation-circle">404 page</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink
-              to="#"
-              onClick={() => setNoticeFlag(true)} // Set notice flag to true
-              className={({ isActive }) => (isActive ? 'activeClicked' : '')}
+              Analytics
+            </CDBSidebarMenuItem>
+
+            <CDBSidebarMenuItem
+              icon="exclamation-circle"
+              className={selectedMenuItem === '404' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('404', () => window.open('/hero404', '_blank'))}
             >
-              <CDBSidebarMenuItem icon="bell">Notices</CDBSidebarMenuItem>
-            </NavLink>
+              404 Page
+            </CDBSidebarMenuItem>
+
+            <CDBSidebarMenuItem
+              icon="bell"
+              className={selectedMenuItem === 'Notices' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('Notices', () => setNoticeFlag(true))}
+            >
+              Notices
+            </CDBSidebarMenuItem>
           </CDBSidebarMenu>
         </CDBSidebarContent>
 
-        <CDBSidebarFooter style={{ textAlign: 'center' }}>
-          {/* <div style={{ padding: '20px 5px' }}>Sidebar Footer</div> */}
-        </CDBSidebarFooter>
+        <CDBSidebarFooter style={{ textAlign: 'center' }}></CDBSidebarFooter>
       </CDBSidebar>
     </div>
   );

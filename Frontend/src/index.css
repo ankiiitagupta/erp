@@ -301,6 +301,16 @@ body {
     margin-left: 310px;
     /* Adjust when full sidebar is open */
 }
+.activeClicked {
+    background-color: #004080; /* Highlight background color */
+    color: #ffffff; /* Text color for active item */
+    font-weight: bold; /* Optional: bold text for active item */
+}
+
+.activeClicked:hover {
+    background-color: #003366; /* Darker shade on hover */
+}
+
 
 .top-section {
     margin-bottom: 20px;
