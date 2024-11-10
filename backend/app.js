@@ -407,6 +407,79 @@ app.get("/api/studentperformancerecord", (req, res) => {
 
 
 
+// Subjects and SubjectId of student
+app.get("/api/subjectandsubjectidofstud", (req, res) => {
+  const { RollNO} = req.query;
+
+  db.query(
+    `
+        SELECT 
+        s.SubjectID,
+        s.SubjectName 
+    FROM 
+        Enrollment e
+    JOIN 
+        Subject s ON e.CourseID = s.CourseID
+    WHERE 
+        e.RollNO = ?;
+`,
+    [RollNO],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+// Faculties of the student
+app.get("/api/facultyofstudent", (req, res) => {
+  const { RollNO} = req.query;
+
+  db.query(
+    `
+         SELECT 
+    s.SubjectName,
+    f.Faculty_Name
+    FROM 
+        Enrollment e
+    JOIN 
+        Subject s ON e.CourseID = s.CourseID
+    JOIN 
+        Faculty f ON s.FacultyID = f.FacultyID
+    WHERE 
+        e.RollNO = ?;
+`,
+    [RollNO],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+// Batchmate of the student
+app.get("/api/batchmateofstud", (req, res) => {
+  const { RollNO} = req.query;
+
+  db.query(
+    `
+       SELECT S2.Stud_name AS BatchmateName, S2.RollNO 
+      FROM student S1
+      JOIN student S2 ON S1.Stud_YearOfStudy = S2.Stud_YearOfStudy
+      WHERE S1.RollNO = ? 
+      AND S2.RollNO != ?;
+`,
+    [RollNO,RollNO],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+
+
+
 /*
  * ********************************************************************
  *                             Faculty                            *

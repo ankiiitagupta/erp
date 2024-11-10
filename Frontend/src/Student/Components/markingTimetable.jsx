@@ -55,6 +55,12 @@ function MarkingTimeTable({ RollNO }) {
     ? `${Math.max(baseFontSize - (ExamTypes.length - 6), minFontSize)}px`
     : `${baseFontSize}px`;
 
+  const baseFontSize2 = 18;
+  const minFontSize2 = 14;
+  const fontSize2 = ExamTypes.length > 6
+    ? `${Math.max(baseFontSize2 - (ExamTypes.length - 6), minFontSize2)}px`
+    : `${baseFontSize2}px`;
+
   return (
     <div className="performance-container">
       <h4>
@@ -98,7 +104,7 @@ function MarkingTimeTable({ RollNO }) {
                 <td
                   key={i}
                   className="cell-content"
-                  style={{ fontSize }}
+                  style={{ fontSize2 }}
                 >
                   {record.exams[ExamType]?.obtained || "-"}
                 </td>

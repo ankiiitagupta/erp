@@ -21,18 +21,9 @@ const StudentDashboard = () => {
   const [tFlag, setTFlag] = useState(false); // Manage timetable flag
   const [attFlag, setAttFlag] = useState(false); // Manage attendance flag
   const [noticeFlag, setNoticeFlag]= useState(false);
-
-  const performanceData = [
-    {
-      subjectName: "Mathematics",
-      attendancePercentage: 85,
-      midSem1: { obtained: 30, max: 50 },
-      midSem2: { obtained: 28, max: 50 },
-      put: { obtained: 40, max: 50 },
-      assignments: [9, 8, 10, 9, 7]
-    },
-    // Add more subjects as needed
-  ];
+  const [subjects, setSubjects] = useState([]);
+  const [Faculties, setFaculty] = useState([]);
+  const [classmates, setClassmates] = useState([]);
 
   const resetFlags = () => {
     setAttFlag(false);
@@ -75,7 +66,36 @@ const StudentDashboard = () => {
         setError("Failed to fetch timetable data");
         console.error(error);
       });
+
+      //Fetch the subject of the Student
+      axios.get(`http://localhost:3006/api/subjectandsubjectidofstud?RollNO=${RollNO}`)
+      .then(response => {
+        setSubjects(response.data); // Update with API response
+      })
+      .catch(error => {
+        console.error("Error fetching subjects:", error);
+      });
+
+      //Fetch the Faculties of the Student
+      axios.get(`http://localhost:3006/api/facultyofstudent?RollNO=${RollNO}`)
+      .then(response => {
+        setFaculty(response.data); // Update with API response
+      })
+      .catch(error => {
+        console.error("Error fetching Faculties:", error);
+      });
+
+      //Fetch the Classmate of the Student
+      axios.get(`http://localhost:3006/api/batchmateofstud?RollNO=${RollNO}`)
+      .then(response => {
+        setClassmates(response.data); // Update with API response
+      })
+      .catch(error => {
+        console.error("Error fetching Faculties:", error);
+      });
   }, [RollNO]);
+
+    
 
   const renderStudentDetails = () => {
     return students.map((student) => (
@@ -170,20 +190,16 @@ const StudentDashboard = () => {
   };
 
   const renderFaculty = () => {
-    const faculty = [
-      { name: "Dr. Smith", subject: "Mathematics" },
-      { name: "Prof. Johnson", subject: "Physics" },
-    ];
   
     return (
       <div className="info-container faculty-container">
         <h4>Faculty Teaching</h4>
         <ul>
-          {faculty.map((teacher, index) => (
+          {Faculties.map((teacher, index) => (
             <li key={index} id="faccontainer">
-              <strong>Name:</strong> {teacher.name}
+              <strong>Name:</strong> {teacher.Faculty_Name}
               <br />
-              <strong>Subject:</strong> {teacher.subject}
+              <strong>Subject:</strong> {teacher.SubjectName}
             </li>
           ))}
         </ul>
@@ -191,21 +207,16 @@ const StudentDashboard = () => {
     );
   };
 
-  const renderClassmates = () => {
-    const classmates = [
-      { name: "Alice", rollNo: "01" },
-      { name: "Bob", rollNo: "02" },
-    ];
-  
+  const renderClassmates = () => {  
     return (
       <div className="info-container classmates-container">
         <h4>Classmates</h4>
         <ul >
           {classmates.map((classmate, index) => (
             <li key={index} id="matecontainer">
-              <strong>Name:</strong> {classmate.name}
+              <strong>Name:</strong> {classmate.BatchmateName}
               <br />
-              <strong>Roll No:</strong> {classmate.rollNo}
+              <strong>Roll No:</strong> {classmate.RollNO}
             </li>
           ))}
         </ul>
@@ -213,25 +224,20 @@ const StudentDashboard = () => {
     );
   };
   
-  const renderSubjects = () => {
-    const subjects = [
-      { name: "Mathematics", code: "MATH101" },
-      { name: "Physics", code: "PHY102" },
-    ];
-  
+  const renderSubjects = () => {  
     return (
       <div className="info-container subjects-container">
-        <h4>Subjects</h4>
-        <ul>
-          {subjects.map((subject, index) => (
-            <li key={index} id="subcontainer">
-              <strong>Subject Name:</strong> {subject.name}
-              <br />
-              <strong>Code:</strong> {subject.code}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <h4>Subjects</h4>
+      <ul>
+        {subjects.map((subject, index) => (
+          <li key={subject.SubjectID} id="subcontainer">
+            <strong>Subject Name:</strong> {subject.SubjectName}
+            <br />
+            <strong>Subject ID:</strong> {subject.SubjectID}
+          </li>
+        ))}
+      </ul>
+    </div>
     );
   };
   
