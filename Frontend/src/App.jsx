@@ -1,38 +1,38 @@
-import { useState } from 'react'
-import './App.css'
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home';
-// import SelectProfile from './Components/SelectProfile';
-import Login from '../src/Pages/Login.jsx';
-// AdminDashboard from './Student/Components/AdminDashboard.jsx';
-import FacultyDashboard from './faculty/components/facultyDashboard.jsx';
-
-import StudentDashboard from './Student/Components/StudentDashboard.jsx';
-
+import Login from './Pages/Login';
+import FacultyDashboard from './faculty/components/FacultyDashboard';
+import StudentDashboard from './Student/Components/StudentDashboard';
+import Form from './Student/Components/Form';
+import Sidebar from './Student/Components/Sidebar';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-    <BrowserRouter>
-    
-      <Routes>
-        
-        <Route path="/" element={<Home/>}></Route>
-        <Route path="/login" element={<Login/>}></Route>
+      <BrowserRouter>
+        {/* Sidebar will persist across all routes */}
+        {/* <Sidebar /> */}
+        <Routes>
+          {/* Home Page */}
+          <Route path="/" element={<Home />} />
 
-        {/* <Route path="/admindashboard" element={<AdminDashboard/>}></Route>*/}
-        <Route path="/facultydashboard/:FacultyID" element={<FacultyDashboard/>}></Route> 
-        <Route path="/studentdashboard/:RollNO" element={<StudentDashboard/>}></Route>
-        
-      </Routes>
-    
-    </BrowserRouter>
-      
-      {/* <Login/> */}
+          {/* Login Page */}
+          <Route path="/login" element={<Login />} />
+
+          {/* Dashboards */}
+          <Route path="/facultydashboard/:FacultyID" element={<FacultyDashboard />} />
+          <Route path="/studentdashboard/:RollNO" element={<StudentDashboard />} />
+
+          {/* Form Page (Profile Page) */}
+          <Route path="/profile" element={<Form />} />
+        </Routes>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
+
+
+

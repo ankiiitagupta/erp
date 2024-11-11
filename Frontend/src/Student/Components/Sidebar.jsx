@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -11,7 +11,7 @@ import {
 
 const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [selectedMenuItem, setSelectedMenuItem] = useState('Dashboard'); // Track selected menu item
+  const [selectedMenuItem, setSelectedMenuItem] = useState('Dashboard');
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -21,7 +21,7 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
   const handleMenuClick = (menuItem, action) => {
     setSelectedMenuItem(menuItem);
     resetFlags();
-    action && action();
+    if (action) action();
   };
 
   return (
@@ -32,9 +32,8 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
         toggled={!isCollapsed}
         collapse={isCollapsed}
       >
-        <CDBSidebarHeader
-          prefix={<i className="fa fa-bars fa-large" onClick={toggleSidebar}></i>}
-        >
+        {/* Sidebar Header */}
+        <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large" onClick={toggleSidebar}></i>}>
           <a
             href="/"
             className="text-decoration-none"
@@ -45,8 +44,10 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
           </a>
         </CDBSidebarHeader>
 
+        {/* Sidebar Content */}
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
+            {/* Dashboard */}
             <CDBSidebarMenuItem
               icon="columns"
               className={selectedMenuItem === 'Dashboard' ? 'activeClicked' : ''}
@@ -54,7 +55,8 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
             >
               Dashboard
             </CDBSidebarMenuItem>
-            
+
+            {/* Attendance */}
             <CDBSidebarMenuItem
               icon="table"
               className={selectedMenuItem === 'Attendance' ? 'activeClicked' : ''}
@@ -63,6 +65,7 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
               Attendance Detail
             </CDBSidebarMenuItem>
 
+            {/* Profile (Updated to navigate to Form) */}
             <CDBSidebarMenuItem
               icon="user"
               className={selectedMenuItem === 'Profile' ? 'activeClicked' : ''}
@@ -70,7 +73,8 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
             >
               Profile Page
             </CDBSidebarMenuItem>
-            
+
+            {/* Analytics */}
             <CDBSidebarMenuItem
               icon="chart-line"
               className={selectedMenuItem === 'Analytics' ? 'activeClicked' : ''}
@@ -79,6 +83,7 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
               Analytics
             </CDBSidebarMenuItem>
 
+            {/* 404 Page */}
             <CDBSidebarMenuItem
               icon="exclamation-circle"
               className={selectedMenuItem === '404' ? 'activeClicked' : ''}
@@ -87,6 +92,7 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
               404 Page
             </CDBSidebarMenuItem>
 
+            {/* Notices */}
             <CDBSidebarMenuItem
               icon="bell"
               className={selectedMenuItem === 'Notices' ? 'activeClicked' : ''}
@@ -97,6 +103,7 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
           </CDBSidebarMenu>
         </CDBSidebarContent>
 
+        {/* Sidebar Footer */}
         <CDBSidebarFooter style={{ textAlign: 'center' }}></CDBSidebarFooter>
       </CDBSidebar>
     </div>
@@ -104,3 +111,4 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
 };
 
 export default Sidebar;
+
