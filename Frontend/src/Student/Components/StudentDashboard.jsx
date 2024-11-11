@@ -10,7 +10,7 @@ import TodaysTimeTable from "./TodaysTimeTable.jsx";
 import AttendanceDetails from "./AttendanceDetails.jsx"; // Ensure to import your AttendanceDetails component
 import MarkingTimeTable from "./markingTimetable.jsx";
 import Notices from "./Notices.jsx";
-
+import Profile from "./Profile.jsx";
 
 const StudentDashboard = () => {
   const { RollNO } = useParams(); // Get Roll number from URL
@@ -20,7 +20,8 @@ const StudentDashboard = () => {
   const [error, setError] = useState(null);
   const [tFlag, setTFlag] = useState(false); // Manage timetable flag
   const [attFlag, setAttFlag] = useState(false); // Manage attendance flag
-  const [noticeFlag, setNoticeFlag]= useState(false);
+  const [profileFlag, setProfileFlag] = useState(false); // Manage attendance flag
+  const [noticeFlag, setNoticeFlag] = useState(false);
   const [subjects, setSubjects] = useState([]);
   const [Faculties, setFaculty] = useState([]);
   const [classmates, setClassmates] = useState([]);
@@ -28,6 +29,7 @@ const StudentDashboard = () => {
   const resetFlags = () => {
     setAttFlag(false);
     setNoticeFlag(false);
+    setProfileFlag(false);
   };
 
   useEffect(() => {
@@ -67,8 +69,8 @@ const StudentDashboard = () => {
         console.error(error);
       });
 
-      //Fetch the subject of the Student
-      axios.get(`http://localhost:3006/api/subjectandsubjectidofstud?RollNO=${RollNO}`)
+    //Fetch the subject of the Student
+    axios.get(`http://localhost:3006/api/subjectandsubjectidofstud?RollNO=${RollNO}`)
       .then(response => {
         setSubjects(response.data); // Update with API response
       })
@@ -76,8 +78,8 @@ const StudentDashboard = () => {
         console.error("Error fetching subjects:", error);
       });
 
-      //Fetch the Faculties of the Student
-      axios.get(`http://localhost:3006/api/facultyofstudent?RollNO=${RollNO}`)
+    //Fetch the Faculties of the Student
+    axios.get(`http://localhost:3006/api/facultyofstudent?RollNO=${RollNO}`)
       .then(response => {
         setFaculty(response.data); // Update with API response
       })
@@ -85,8 +87,8 @@ const StudentDashboard = () => {
         console.error("Error fetching Faculties:", error);
       });
 
-      //Fetch the Classmate of the Student
-      axios.get(`http://localhost:3006/api/batchmateofstud?RollNO=${RollNO}`)
+    //Fetch the Classmate of the Student
+    axios.get(`http://localhost:3006/api/batchmateofstud?RollNO=${RollNO}`)
       .then(response => {
         setClassmates(response.data); // Update with API response
       })
@@ -95,7 +97,7 @@ const StudentDashboard = () => {
       });
   }, [RollNO]);
 
-    
+
 
   const renderStudentDetails = () => {
     return students.map((student) => (
@@ -162,7 +164,7 @@ const StudentDashboard = () => {
     ));
   };
 
-  const renderTimetable= () => {
+  const renderTimetable = () => {
     return (
       <div className="timetable">
         <div className="ttbtn" onClick={() => setTFlag(!tFlag)}>
@@ -178,19 +180,19 @@ const StudentDashboard = () => {
       </div>
     );
   };
-  
+
   const renderMarkingTimeTable = () => {
     return (
       <div className="timetable">
-        
-        <MarkingTimeTable RollNO={RollNO}/>
+
+        <MarkingTimeTable RollNO={RollNO} />
 
       </div>
     );
   };
 
   const renderFaculty = () => {
-  
+
     return (
       <div className="info-container faculty-container">
         <h4>Faculty Teaching</h4>
@@ -207,7 +209,7 @@ const StudentDashboard = () => {
     );
   };
 
-  const renderClassmates = () => {  
+  const renderClassmates = () => {
     return (
       <div className="info-container classmates-container">
         <h4>Classmates</h4>
@@ -223,31 +225,31 @@ const StudentDashboard = () => {
       </div>
     );
   };
-  
-  const renderSubjects = () => {  
+
+  const renderSubjects = () => {
     return (
       <div className="info-container subjects-container">
-      <h4>Subjects</h4>
-      <ul>
-        {subjects.map((subject, index) => (
-          <li key={subject.SubjectID} id="subcontainer">
-            <strong>Subject Name:</strong> {subject.SubjectName}
-            <br />
-            <strong>Subject ID:</strong> {subject.SubjectID}
-          </li>
-        ))}
-      </ul>
-    </div>
+        <h4>Subjects</h4>
+        <ul>
+          {subjects.map((subject, index) => (
+            <li key={subject.SubjectID} id="subcontainer">
+              <strong>Subject Name:</strong> {subject.SubjectName}
+              <br />
+              <strong>Subject ID:</strong> {subject.SubjectID}
+            </li>
+          ))}
+        </ul>
+      </div>
     );
   };
-  
+
 
   return (
     <div className="dashboard">
-      <Sidebar setAttFlag={setAttFlag}  setNoticeFlag={setNoticeFlag} resetFlags={resetFlags} RollNO = {RollNO}/>
+      <Sidebar setAttFlag={setAttFlag} setProfileFlag={setProfileFlag} setNoticeFlag={setNoticeFlag} resetFlags={resetFlags} RollNO={RollNO} />
       <div className="main-content">
         <Header />
-        
+
 
         {/* Conditional rendering based on noticeFlag */}
         {noticeFlag ? (
@@ -258,31 +260,45 @@ const StudentDashboard = () => {
           <>
             {attFlag ? (
               <div className="attendance-section">
-                <AttendanceDetails RollNO={RollNO} students={students}/>
+                <AttendanceDetails RollNO={RollNO} students={students} />
               </div>
-            ) : (
-              <>
-                <div className="top-section">{renderStudentDetails()}</div>
-                <div className="middle-section">
-                  <div className="pie-chart-section">{renderPieChart()}</div>
-                  <div className="timetable-section">{renderTimetable()}</div>
-                  <div className="markingTimetable">
-                    {renderMarkingTimeTable()}
+            ) :
+              (
+                <>
+                  {
+                    profileFlag ? (
+                      <div className="profile-section">
+                        <Profile />
+                      </div>
+                    ) : (
+                      (
+                        <>
+                          <div className="top-section">{renderStudentDetails()}</div>
+                          <div className="middle-section">
+                            <div className="pie-chart-section">{renderPieChart()}</div>
+                            <div className="timetable-section">{renderTimetable()}</div>
+                            <div className="markingTimetable">
+                              {renderMarkingTimeTable()}
 
-                  </div>
-                  <div className="additional-info">
-                  {renderFaculty()}
-                  {renderClassmates()}
-                  {renderSubjects()}
-                </div>
-                </div>
-              </>
-            )}
+                            </div>
+                            <div className="additional-info">
+                              {renderFaculty()}
+                              {renderClassmates()}
+                              {renderSubjects()}
+                            </div>
+                          </div>
+                        </>
+                      )
+                    )
+                  }
+                </>
+              )
+            }
           </>
         )}
 
-      
-       
+
+
       </div>
     </div>
   );

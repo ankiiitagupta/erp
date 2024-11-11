@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 //import './Form.css';
 
-const Form = () => {
+const Profile = () => {
   const [formData, setFormData] = useState({
     rollNo: '',
     course: '',
@@ -126,4 +126,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default Profile;

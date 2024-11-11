@@ -4,7 +4,7 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import FacultyDashboard from './faculty/components/FacultyDashboard';
 import StudentDashboard from './Student/Components/StudentDashboard';
-import Form from './Student/Components/Form';
+import Profile from './Student/Components/Profile';
 import Sidebar from './Student/Components/Sidebar';
 
 function App() {
@@ -23,9 +23,6 @@ function App() {
           {/* Dashboards */}
           <Route path="/facultydashboard/:FacultyID" element={<FacultyDashboard />} />
           <Route path="/studentdashboard/:RollNO" element={<StudentDashboard />} />
-
-          {/* Form Page (Profile Page) */}
-          <Route path="/profile" element={<Form />} />
         </Routes>
       </BrowserRouter>
     </>

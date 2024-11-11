@@ -9,7 +9,7 @@ import {
   CDBSidebarMenuItem,
 } from 'cdbreact';
 
-const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
+const Sidebar = ({ setAttFlag,setProfileFlag, setNoticeFlag, resetFlags, RollNO }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState('Dashboard');
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ const Sidebar = ({ setAttFlag, setNoticeFlag, resetFlags, RollNO }) => {
             <CDBSidebarMenuItem
               icon="user"
               className={selectedMenuItem === 'Profile' ? 'activeClicked' : ''}
-              onClick={() => handleMenuClick('Profile', () => navigate('/profile'))}
+              onClick={() => handleMenuClick('Profile', () => setProfileFlag(true))}
             >
               Profile Page
             </CDBSidebarMenuItem>
