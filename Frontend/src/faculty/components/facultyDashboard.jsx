@@ -29,7 +29,7 @@ const FacultyDashboard = () => {
   useEffect(() => {
     // Fetch faculty basic details using Faculty ID
     axios
-      .get(`${API_URL}/api/facultyDetails?FacultyID=${FacultyID}`)
+      .get(`${API_URL}/api/EmployeeDetails?FacultyID=${FacultyID}`)
       .then((response) => {
         setFaculty(response.data);
         setShowPopup(true); // Show pop-up on faculty data fetch

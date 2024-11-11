@@ -35,14 +35,15 @@ const EmployeeDetail = ({ FacultyID }) => {
   ]);
 
   useEffect(() => {
-    if (!FacultyID) return;
+    //if (!FacultyID) return;
 
     axios
       .get(`${API_URL}/api/EmployeeDetails?FacultyID=${FacultyID}`)
-      .then((response) => setEmployee(response.data))
+      .then((response) => {
+        setEmployee(response.data);
+      })
       .catch((error) => {
-        setFetchError("Failed to fetch faculty data");
-        console.error(error);
+        console.error("Failed to fetch faculty data");
       });
   }, [FacultyID]);
 
@@ -74,7 +75,7 @@ const EmployeeDetail = ({ FacultyID }) => {
     const statusText = employeeStatus ? "Active" : "Inactive";
     const statusClass = employeeStatus ? "status-active" : "status-inactive";
 
-    return (
+    return employee.map((employeeMember) => (
       <div className="employee-details-container">
         <div className="employee-card">
           <div className="employee-profile-section">
@@ -95,13 +96,13 @@ const EmployeeDetail = ({ FacultyID }) => {
             <div className="employee-basic-info-details">
               <h2 className="employee-full-name">{fullName}</h2>
               <p>
-                <strong>Employee ID:</strong> {employeeId}
+                <strong>Employee ID:</strong> {employeeMember.FacultyID} 
               </p>
               <p>
-                <strong>Department:</strong> {department}
+                <strong>Department:</strong> {employeeMember.DepartmentName}
               </p>
               <p>
-                <strong>Designation:</strong> {designation}
+                <strong>Designation:</strong> {employee.Faculty_Designation}
               </p>
               <p>
                 <strong>Joining Date:</strong>{" "}
@@ -113,10 +114,10 @@ const EmployeeDetail = ({ FacultyID }) => {
                 <strong>Contact:</strong>
               </p>
               <p>
-                <strong>Email:</strong> {contactDetails?.email || "N/A"}
+                <strong>Email:</strong> {employeeMember.Faculty_Email || "N/A"}
               </p>
               <p>
-                <strong>Phone:</strong> {contactDetails?.phone || "N/A"}
+                <strong>Phone:</strong> { employeeMember.Faculty_Contact|| "N/A"}
               </p>
               <p>
                 <strong>Office Address:</strong>{" "}
@@ -126,7 +127,7 @@ const EmployeeDetail = ({ FacultyID }) => {
           </div>
         </div>
       </div>
-    );
+    ));
   };
 
   const renderPieChart = () => {

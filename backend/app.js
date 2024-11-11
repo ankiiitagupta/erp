@@ -563,26 +563,3 @@ ORDER BY
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-
-/*
- * ********************************************************************
- *                             Common                             *
- * ********************************************************************/
-
-// Endpoint to fetch all faculty names
-// app.get('/api/faculty', (req, res) => {
-//     const sqlQuery = 'SELECT FacultyID,Faculty_Name FROM faculty';
-  
-//     db.query(sqlQuery, (err, results) => {
-//       if (err) {
-//         console.error('Error executing query:', err);
-//         return res.status(500).json({ error: 'Database query error' });
-//       }
-  
-//       // Map the results to an array of names
-//       const facultyNames = results.map((row) => row.name);
-//       res.json(facultyNames);
-//     });
-//   });
-
-
