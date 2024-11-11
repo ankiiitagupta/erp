@@ -4,6 +4,7 @@ import "../stylesheets/EmployeeDetail.css";
 import { API_URL } from "../../axios.js"; // Ensure this path is correct
 
 import PieChart from "../../Student/Components/PieChart.jsx";
+import Payroll from "./Payroll.jsx"
 
 const EmployeeDetail = ({ FacultyID }) => {
   const [employee, setEmployee] = useState(null);  
@@ -17,6 +18,21 @@ const EmployeeDetail = ({ FacultyID }) => {
    
    
   ]); // Dummy data for attendance
+  const [salaryData] = useState({
+    basicSalary: 50000,
+    bonus: 10000,
+  });
+
+  const [allowances] = useState([
+    { name: 'House Rent Allowance (HRA)', amount: 20000 },
+    { name: 'Dearness Allowance (DA)', amount: 5000 },
+  ]);
+
+  const [deductions] = useState([
+    { name: 'Provident Fund (PF)', amount: 6000 },
+    { name: 'Professional Tax', amount: 200 },
+    { name: 'Tax Deducted at Source (TDS)', amount: 3000 },
+  ]);
 
   useEffect(() => {
     if (!FacultyID) return;
@@ -145,6 +161,17 @@ const EmployeeDetail = ({ FacultyID }) => {
     ));
   };
 
+  const renderPayroll = () => {
+    return (
+      <Payroll
+        salaryData={salaryData}
+        allowances={allowances}
+        deductions={deductions}
+      />
+    );
+  };
+
+
   if (fetchError) {
     return <p>{fetchError}</p>;
   }
@@ -153,6 +180,7 @@ const EmployeeDetail = ({ FacultyID }) => {
     <div className="EmpDetails">
         <div className="Employee-All-Detail">{renderFacultyAllDetail()}</div>
         <div className="pie-chart-section">{renderPieChart()}</div>
+        <div className="Payroll-section">{renderPayroll()}</div>
     </div>
   );
 };

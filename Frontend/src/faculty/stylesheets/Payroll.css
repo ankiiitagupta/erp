@@ -1,0 +1,137 @@
+.payroll-container {
+    max-width: 50%;
+    height: 70vh;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    overflow: hidden;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-top: 1rem;
+    color: #333;
+    font-size: 1.2rem;
+    margin-right: 4rem;
+  }
+  
+  .payroll-content {
+    border: 2px solid red;
+    display: flex;
+    gap: 0;
+    /* justify-content: space-evenly; // why this is not working */
+  }
+  
+  .chart-container {
+    border: 2px solid red;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    padding-top: 8rem;
+  }
+  
+  .chart-container .recharts-wrapper {
+    height: 100%;
+  }
+  
+  .salary-details-container {
+    border: 2px solid red;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+  }
+  
+  .salary-details,
+  .deductions-details,
+  .net-salary {
+    padding: 0.2rem;
+    background-color: #ffffff;
+    border: 0.1rem solid #ddd;
+    border-radius: 0.25rem;
+    margin-bottom: 0.5rem;
+    margin-left: 2rem;
+    font-size: 0.85rem;
+  }
+  
+  .net-salary {
+    border: 0.01rem solid #ddd;
+  }
+  
+  .salary-details div,
+  .deductions-details div,
+  .net-salary div {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.2rem;
+  }
+  
+  hr {
+    margin: 0.8rem 0;
+    border: none;
+    border-top: 0.1rem solid #ddd;
+  }
+  
+  h3 {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  .net-salary-section {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #007BFF;
+  }
+  
+  /* Desktop Layout */
+  @media (min-width: 768px) {
+    .payroll-content {
+      flex-direction: row;
+      gap: 4rem;
+      align-items: center;
+    }
+  
+    .chart-container {
+      width: 20%;
+      height: 25%;
+      margin: 0;
+    }
+  
+    .salary-details-container {
+      width: 70%;
+      overflow-y: auto;
+    }
+  }
+  
+  /* Mobile Responsive Layout */
+  @media (max-width: 768px) {
+    .payroll-container {
+      width: 90%;
+      height: auto;
+    }
+  
+    .payroll-content {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .chart-container {
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+  
+    .salary-details-container {
+      width: 100%;
+    }
+  }
+  
