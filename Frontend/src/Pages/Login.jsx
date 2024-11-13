@@ -59,8 +59,28 @@ function Login() {
 
             <p>Please login to your account</p>
 
-            <MDBInput wrapperClass='mb-4' label='Username' id='form1' type='text' value={username} onChange={handleUsernameChange} />
-            <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+            <MDBInput 
+              wrapperClass='mb-4' 
+              label='Username' 
+              id='form1' 
+              type='text' 
+              value={username} 
+              onChange={handleUsernameChange}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleLogin(e);
+              }}
+            />
+            <MDBInput 
+              wrapperClass='mb-4' 
+              label='Password' 
+              id='form2' 
+              type='password' 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleLogin(e);
+              }}
+            />
 
             {error && <p style={{color: 'red'}}>{error}</p>}
 

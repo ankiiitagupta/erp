@@ -23,6 +23,7 @@ function App() {
           {/* Dashboards */}
           <Route path="/facultydashboard/:FacultyID" element={<FacultyDashboard />} />
           <Route path="/studentdashboard/:RollNO" element={<StudentDashboard />} />
+          <Route path="/studentdashboard/:RollNO" element={<StudentDashboard />} />
         </Routes>
       </BrowserRouter>
     </>
