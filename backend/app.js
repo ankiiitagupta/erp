@@ -463,7 +463,7 @@ app.get("/api/batchmateofstud", (req, res) => {
 
   db.query(
     `
-       SELECT S2.Stud_name AS BatchmateName, S2.RollNO 
+      SELECT S2.Stud_name AS BatchmateName, S2.RollNO 
       FROM student S1
       JOIN student S2 ON S1.Stud_YearOfStudy = S2.Stud_YearOfStudy
       WHERE S1.RollNO = ? 

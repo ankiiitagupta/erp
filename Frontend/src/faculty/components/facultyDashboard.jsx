@@ -5,34 +5,35 @@ import FacultySidebar from "./FacultySidebar.jsx";
 import Header from "../../Student/Components/Header.jsx";
 import { API_URL } from "../../axios.js";
 import FacultyTimeTable from "./FacultyTimetable.jsx";
-import TimetablePopup from "./TimetablePopup.jsx"; // Import the TimetablePopup component
-
+import TimetablePopup from "./TimetablePopup.jsx";
 import EmployeeDetail from "./EmployeeDetail.jsx";
+import MarkStudentAttendance from "./MarkStudentAttendance.jsx"; // Ensure this component is correctly imported
 
+// Inline style for name box layout
 const namebox = {
   display: "flex",
   flexDirection: "row",
   justifyContent: "space-between",
-  gap: "25rem", // Adjusted gap as needed
+  gap: "25rem",
 };
 
 const FacultyDashboard = () => {
-  const { FacultyID } = useParams(); // Get Faculty ID from URL
-  const [faculty, setFaculty] = useState([]);
-  const [timetable, setTimetable] = useState([]);
-  const [todayTimetable, setTodayTimetable] = useState([]);
-  const [error, setError] = useState(null);
-  const [showPopup, setShowPopup] = useState(false); // State for pop-up visibility
-  const [EmpdetailFlag, setEmpdetailFlag] = useState(false); 
-
+  const { FacultyID } = useParams(); // Get Faculty ID from URL parameters
+  const [faculty, setFaculty] = useState([]); // State for faculty details
+  const [timetable, setTimetable] = useState([]); // State for faculty timetable
+  const [todayTimetable, setTodayTimetable] = useState([]); // State for today's timetable
+  const [error, setError] = useState(null); // State for error messages
+  const [showPopup, setShowPopup] = useState(false); // State for timetable popup visibility
+  const [EmpdetailFlag, setEmpdetailFlag] = useState(false); // Flag for showing employee details
+  const [MarkAttendanceFlag, setMarkAttendanceFlag] = useState(false); // Flag for showing attendance mark section
 
   useEffect(() => {
-    // Fetch faculty basic details using Faculty ID
+    // Fetch faculty details using Faculty ID
     axios
       .get(`${API_URL}/api/EmployeeDetails?FacultyID=${FacultyID}`)
       .then((response) => {
         setFaculty(response.data);
-        setShowPopup(true); // Show pop-up on faculty data fetch
+        setShowPopup(true); // Show popup after fetching faculty data
       })
       .catch((error) => {
         setError("Failed to fetch faculty data");
@@ -44,7 +45,7 @@ const FacultyDashboard = () => {
       .get(`${API_URL}/api/facultyTimetable?FacultyID=${FacultyID}`)
       .then((response) => {
         setTimetable(response.data);
-        filterTodayTimetable(response.data); // Filter today's timetable
+        filterTodayTimetable(response.data); // Filter timetable for today's classes
       })
       .catch((error) => {
         setError("Failed to fetch timetable data");
@@ -52,16 +53,19 @@ const FacultyDashboard = () => {
       });
   }, [FacultyID]);
 
+  // Function to filter classes for today from timetable data
   const filterTodayTimetable = (data) => {
     const today = new Date().toLocaleString("en-us", { weekday: "long" });
     const todayClasses = data.filter((slot) => slot.Day === today);
     setTodayTimetable(todayClasses);
   };
 
+  // Function to close the timetable popup
   const closePopup = () => {
     setShowPopup(false);
   };
 
+  // Function to render faculty details section
   const renderFacultyDetails = () => {
     if (faculty.length === 0) return <p>No faculty data available.</p>;
 
@@ -76,7 +80,9 @@ const FacultyDashboard = () => {
           <div style={namebox}>
             <div style={{ margin: "0", lineHeight: "1rem" }}>
               <h3>{facultyMember.Faculty_Name}</h3>
-              <p style={{ marginTop: "0" }}>Faculty ID: {facultyMember.FacultyID}</p>
+              <p style={{ marginTop: "0" }}>
+                Faculty ID: {facultyMember.FacultyID}
+              </p>
               <p>Department: {facultyMember.DepartmentName}</p>
             </div>
             <div style={{ marginTop: "2rem", lineHeight: "1rem" }}>
@@ -89,6 +95,7 @@ const FacultyDashboard = () => {
     ));
   };
 
+  // Function to render the timetable section
   const renderTimetable = () => {
     if (timetable.length === 0) return <p>No timetable data available.</p>;
 
@@ -102,24 +109,30 @@ const FacultyDashboard = () => {
 
   return (
     <div className="dashboard">
-      <FacultySidebar setEmpdetailFlag={setEmpdetailFlag} />
+      <FacultySidebar setEmpdetailFlag={setEmpdetailFlag} setMarkAttendanceFlag={setMarkAttendanceFlag} />
       <div className="main-content">
         <Header />
-        {EmpdetailFlag ? (
+        {MarkAttendanceFlag ? (
+          <div className="MarkAttendance-Detail">
+            <MarkStudentAttendance FacultyID={FacultyID} />
+          </div>
+        ) : EmpdetailFlag ? (
           <div className="Employee-Detail">
             <EmployeeDetail FacultyID={FacultyID} />
           </div>
         ) : (
           <div className="faculty-section">
+            {showPopup && <TimetablePopup timetable={todayTimetable} onClose={closePopup} />}
             {error && <p className="error">{error}</p>}
-            <div className="faculty-details-section">{renderFacultyDetails()}</div>
-            <div className="timetable-section">{renderTimetable()}</div>
+            <div className="faculty-details-section">
+              {renderFacultyDetails()}
+            </div>
+            <div className="timetable-section">
+              {renderTimetable()}
+            </div>
           </div>
         )}
       </div>
-      {showPopup && (
-        <TimetablePopup timetable={todayTimetable} onClose={closePopup} />
-      )}
     </div>
   );
 };

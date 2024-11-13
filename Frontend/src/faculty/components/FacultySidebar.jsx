@@ -9,7 +9,7 @@ import {
   CDBSidebarMenuItem,
 } from "cdbreact";
 
-const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag }) => {
+const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setMarkAttendanceFlag}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -55,11 +55,13 @@ const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag }) => {
               </CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink to="/profile" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="user">Academics</CDBSidebarMenuItem>
+            <NavLink to="#" 
+            onClick={() => setMarkAttendanceFlag(true)}
+            activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="book">Academics</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink to="/analytics" activeClassName="activeClicked">
+            <NavLink to="#" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="chart-line">
                 Student Marks
               </CDBSidebarMenuItem>
