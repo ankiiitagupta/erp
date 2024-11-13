@@ -33,13 +33,13 @@ const Payroll = ({ salaryData, deductions, allowances, unpaidLeave = 0 }) => {
 
       <div className="payroll-content">
         <div className="chart-container" style={{ float: 'left', marginRight: '20px' }}>
-          <PieChart width={200} height={200}>
+          <PieChart width={400} height={400}>
             <Pie 
               data={data} 
               cx="50%" 
-              cy="50%" 
+              cy="70%" 
               outerRadius={100} 
-         
+              className='piechart-circle'
            
             >
               {data.map((_, index) => (
@@ -51,7 +51,7 @@ const Payroll = ({ salaryData, deductions, allowances, unpaidLeave = 0 }) => {
           </PieChart>
         </div>
 
-        <div className="salary-details-container" style={{ marginLeft: '220px' }}>
+        <div className="salary-details-container" >
           <div className="salary-section">
             <h6>Salary Breakdown</h6>
             <div className="salary-details">

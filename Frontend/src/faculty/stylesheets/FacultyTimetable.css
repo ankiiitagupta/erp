@@ -5,12 +5,18 @@
     width: 100%;
 }
 
+h4 {
+    margin-left: 1rem;
+    display: flex;
+}
+
 .faculty-timetable table {
     width: 100%;
     border: 1px solid #000;
 }
 
-.faculty-timetable th, .faculty-timetable td {
+.faculty-timetable th,
+.faculty-timetable td {
     border: 1px solid #000;
     padding: 10px;
     text-align: left;
@@ -22,7 +28,8 @@
 }
 
 .faculty-timetable tbody tr:hover {
-    background-color: #f1f1f1; /* Light gray on hover */
+    background-color: #f1f1f1;
+    /* Light gray on hover */
 }
 
 .faculty-timetable td {
@@ -30,7 +37,8 @@
 }
 
 .faculty-timetable td div {
-    margin-bottom: 5px; /* Space between lines */
+    margin-bottom: 5px;
+    /* Space between lines */
 }
 
 .faculty-timetable .attendance-button {
@@ -40,18 +48,23 @@
     color: white;
     border: none;
     cursor: pointer;
-    border-radius: 5px; /* Rounded corners */
+    border-radius: 5px;
+    /* Rounded corners */
     transition: background-color 0.3s ease;
 }
 
 .faculty-timetable .attendance-button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #45a049;
+    /* Darker green on hover */
 }
 
 .faculty-timetable .no-lecture-message {
-    background-color: #f8d7da; /* Light red for no lecture */
-    color: #721c24; /* Dark red text */
-    text-align: center; /* Center text */
+    background-color: #f8d7da;
+    /* Light red for no lecture */
+    color: #721c24;
+    /* Dark red text */
+    text-align: center;
+    /* Center text */
 }
 
 .dropdown-menu {
@@ -63,14 +76,14 @@
     padding: 5px 0;
     width: 150px;
     z-index: 10;
-  }
-  
-  .dropdown-item {
+}
+
+.dropdown-item {
     padding: 8px 12px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  .dropdown-item:hover {
+}
+
+.dropdown-item:hover {
     background-color: #f1f1f1;
-  }
+}
