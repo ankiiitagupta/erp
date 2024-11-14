@@ -297,3 +297,71 @@ th.out-of-header {
     padding: 0.4rem 0.6rem;
   }
 }
+
+
+/* ====================================================Syllabus Component========================================================================= */
+
+
+
+.syllabus-content {
+  flex-grow: 1;
+  background-color: #e2e2e2;
+  padding: 40px;
+}
+
+.syllabus-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.subject-card {
+  display: flex;
+  align-items: center;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.subject-details {
+  flex-grow: 1;
+}
+
+.subject-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.subject-code,
+.course-code {
+  margin-left: 10px;
+  color: #777;
+}
+
+.progress-bar-container {
+  flex-grow: 3;
+  height: 0.5rem;
+  background-color: #ddd;
+  border-radius: 4px;
+  margin: 0px 15px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #bb6572;
+}
+
+.update-progress-button {
+  background-color: #bb6572;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.progress-percentage {
+  font-weight: bold;
+}

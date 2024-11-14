@@ -9,6 +9,7 @@ import meeting from "../../assets/AcademicDashboardsvg/meeting.png";
 
 const AcademicsDashboard = (FacultyID) => {
   const [showMarks, setShowMarks] = useState(false);
+  const [showSyllabus, setshowSyllabus] = useState(false);
   const [applyOutOfToAll, setApplyOutOfToAll] = useState(false);
   const [marksData, setMarksData] = useState([
     {
@@ -20,6 +21,7 @@ const AcademicsDashboard = (FacultyID) => {
     },
     // Add more students as needed
   ]);
+   
 
   // State for placeholder selections
   const [selectedCourse, setSelectedCourse] = useState("");
@@ -49,6 +51,44 @@ const AcademicsDashboard = (FacultyID) => {
     }
   };
 
+  const renderSyllabusStudent = () => {
+  
+      const subjects = [
+        { name: "MATHEMATICS", subjectCode: "(SUBJECT CODE)", course: "BTECH-CSE", progress: 50 },
+        { name: "MATHEMATICS", subjectCode: "(SUBJECT CODE)", course: "BTECH-CSE", progress: 50 },
+        { name: "MATHEMATICS", subjectCode: "(SUBJECT CODE)", course: "BTECH-CSE", progress: 50 },
+        { name: "MATHEMATICS", subjectCode: "(SUBJECT CODE)", course: "BTECH-CSE", progress: 50 },
+      ];
+    
+      return (
+        <div className="syllabus-dashboard">
+          
+    
+          <div className="syllabus-content">
+            <h1 className="syllabus-title">SYLLABUS</h1>
+            {subjects.map((subject, index) => (
+              <div key={index} className="subject-card">
+                <div className="subject-details">
+                  <span className="subject-name">{subject.name}</span>
+                  <span className="subject-code">{subject.subjectCode}</span>
+                  <span className="course-code">{subject.course}</span>
+                </div>
+                <div className="progress-bar-container">
+                  <div
+                    className="progress-bar"
+                    style={{ width: `${subject.progress}%` }}
+                  ></div>
+                </div>
+                <button className="update-progress-button">Update</button>
+                <span className="progress-percentage">{subject.progress}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
+    
+  }
   const renderMarksStudent = () => {
     // Condition to check if all dropdowns are selected
     const allFieldsSelected =
@@ -170,7 +210,8 @@ const AcademicsDashboard = (FacultyID) => {
 
   return (
     <div className="academics-dashboard">
-      {showMarks ? (
+      {showSyllabus ? renderSyllabusStudent():
+      showMarks ? (
         renderMarksStudent()
       ) : (
         <div className="main-content">
@@ -184,7 +225,7 @@ const AcademicsDashboard = (FacultyID) => {
               </span>
             </div>
 
-            <div className="icon-card">
+            <div className="icon-card" onClick={() => setshowSyllabus(true)}>
               <img src={syllabus} alt="Syllabus" className="icon" />
               <p>SYLLABUS</p>
               <span className="tooltip">
