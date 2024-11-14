@@ -8,6 +8,7 @@ import FacultyTimeTable from "./FacultyTimetable.jsx";
 import TimetablePopup from "./TimetablePopup.jsx";
 import EmployeeDetail from "./EmployeeDetail.jsx";
 import MarkStudentAttendance from "./MarkStudentAttendance.jsx"; // Ensure this component is correctly imported
+import AcademicsDashboard from "./AcademicDashbooard.jsx";
 
 // Inline style for name box layout
 const namebox = {
@@ -26,7 +27,7 @@ const FacultyDashboard = () => {
   const [showPopup, setShowPopup] = useState(false); // State for timetable popup visibility
   const [EmpdetailFlag, setEmpdetailFlag] = useState(false); // Flag for showing employee details
   const [MarkAttendanceFlag, setMarkAttendanceFlag] = useState(false); // Flag for showing attendance mark section
-
+  const [AcademicFlag, setAcademicFlag] = useState(false);
   useEffect(() => {
     // Fetch faculty details using Faculty ID
     axios
@@ -109,10 +110,17 @@ const FacultyDashboard = () => {
 
   return (
     <div className="dashboard">
-      <FacultySidebar setEmpdetailFlag={setEmpdetailFlag} setMarkAttendanceFlag={setMarkAttendanceFlag} />
+      <FacultySidebar
+        setEmpdetailFlag={setEmpdetailFlag}
+        setMarkAttendanceFlag={setMarkAttendanceFlag}
+        setAcademicFlag={setAcademicFlag}
+      />
       <div className="main-content">
         <Header />
-        {MarkAttendanceFlag ? (
+        {AcademicFlag ? (
+          <AcademicsDashboard FacultyID={FacultyID} />
+          
+        ) : MarkAttendanceFlag ? (
           <div className="MarkAttendance-Detail">
             <MarkStudentAttendance FacultyID={FacultyID} />
           </div>
@@ -122,14 +130,14 @@ const FacultyDashboard = () => {
           </div>
         ) : (
           <div className="faculty-section">
-            {showPopup && <TimetablePopup timetable={todayTimetable} onClose={closePopup} />}
+            {showPopup && (
+              <TimetablePopup timetable={todayTimetable} onClose={closePopup} />
+            )}
             {error && <p className="error">{error}</p>}
             <div className="faculty-details-section">
               {renderFacultyDetails()}
             </div>
-            <div className="timetable-section">
-              {renderTimetable()}
-            </div>
+            <div className="timetable-section">{renderTimetable()}</div>
           </div>
         )}
       </div>

@@ -287,6 +287,62 @@ body {
     padding-left: 10px;
 }
 
+/* Hamburger icon transform */
+@media (max-width: 768px) {
+    .fa-bars {
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+  
+    .fa-times {
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform: rotate(45deg);
+    }
+    
+    /* When sidebar is collapsed (hamburger is clicked), make it "X" */
+    .fa-bars:hover {
+      opacity: 0; /* Hide the original hamburger icon */
+    }
+  
+    .fa-times {
+      opacity: 1; /* Show the X icon when clicked */
+      transform: rotate(-45deg); /* Upside-down X effect */
+    }
+  
+    /* Additional styling for the sidebar toggle button */
+    .cdb-sidebar-header {
+      display: flex;
+      justify-content: flex-start;
+      padding: 1rem;
+    }
+  
+    .cdb-sidebar-header a {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-left: 1rem;
+    }
+  
+    .cdb-sidebar-menu {
+      display: none;
+    }
+  
+    .cdb-sidebar-content {
+      display: flex;
+    }
+  }
+  
+  /* For larger screens (sidebar remains open) */
+  @media (min-width: 769px) {
+    .fa-bars {
+      display: none;
+    }
+  
+    .fa-times {
+      display: none;
+    }
+  }
+  
+
 .main-content {
     flex-grow: 1;
     /* Take remaining space after sidebar */

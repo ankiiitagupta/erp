@@ -9,7 +9,7 @@ import {
   CDBSidebarMenuItem,
 } from "cdbreact";
 
-const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setMarkAttendanceFlag}) => {
+const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setMarkAttendanceFlag, setAcademicFlag }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -28,7 +28,10 @@ const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setMarkAttendanceFlag
       >
         <CDBSidebarHeader
           prefix={
-            <i className="fa fa-bars fa-large" onClick={toggleSidebar}></i>
+            <i 
+              className={`fa ${isCollapsed ? "fa-times" : "fa-bars"} fa-lg`} 
+              onClick={toggleSidebar}
+            ></i>
           }
         >
           <a
@@ -47,24 +50,24 @@ const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setMarkAttendanceFlag
             </NavLink>
             <NavLink
               to="#"
-              onClick={() => setEmpdetailFlag(true)} // Set flag to true for Employee Detail
+              onClick={() => setEmpdetailFlag(true)} 
               activeClassName="activeClicked"
             >
-              <CDBSidebarMenuItem icon="user">
-                Employee Detail
-              </CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="user">Employee Detail</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink to="#" 
-            onClick={() => setMarkAttendanceFlag(true)}
-            activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="book">Academics</CDBSidebarMenuItem>
+              onClick={() => setMarkAttendanceFlag(true)}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="book">Mark Attendance</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink to="#" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="chart-line">
-                Student Marks
-              </CDBSidebarMenuItem>
+            <NavLink to="#" 
+              onClick={() => setAcademicFlag(true)}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="chart-line">Academic</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink
@@ -72,9 +75,7 @@ const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setMarkAttendanceFlag
               target="_blank"
               activeClassName="activeClicked"
             >
-              <CDBSidebarMenuItem icon="exclamation-circle">
-                Student Attendance
-              </CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="exclamation-circle">Student Attendance</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink
@@ -82,14 +83,12 @@ const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setMarkAttendanceFlag
               target="_blank"
               activeClassName="activeClicked"
             >
-              <CDBSidebarMenuItem icon="exclamation-circle">
-                Timetable
-              </CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="exclamation-circle">Timetable</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink
               to="#"
-              onClick={() => setNoticeFlag(true)} // Set flag to true for Notices
+              onClick={() => setNoticeFlag(true)} 
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="bell">Notices</CDBSidebarMenuItem>
