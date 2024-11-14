@@ -1,1 +1,1 @@
-/api/batchmateofstud
+EmployeeDetails
