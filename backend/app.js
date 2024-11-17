@@ -194,8 +194,8 @@ LEFT JOIN
         AND a.LectureDate = t.LectureDate
 WHERE 
     st.RollNO = ?  -- Replace with dynamic input from API
-    AND t.LectureDate = ?  -- Replace with dynamic date input
-    AND (a.AttendanceStatus IS NULL OR a.AttendanceStatus = 'Not Marked')  -- Ensures 'Not Marked' if attendance is not recorded
+    AND t.LectureDate = CURDATE()  -- Replace with dynamic date input
+   
 ORDER BY 
     t.StartTime;
 `,
@@ -302,7 +302,6 @@ app.get("/api/timetablebydate", (req, res) => {
           WHERE 
               st.RollNO = ? 
               AND t.LectureDate = ?  
-              AND a.AttendanceStatus IS NOT NULL  -- This filters out any lectures without attendance records
           ORDER BY 
               t.StartTime;`,
     [RollNO, LectureDate],
@@ -567,24 +566,32 @@ app.get("/api/facultytodaystimetable", (req, res) => {
 
   // Query to get timetable details for the specific faculty
   const query = `
-          SELECT 
-          t.TimetableID,
-          s.SubjectName,
-          t.StartTime,
-          t.EndTime,
-          t.RoomNumber,
-          t.LectureNumber,
-          t.DayOfWeek,
-          t.LectureDate
-      FROM 
-          timetable AS t
-      JOIN 
-          subject AS s ON t.SubjectID = s.SubjectID
-      WHERE 
-          t.FacultyID = ? -- Replace with the FacultyID of the desired faculty
-          AND t.LectureDate = CURDATE() -- Filters for today’s date
-      ORDER BY 
-          t.StartTime;
+        SELECT DISTINCT
+        t.TimetableID,
+        s.SubjectName,
+        c.CourseName, 
+        st.Stud_YearOfStudy,  -- YearOfStudy is from the student table
+        t.StartTime,
+        t.EndTime,
+        t.RoomNumber,
+        t.LectureNumber,
+        t.DayOfWeek,
+        st.Section,
+        t.LectureDate
+    FROM 
+        timetable AS t
+    JOIN 
+        subject AS s ON t.SubjectID = s.SubjectID
+    JOIN 
+        course AS c ON t.CourseID = c.CourseID  -- Join with the course table
+    JOIN 
+        student AS st ON st.Section = t.Section -- Join with the student table to get the section
+    WHERE 
+        t.FacultyID = ? -- Replace with the FacultyID of the desired faculty
+        AND t.LectureDate = CURDATE() -- Filters for today’s date
+    ORDER BY 
+        t.StartTime;
+
         `;
 
   db.query(query, [facultyID], (err, results) => {
@@ -597,6 +604,120 @@ app.get("/api/facultytodaystimetable", (req, res) => {
     res.json(results);
   });
 });
+app.get("/api/facultyondateselectionattendance", (req, res) => {
+  const { facultyID, LectureDate } = req.query;
+
+  // Check if LectureDate is provided and is a valid date
+  if (!LectureDate || isNaN(Date.parse(LectureDate))) {
+    return res.status(400).json({ error: "Invalid or missing LectureDate" });
+  }
+
+  // Ensure the LectureDate is in the correct format (YYYY-MM-DD)
+  const formattedDate = new Date(LectureDate).toISOString().split('T')[0];
+
+  // Query to get timetable details for the specific faculty
+  const query = `
+    SELECT DISTINCT
+      s.SubjectName,
+      c.CourseName, 
+      st.Stud_YearOfStudy,  -- YearOfStudy is from the student table
+      t.StartTime,
+      t.EndTime,
+      t.RoomNumber,
+      t.LectureNumber,
+      t.DayOfWeek,
+      st.Section
+    FROM 
+      timetable AS t
+    JOIN 
+      subject AS s ON t.SubjectID = s.SubjectID
+    JOIN 
+      course AS c ON t.CourseID = c.CourseID  -- Join with the course table
+    JOIN 
+      student AS st ON st.Section = t.Section -- Join with the student table to get the section
+    WHERE 
+      t.FacultyID = ? 
+      AND t.LectureDate = ? -- Filters for the selected date
+    ORDER BY 
+      t.StartTime;
+  `;
+
+  db.query(query, [facultyID, formattedDate], (err, results) => {
+    if (err) {
+      console.error("Error fetching timetable data:", err);
+      return res.status(500).json({ error: "Failed to fetch timetable data" });
+    }
+
+    // Send the timetable data to the frontend
+    res.json(results);
+  });
+});
+
+
+//Get students Of the faculty on a selected date for attendance
+app.get("/api/getstudentsoflectureondate", (req, res) => {
+  const { facultyID,LectureDate,LectureNumber } = req.query;
+  db.query(
+    `
+          SELECT 
+          st.RollNO, 
+          st.Stud_name
+        FROM 
+          student AS st
+        JOIN 
+          timetable AS t ON st.Section = t.Section
+        WHERE 
+          t.FacultyID = ?
+          AND t.LectureDate = ?
+          AND t.LectureNumber =? 
+        ORDER BY 
+          st.RollNO; 
+
+      `,
+    [facultyID , LectureDate , LectureNumber],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+
+// Update the attendance
+app.post("/api/markattendance", (req, res) => {
+  const { attendanceData } = req.body;
+
+  if (!attendanceData || !Array.isArray(attendanceData)) {
+    return res.status(400).json({ error: "Invalid attendance data" });
+  }
+
+  // Prepare the query to update attendance for all students
+  const query = `
+    UPDATE attendance 
+    SET Status = CASE 
+      ${attendanceData.map((item, index) => 
+        `WHEN StudentID = ${db.escape(item.studentID)} AND LectureDate = ${db.escape(item.lectureDate)} AND LectureNumber = ${db.escape(item.lectureNumber)} 
+         THEN ${db.escape(item.status)}`
+      ).join(' ')}
+    END
+    WHERE (${attendanceData.map(item => 
+      `StudentID = ${db.escape(item.studentID)} AND LectureDate = ${db.escape(item.lectureDate)} AND LectureNumber = ${db.escape(item.lectureNumber)}`
+    ).join(') OR (')})
+  `;
+
+  // Execute the query
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error updating attendance:", err);
+      return res.status(500).json({ error: "Failed to mark attendance" });
+    }
+
+    res.json({ message: "Attendance updated successfully" });
+  });
+});
+
+
+
 
 // Start the server on the specified port
 app.listen(port, () => {

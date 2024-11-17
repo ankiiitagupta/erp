@@ -1,127 +1,199 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
 import "../stylesheets/MarkStudentAttendance.css";
+import { API_URL } from "../../axios";
+import axios from "axios";
 
-const MarkStudentAttendance = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCourse, setSelectedCourse] = useState("");
+const MarkStudentAttendance = ({ facultyID }) => {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedLecture, setSelectedLecture] = useState("");
-  const [selectedSubject, setSelectedSubject] = useState("");
+  const [lectures, setLectures] = useState([]);
+  const [students, setStudents] = useState([]);
+  const [attendance, setAttendance] = useState([]);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // State to show success popup
 
-  const students = [
-    { name: "ALICE", id: "214452200035" , fname:"Ram"},
-    { name: "BECCA", id: "214452200036", fname:"Sunny" },
-  ];
+  useEffect(() => {
+    if (selectedDate !== "") {
+      axios
+        .get(`${API_URL}/api/facultyondateselectionattendance?facultyID=${facultyID}&LectureDate=${selectedDate}`)
+        .then((response) => {
+          if (Array.isArray(response.data)) {
+            setLectures(response.data);
+            setStudents([]);
+            setSelectedLecture("");
+            setAttendance([]); 
+          } else {
+            setError("Invalid response format");
+          }
+        })
+        .catch((error) => {
+          setError("Failed to fetch timetable data");
+          console.error(error);
+        });
+    } else {
+      setLectures([]);
+    }
+  }, [facultyID, selectedDate]);
 
-  const course = ["Btech-CS-A1", "BTech-CS-A2", "BTech-AIML"];
-  const lectures = Array.from({ length: 8 }, (_, i) => i + 1);
-  const subjects=["english","physics","computer"]
+  const handleDateChange = (e) => {
+    setSelectedDate(e.target.value);
+  };
 
-  // Filter students based on the search term
-  const filteredStudents = students.filter(
-    (student) =>
-      student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      student.id.includes(searchTerm)
-  );
+  const handleLectureChange = async (e) => {
+    const selectedLectureId = e.target.value;
+    setSelectedLecture(selectedLectureId);
+
+    try {
+      const response = await axios.get(
+        `${API_URL}/api/getstudentsoflectureondate?facultyID=${facultyID}&LectureDate=${selectedDate}&LectureNumber=${selectedLectureId}`
+      );
+      if (Array.isArray(response.data)) {
+        setStudents(response.data);
+        setAttendance(response.data.map(() => ({ status: "absent" }))); 
+      } else {
+        console.error('Invalid student data format');
+      }
+    } catch (err) {
+      console.error('Failed to fetch students data', err);
+    }
+  };
+
+  const handleAttendanceChange = (index, status) => {
+    const updatedAttendance = [...attendance];
+    updatedAttendance[index].status = status;
+    setAttendance(updatedAttendance);
+  };
+
+  const handleSubmit = () => {
+    const attendanceData = students.map((student, index) => ({
+      studentID: student.StudentID,
+      lectureDate: selectedDate,
+      lectureNumber: selectedLecture,
+      status: attendance[index].status
+    }));
+    
+    console.log(attendanceData); // Log the data being sent to the server
+    
+    axios
+      .post(`${API_URL}/api/markattendance`, { attendanceData })
+      .then((response) => {
+        console.log("Attendance marked successfully:", response);
+        setShowSuccessPopup(true);
+        setStudents([]);
+        setAttendance([]);
+        setSelectedDate("");
+        setSelectedLecture("");
+      })
+      .catch((error) => {
+        console.error("Failed to mark attendance", error);
+      });
+    
+  };
+
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false); // Close the success popup
+  };
 
   return (
     <div className="attendance-container">
       <div className="attendance-inner">
         <h2 className="attendance-title">STUDENT ATTENDANCE</h2>
+
+        {/* Date Selection */}
         <div className="components-select">
           <label>
-            Lecture Number:
-            <select
-              className="select-dropdown"
-              value={selectedLecture}
-              onChange={(e) => setSelectedLecture(e.target.value)}
-            >
-              <option value="">SELECT</option>
-              {lectures.map((lec, index) => (
-                <option key={index} value={lec}>{lec}</option>
-              ))}
-            </select>
-          </label>
-          <label classname='date-container'>
-            <p>Date:</p>
+            Date:
             <input
               type="date"
               className="form-value"
-              onChange={(e) => setSelectedDate(e.target.value)}
-              value={selectedDate} // Bind the selected date value
+              onChange={handleDateChange}
+              value={selectedDate}
             />
           </label>
-          <label>
-            Course & Section:
-            <select
-              className="select-dropdown"
-              value={selectedCourse}
-              onChange={(e) => setSelectedCourse(e.target.value)}
-            >
-              <option value="">SELECT</option>
-              {course.map((crse, index) => (
-                <option key={index} value={crse}>{crse}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Subject:
-            <select
-              className="select-dropdown"
-              value={selectedSubject}
-              onChange={(e) => setSelectedSubject(e.target.value)}
-            >
-              <option value="">SELECT</option>
-              {subjects.map((subject, index) => (
-                <option key={index} value={subject}>{subject}</option>
-              ))}
-            </select>
-          </label>
         </div>
-        <div className="search-bar" style={{ textAlign: 'right' }}>
-          <input
-            type="text"
-            placeholder="Search by name or ID..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
-        </div>
+
+        {selectedDate && lectures.length === 0 && (
+          <p>No lecture on the selected date.</p>
+        )}
+
+        {selectedDate && lectures.length > 0 && (
+          <div className="components-select">
+            <label>
+              Select Lecture:
+              <select
+                className="select-dropdown"
+                value={selectedLecture}
+                onChange={handleLectureChange}
+              >
+                <option value="">SELECT</option>
+                {lectures.map((lec) => (
+                  <option key={lec.LectureNumber} value={lec.LectureNumber}>
+                    {lec.SubjectName} - {lec.CourseName} ({lec.LectureNumber})
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        )}
+
+        {/* Display Students for Selected Lecture */}
         <div className="student-list">
           <h3>STUDENT LIST:</h3>
-          {filteredStudents.length > 0 ? (
-            filteredStudents.map((student, index) => (
+          {students.length > 0 ? (
+            students.map((student, index) => (
               <div key={index} className="student-item">
                 <div className="avatar"></div>
                 <div className="student-info">
-                  <p className="student-name">{student.name}</p>
-                  <p className="student-id">{student.id}</p>
-                  <p className="student-fname">{student.fname}</p>
-
+                  <p className="student-name">{student.Stud_name}</p>
+                  <p className="student-id">{student.RollNO}</p>
                 </div>
                 <div className="attendance-options">
                   <label>
-                    <input type="radio" name={`attendance-${index}`} value="present" /> Present
+                    <input
+                      type="radio"
+                      name={`attendance-${index}`}
+                      value="present"
+                      onChange={() => handleAttendanceChange(index, "present")}
+                      checked={attendance[index]?.status === "present"}
+                    />{" "}
+                    Present
                   </label>
                   <label>
-                    <input type="radio" name={`attendance-${index}`} value="absent" defaultChecked /> Absent
+                    <input
+                      type="radio"
+                      name={`attendance-${index}`}
+                      value="absent"
+                      onChange={() => handleAttendanceChange(index, "absent")}
+                      checked={attendance[index]?.status === "absent"}
+                    />{" "}
+                    Absent
                   </label>
                 </div>
               </div>
             ))
           ) : (
-            <p>No students found</p>
+            <p>No students found for this lecture</p>
           )}
         </div>
+
+        {/* Buttons */}
         <div className="btns">
-        <button className="reset">Reset</button>
-        <button className="edit">Edit</button>
-        <button className="submit" type="submit">Submit</button>
+          <button className="reset">Reset</button>
+          <button className="edit">Edit</button>
+          <button className="submit" type="button" onClick={handleSubmit}>
+            Submit
+          </button>
         </div>
-        
-        
       </div>
+
+      {/* Success Popup */}
+      {showSuccessPopup && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <h3>Attendance Marked Successfully!</h3>
+            <button className="popup-close-btn" onClick={handleClosePopup}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -122,7 +122,7 @@ const FacultyDashboard = () => {
           
         ) : MarkAttendanceFlag ? (
           <div className="MarkAttendance-Detail">
-            <MarkStudentAttendance FacultyID={FacultyID} />
+            <MarkStudentAttendance facultyID={FacultyID} />
           </div>
         ) : EmpdetailFlag ? (
           <div className="Employee-Detail">
