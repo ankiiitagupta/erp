@@ -131,7 +131,7 @@ const FacultyDashboard = () => {
         ) : (
           <div className="faculty-section">
             {showPopup && (
-              <TimetablePopup timetable={todayTimetable} onClose={closePopup} />
+              <TimetablePopup facultyID={FacultyID} onClose={closePopup} />
             )}
             {error && <p className="error">{error}</p>}
             <div className="faculty-details-section">

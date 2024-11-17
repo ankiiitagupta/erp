@@ -172,7 +172,7 @@ app.get("/api/todaystimetable", (req, res) => {
     t.EndTime, 
     t.RoomNumber, 
     t.LectureNumber,
-    COALESCE(a.AttendanceStatus, 'Not Marked') AS AttendanceStatus
+    COALESCE(a.AttendanceStatus, 'Not Marked') AS AttendanceStatus  -- If no attendance is marked, show 'Not Marked'
 FROM 
     student AS st
 JOIN 
@@ -193,10 +193,12 @@ LEFT JOIN
         AND a.LectureNumber = t.LectureNumber
         AND a.LectureDate = t.LectureDate
 WHERE 
-    st.RollNO = ? -- Replace with dynamic input from API
-    AND t.LectureDate = ? -- Replace with dynamic date input
+    st.RollNO = ?  -- Replace with dynamic input from API
+    AND t.LectureDate = ?  -- Replace with dynamic date input
+    AND (a.AttendanceStatus IS NULL OR a.AttendanceStatus = 'Not Marked')  -- Ensures 'Not Marked' if attendance is not recorded
 ORDER BY 
-    t.StartTime;`,
+    t.StartTime;
+`,
     [RollNO, formattedDate],
     (err, results) => {
       if (err) {
@@ -374,7 +376,7 @@ app.get("/api/attendencebymonthforsub", (req, res) => {
 
 // Student Performance Record
 app.get("/api/studentperformancerecord", (req, res) => {
-  const { RollNO} = req.query;
+  const { RollNO } = req.query;
 
   db.query(
     `
@@ -409,7 +411,7 @@ app.get("/api/studentperformancerecord", (req, res) => {
 
 // Subjects and SubjectId of student
 app.get("/api/subjectandsubjectidofstud", (req, res) => {
-  const { RollNO} = req.query;
+  const { RollNO } = req.query;
 
   db.query(
     `
@@ -433,7 +435,7 @@ app.get("/api/subjectandsubjectidofstud", (req, res) => {
 
 // Faculties of the student
 app.get("/api/facultyofstudent", (req, res) => {
-  const { RollNO} = req.query;
+  const { RollNO } = req.query;
 
   db.query(
     `
@@ -459,7 +461,7 @@ app.get("/api/facultyofstudent", (req, res) => {
 
 // Batchmate of the student
 app.get("/api/batchmateofstud", (req, res) => {
-  const { RollNO} = req.query;
+  const { RollNO } = req.query;
 
   db.query(
     `
@@ -469,7 +471,7 @@ app.get("/api/batchmateofstud", (req, res) => {
       WHERE S1.RollNO = ? 
       AND S2.RollNO != ?;
 `,
-    [RollNO,RollNO],
+    [RollNO, RollNO],
     (err, results) => {
       if (err) throw err;
       res.json(results);
@@ -547,6 +549,43 @@ ORDER BY
     tt.LectureDate, tt.LectureNumber;
 
 `;
+
+  db.query(query, [facultyID], (err, results) => {
+    if (err) {
+      console.error("Error fetching timetable data:", err);
+      return res.status(500).json({ error: "Failed to fetch timetable data" });
+    }
+
+    // Send the timetable data to the frontend
+    res.json(results);
+  });
+});
+
+// Faculty Todays Timetable
+app.get("/api/facultytodaystimetable", (req, res) => {
+  const { facultyID } = req.query;
+
+  // Query to get timetable details for the specific faculty
+  const query = `
+          SELECT 
+          t.TimetableID,
+          s.SubjectName,
+          t.StartTime,
+          t.EndTime,
+          t.RoomNumber,
+          t.LectureNumber,
+          t.DayOfWeek,
+          t.LectureDate
+      FROM 
+          timetable AS t
+      JOIN 
+          subject AS s ON t.SubjectID = s.SubjectID
+      WHERE 
+          t.FacultyID = ? -- Replace with the FacultyID of the desired faculty
+          AND t.LectureDate = CURDATE() -- Filters for today’s date
+      ORDER BY 
+          t.StartTime;
+        `;
 
   db.query(query, [facultyID], (err, results) => {
     if (err) {

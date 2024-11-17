@@ -19,7 +19,7 @@ const TodaysTimeTable = (props) => {
               let status = "Not Marked";
               let backgroundColor = ""; // For styling purposes
 
-              if (lecture.AttendanceStatus === null) {
+              if (lecture.AttendanceStatus === "Not Marked") {
                 status = "Not Marked";
                 backgroundColor = "#fffacd"; // No specific color
               } else if (lecture.AttendanceStatus === 1) {
