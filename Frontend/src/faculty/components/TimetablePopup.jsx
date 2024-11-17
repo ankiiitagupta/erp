@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import {API_URL} from "../../axios";
+import { API_URL } from "../../axios";
 import '../stylesheets/TimetablePopup.css';
 import axios from "axios";
 import PropTypes from 'prop-types';
@@ -9,7 +10,6 @@ const TimetablePopup = ({ facultyID, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [nextClassIndex, setNextClassIndex] = useState(null);
-
 
   // Fetch timetable data
   useEffect(() => {
@@ -32,7 +32,7 @@ const TimetablePopup = ({ facultyID, onClose }) => {
     };
 
     fetchTimetable();
-  }, [facultyID, API_URL]);
+  }, [facultyID]);
 
   // Calculate the next class
   useEffect(() => {
@@ -50,17 +50,11 @@ const TimetablePopup = ({ facultyID, onClose }) => {
     }
   }, [timetable]);
 
-  // Close popup when clicking outside the content
-  const handleOverlayClick = (event) => {
-    if (event.target.className === 'popup-overlay') {
-      onClose();
-    }
-  };
-
   return (
-    <div className="popup-overlay" onClick={handleOverlayClick}>
+    <div className="popup-overlay" onClick={() => onClose()}>
       <div className="popup-content">
-        <h4>Today's Timetable</h4>
+        {/* Heading for the popup */}
+        <h4 className="popup-heading">Today's Timetable</h4>
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
@@ -106,3 +100,4 @@ TimetablePopup.propTypes = {
 };
 
 export default TimetablePopup;
+
