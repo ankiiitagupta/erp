@@ -20,7 +20,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
             setLectures(response.data);
             setStudents([]);
             setSelectedLecture("");
-            setAttendance([]); 
+            setAttendance([]);
           } else {
             setError("Invalid response format");
           }
@@ -46,16 +46,23 @@ const MarkStudentAttendance = ({ facultyID }) => {
       const response = await axios.get(
         `${API_URL}/api/getstudentsoflectureondate?facultyID=${facultyID}&LectureDate=${selectedDate}&LectureNumber=${selectedLectureId}`
       );
+
       if (Array.isArray(response.data)) {
         setStudents(response.data);
-        setAttendance(response.data.map(() => ({ status: "absent" }))); 
+
+        // Set attendance state based on AttendanceStatus
+        const initialAttendance = response.data.map((student) => ({
+          status: student.AttendanceStatus === 1 ? 1 : student.AttendanceStatus === 0 ? 0 : null,
+        }));
+        setAttendance(initialAttendance);
       } else {
-        console.error('Invalid student data format');
+        console.error("Invalid student data format");
       }
     } catch (err) {
-      console.error('Failed to fetch students data', err);
+      console.error("Failed to fetch students data", err);
     }
   };
+
 
   const handleAttendanceChange = (index, status) => {
     const updatedAttendance = [...attendance];
@@ -72,9 +79,9 @@ const MarkStudentAttendance = ({ facultyID }) => {
       facultyID: facultyID,
       subjectID: lectures.find(lec => lec.LectureNumber == selectedLecture)?.SubjectID, // Get SubjectID for the selected lecture
     }));
-    
+
     console.log(attendanceData); // Log the data being sent to the server
-    
+
     axios
       .post(`${API_URL}/api/markattendance`, { attendanceData })
       .then((response) => {
@@ -88,7 +95,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
       .catch((error) => {
         console.error("Failed to mark attendance", error);
       });
-    
+
   };
 
   const handleClosePopup = () => {
@@ -155,7 +162,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
                       name={`attendance-${index}`}
                       value="present"
                       onChange={() => handleAttendanceChange(index, 1)}
-                      checked={attendance[index]?.status === 1}
+                      checked={students[index]?.AttendanceStatus == 1} // Check if status is 1
                     />{" "}
                     Present
                   </label>
@@ -165,10 +172,11 @@ const MarkStudentAttendance = ({ facultyID }) => {
                       name={`attendance-${index}`}
                       value="absent"
                       onChange={() => handleAttendanceChange(index, 0)}
-                      checked={attendance[index]?.status === 0}
+                      checked={students[index]?.AttendanceStatus == 0} // Check if status is 0
                     />{" "}
                     Absent
                   </label>
+
                 </div>
               </div>
             ))

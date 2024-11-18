@@ -1,1 +1,1 @@
-facultyondateselectionattendance
+/api/getstudentsoflectureondate

@@ -604,7 +604,7 @@ app.get("/api/facultytodaystimetable", (req, res) => {
   });
 });
 
-//
+//on selection the lecture
 app.get("/api/facultyondateselectionattendance", (req, res) => {
   const { facultyID, LectureDate } = req.query;
 
@@ -653,34 +653,45 @@ app.get("/api/facultyondateselectionattendance", (req, res) => {
   });
 });
 
-
-//Get students Of the faculty on a selected date for attendance
+// Get students of the faculty on a selected date for attendance with their attendance status
 app.get("/api/getstudentsoflectureondate", (req, res) => {
-  const { facultyID,LectureDate,LectureNumber } = req.query;
+  const { facultyID, LectureDate, LectureNumber } = req.query;
+
   db.query(
     `
-          SELECT 
-          st.RollNO, 
-          st.Stud_name
-        FROM 
-          student AS st
-        JOIN 
-          timetable AS t ON st.Section = t.Section
-        WHERE 
-          t.FacultyID = ?
-          AND t.LectureDate = ?
-          AND t.LectureNumber =? 
-        ORDER BY 
-          st.RollNO; 
-
-      `,
-    [facultyID , LectureDate , LectureNumber],
+      SELECT 
+        st.RollNO, 
+        st.Stud_name, 
+        COALESCE(a.AttendanceStatus, 'not marked') AS AttendanceStatus
+      FROM 
+        student AS st
+      JOIN 
+        timetable AS t 
+        ON st.Section = t.Section
+      LEFT JOIN 
+        attendance AS a 
+        ON st.RollNO = a.RollNO 
+        AND t.LectureDate = a.LectureDate 
+        AND t.LectureNumber = a.LectureNumber
+      WHERE 
+        t.FacultyID = ?
+        AND t.LectureDate = ?
+        AND t.LectureNumber = ?
+      ORDER BY 
+        st.RollNO;
+    `,
+    [facultyID, LectureDate, LectureNumber],
     (err, results) => {
-      if (err) throw err;
+      if (err) {
+        console.error("Error fetching students with attendance:", err);
+        res.status(500).json({ error: "Failed to fetch students with attendance" });
+        return;
+      }
       res.json(results);
     }
   );
 });
+
 
 // Update the attendance
 app.post("/api/markattendance", (req, res) => {
