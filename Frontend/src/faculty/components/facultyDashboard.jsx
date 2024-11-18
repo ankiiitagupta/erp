@@ -103,7 +103,9 @@ const FacultyDashboard = () => {
     return (
       <div className="timetable">
         <h4>Faculty Timetable</h4>
-        <FacultyTimeTable timetable={timetable} />
+        <FacultyTimeTable timetable={timetable}  setEmpdetailFlag={setEmpdetailFlag}
+        setMarkAttendanceFlag={setMarkAttendanceFlag}
+        setAcademicFlag={setAcademicFlag}/>
       </div>
     );
   };

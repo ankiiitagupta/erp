@@ -1,9 +1,12 @@
+// FacultyTimetable.jsx
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../axios";
 import axios from "axios";
 import '../stylesheets/FacultyTimetable.css'; // Ensure the CSS file is imported
 
-const FacultyTimeTable = ({ facultyID }) => {
+const FacultyTimeTable = ({ facultyID, setEmpdetailFlag , setMarkAttendanceFlag, setAcademicFlag}) => {
+  const navigate = useNavigate();
   const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const [periods, setPeriods] = useState(null);
   const [error, setError] = useState(null);
@@ -44,9 +47,8 @@ const FacultyTimeTable = ({ facultyID }) => {
     }
   };
 
-  const handleMarkAttendance = (lecture) => {
-    console.log("Marking attendance for:", lecture);
-    // Implement attendance marking logic here
+  const handleTodaysAttendance = (lecture ,setEmpdetailFlag , setMarkAttendanceFlag, setAcademicFlag) => {
+    navigate(`/todaysattendance`, { state: { lecture ,setEmpdetailFlag , setMarkAttendanceFlag, setAcademicFlag  } });
   };
 
   const today = new Date().toLocaleString("en-us", { weekday: "long" });
@@ -92,13 +94,13 @@ const FacultyTimeTable = ({ facultyID }) => {
                         <div className="room-name">Room: {lecture.RoomNumber}</div>
                         <button
                           className="attendance-button"
-                          onClick={() => handleMarkAttendance(lecture)}
+                          onClick={() => handleTodaysAttendance(lecture)}
                         >
                           Mark Attendance
                         </button>
                       </>
                     ) : (
-                      <div className="no-lecture-message">No Lecture</div>
+                      <div className="no-lecture-message" onClick={() => handleTodaysAttendance(lecture)}>No Lecture</div>
                     )}
                   </td>
                 ))}

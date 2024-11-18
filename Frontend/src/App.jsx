@@ -3,9 +3,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import FacultyDashboard from './faculty/components/FacultyDashboard';
+import TodaysAttendance from './faculty/components/TodaysAttendance';
 import StudentDashboard from './Student/Components/StudentDashboard';
-import Profile from './Student/Components/Profile';
-import Sidebar from './Student/Components/Sidebar';
+
 
 function App() {
   return (
@@ -22,6 +22,7 @@ function App() {
 
           {/* Dashboards */}
           <Route path="/facultydashboard/:FacultyID" element={<FacultyDashboard />} />
+          <Route path="/todaysattendance" element={<TodaysAttendance />} />
           <Route path="/studentdashboard/:RollNO" element={<StudentDashboard />} />
           <Route path="/studentdashboard/:RollNO" element={<StudentDashboard />} />
         </Routes>
