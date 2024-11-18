@@ -1,1 +1,1 @@
-/api/getstudentsoflectureondate
+AttendanceStatus

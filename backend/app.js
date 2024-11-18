@@ -288,21 +288,22 @@ app.get("/api/timetablebydate", (req, res) => {
           JOIN 
               course AS c ON e.CourseID = c.CourseID
           JOIN 
-              timetable AS t ON c.DepartmentID = t.DepartmentID
-                AND t.YearOfStudy = st.Stud_YearOfStudy
-                AND t.Section = st.Section
-          JOIN 
+              timetable AS t ON t.CourseID = c.CourseID
+                  AND t.YearOfStudy = st.Stud_YearOfStudy
+                  AND t.Section = st.Section
+                  AND t.DepartmentID = c.DepartmentID
+          LEFT JOIN 
               subject AS s ON t.SubjectID = s.SubjectID
-          JOIN 
+          LEFT JOIN 
               faculty AS f ON s.FacultyID = f.FacultyID
           LEFT JOIN 
-              attendance AS a ON st.RollNO = a.RollNO 
-                AND t.SubjectID = a.SubjectID 
-                AND t.LectureNumber = a.LectureNumber 
-                AND t.LectureDate = a.LectureDate  -- Ensure the date matches the attendance record
+              attendance AS a ON a.RollNo = st.RollNO
+                  AND a.LectureNumber = t.LectureNumber
+                  AND a.LectureDate = t.LectureDate
           WHERE 
-              st.RollNO = ? 
-              AND t.LectureDate = ?  
+              st.RollNO = ?  -- Replace with dynamic input from API
+              AND t.LectureDate = CURDATE()  -- Replace with dynamic date input
+            
           ORDER BY 
               t.StartTime;`,
     [RollNO, LectureDate],

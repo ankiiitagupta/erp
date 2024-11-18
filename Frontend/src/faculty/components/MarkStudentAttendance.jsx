@@ -50,9 +50,9 @@ const MarkStudentAttendance = ({ facultyID }) => {
       if (Array.isArray(response.data)) {
         setStudents(response.data);
 
-        // Set attendance state based on AttendanceStatus
+        // Initialize attendance based on AttendanceStatus
         const initialAttendance = response.data.map((student) => ({
-          status: student.AttendanceStatus === 1 ? 1 : student.AttendanceStatus === 0 ? 0 : null,
+          status: student.AttendanceStatus, // Use AttendanceStatus directly
         }));
         setAttendance(initialAttendance);
       } else {
@@ -62,6 +62,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
       console.error("Failed to fetch students data", err);
     }
   };
+
 
 
   const handleAttendanceChange = (index, status) => {
@@ -75,7 +76,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
       studentID: student.RollNO,
       lectureDate: selectedDate,
       lectureNumber: selectedLecture,
-      status: attendance[index].status,
+      status: attendance[index]?.status !== null ? attendance[index].status : null,
       facultyID: facultyID,
       subjectID: lectures.find(lec => lec.LectureNumber == selectedLecture)?.SubjectID, // Get SubjectID for the selected lecture
     }));
@@ -162,7 +163,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
                       name={`attendance-${index}`}
                       value="present"
                       onChange={() => handleAttendanceChange(index, 1)}
-                      checked={students[index]?.AttendanceStatus == 1} // Check if status is 1
+                      checked={attendance[index]?.status == 1} // Use attendance state
                     />{" "}
                     Present
                   </label>
@@ -172,10 +173,12 @@ const MarkStudentAttendance = ({ facultyID }) => {
                       name={`attendance-${index}`}
                       value="absent"
                       onChange={() => handleAttendanceChange(index, 0)}
-                      checked={students[index]?.AttendanceStatus == 0} // Check if status is 0
+                      checked={attendance[index]?.status == 0} // Use attendance state
                     />{" "}
                     Absent
                   </label>
+
+
 
                 </div>
               </div>
