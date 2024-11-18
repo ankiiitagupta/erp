@@ -8,6 +8,9 @@ const Header = () => {
   const [grievanceData, setGrievanceData] = useState({
     name: '',
     rollNumber: '',
+    category: '',
+    subject: '',
+    document: null,
     query: '',
   });
 
@@ -48,6 +51,14 @@ const Header = () => {
     setGrievanceData((prevState) => ({
       ...prevState,
       [name]: value,
+    }));
+  };
+
+  // Handle file input (document upload)
+  const handleFileChange = (e) => {
+    setGrievanceData((prevState) => ({
+      ...prevState,
+      document: e.target.files[0],
     }));
   };
 
@@ -149,6 +160,51 @@ const Header = () => {
                 required
               />
             </div>
+
+            {/* Grievance Category Dropdown */}
+            <div className="form-group">
+              <label htmlFor="category">Grievance Category</label>
+              <select
+                id="category"
+                name="category"
+                value={grievanceData.category}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select Category</option>
+                {/* Add your options here */}
+                <option value="ACADEMICS">ACADEMICS</option>
+                <option value="ATTENDANCE">ATTENDANCE</option>
+                {/* Additional categories */}
+              </select>
+            </div>
+
+            {/* Subject Field */}
+            <div className="form-group">
+              <label htmlFor="subject">Subject</label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                value={grievanceData.subject}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            {/* Document Upload Field */}
+            <div className="form-group">
+              <label htmlFor="document">Attach Document (Image)</label>
+              <input
+                type="file"
+                id="document"
+                name="document"
+                accept="image/*"
+                onChange={handleFileChange}
+                required
+              />
+            </div>
+
             <div className="form-group">
               <label htmlFor="query">Grievance Description</label>
               <textarea
@@ -159,6 +215,7 @@ const Header = () => {
                 required
               />
             </div>
+
             <button type="submit" className="submit-btn">Submit</button>
             <button type="button" className="cancel-btn" onClick={toggleGrievanceForm}>Cancel</button>
           </form>
