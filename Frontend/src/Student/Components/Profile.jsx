@@ -224,59 +224,61 @@ const Profile = () => {
         </fieldset>
 
          {/* Examination Details Section */}
-        <fieldset className="form-section">
-          <legend>Examination Passed</legend>
-          <table className="form-table">
-            <thead>
-              <tr>
-                <th>S.No</th>
-                <th>Examination</th>
-                <th>Medium of Education</th>
-                <th>Institute Attended</th>
-                <th>Board/University</th>
-                <th>Year of Passing</th>
-                <th>Roll No.</th>
-                <th>% / CGPA</th>
-                <th>Division</th>
-              </tr>
-            </thead>
-            <tbody>
-              {exams.map((exam, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <select
-                      name="examType"
-                      value={exam.examType}
-                      onChange={(e) => handleExamChange(index, e)}
-                      required
-                    >
-                      <option value="">Select</option>
-                      <option value="High School">High School</option>
-                      <option value="Intermediate">Intermediate</option>
-                      <option value="Graduation">Graduation</option>
-                    </select>
-                  </td>
-                  <td><input type="text" name="medium" value={exam.medium} onChange={(e) => handleExamChange(index, e)} required /></td>
-                  <td><input type="text" name="institute" value={exam.institute} onChange={(e) => handleExamChange(index, e)} required /></td>
-                  <td><input type="text" name="board" value={exam.board} onChange={(e) => handleExamChange(index, e)} required /></td>
-                  <td><input type="number" name="yearOfPassing" value={exam.yearOfPassing} onChange={(e) => handleExamChange(index, e)} required /></td>
-                  <td><input type="text" name="rollNo" value={exam.rollNo} onChange={(e) => handleExamChange(index, e)} required /></td>
-                  <td><input type="number" name="percentage" value={exam.percentage} onChange={(e) => handleExamChange(index, e)} required /></td>
-                  <td>
-                    <select name="division" value={exam.division} onChange={(e) => handleExamChange(index, e)} required>
-                      <option value="">Select</option>
-                      <option value="First">First</option>
-                      <option value="Second">Second</option>
-                      <option value="Third">Third</option>
-                    </select>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <button type="button" onClick={addNewExam}>Add More Exams</button>
-        </fieldset>
+<fieldset className="form-section">
+  <legend>Examination Passed</legend>
+  <div className="table-responsive">
+    <table className="form-table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Examination</th>
+          <th>Medium of Education</th>
+          <th>Institute Attended</th>
+          <th>Board/University</th>
+          <th>Year of Passing</th>
+          <th>Roll No.</th>
+          <th>% / CGPA</th>
+          <th>Division</th>
+        </tr>
+      </thead>
+      <tbody>
+        {exams.map((exam, index) => (
+          <tr key={index}>
+            <td>{index + 1}</td>
+            <td>
+              <select
+                name="examType"
+                value={exam.examType}
+                onChange={(e) => handleExamChange(index, e)}
+                required
+              >
+                <option value="">Select</option>
+                <option value="High School">High School</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Graduation">Graduation</option>
+              </select>
+            </td>
+            <td><input type="text" name="medium" value={exam.medium} onChange={(e) => handleExamChange(index, e)} required /></td>
+            <td><input type="text" name="institute" value={exam.institute} onChange={(e) => handleExamChange(index, e)} required /></td>
+            <td><input type="text" name="board" value={exam.board} onChange={(e) => handleExamChange(index, e)} required /></td>
+            <td><input type="number" name="yearOfPassing" value={exam.yearOfPassing} onChange={(e) => handleExamChange(index, e)} required /></td>
+            <td><input type="text" name="rollNo" value={exam.rollNo} onChange={(e) => handleExamChange(index, e)} required /></td>
+            <td><input type="number" name="percentage" value={exam.percentage} onChange={(e) => handleExamChange(index, e)} required /></td>
+            <td>
+              <select name="division" value={exam.division} onChange={(e) => handleExamChange(index, e)} required>
+                <option value="">Select</option>
+                <option value="First">First</option>
+                <option value="Second">Second</option>
+                <option value="Third">Third</option>
+              </select>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <button type="button" onClick={addNewExam}>Add More Exams</button>
+</fieldset>
 
         {/* Required Documents Section */}
         <fieldset className="form-section">
