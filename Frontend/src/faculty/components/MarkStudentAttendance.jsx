@@ -65,10 +65,12 @@ const MarkStudentAttendance = ({ facultyID }) => {
 
   const handleSubmit = () => {
     const attendanceData = students.map((student, index) => ({
-      studentID: student.StudentID,
+      studentID: student.RollNO,
       lectureDate: selectedDate,
       lectureNumber: selectedLecture,
-      status: attendance[index].status
+      status: attendance[index].status,
+      facultyID: facultyID,
+      subjectID: lectures.find(lec => lec.LectureNumber == selectedLecture)?.SubjectID, // Get SubjectID for the selected lecture
     }));
     
     console.log(attendanceData); // Log the data being sent to the server
@@ -152,8 +154,8 @@ const MarkStudentAttendance = ({ facultyID }) => {
                       type="radio"
                       name={`attendance-${index}`}
                       value="present"
-                      onChange={() => handleAttendanceChange(index, "present")}
-                      checked={attendance[index]?.status === "present"}
+                      onChange={() => handleAttendanceChange(index, 1)}
+                      checked={attendance[index]?.status === 1}
                     />{" "}
                     Present
                   </label>
@@ -162,8 +164,8 @@ const MarkStudentAttendance = ({ facultyID }) => {
                       type="radio"
                       name={`attendance-${index}`}
                       value="absent"
-                      onChange={() => handleAttendanceChange(index, "absent")}
-                      checked={attendance[index]?.status === "absent"}
+                      onChange={() => handleAttendanceChange(index, 0)}
+                      checked={attendance[index]?.status === 0}
                     />{" "}
                     Absent
                   </label>

@@ -6,6 +6,7 @@ const app = express();
 const port = 3006; // Make sure to use the same port here
 
 app.use(cors());
+app.use(express.json()); 
 
 const db = mysql.createConnection({
   host: "localhost",
@@ -570,13 +571,11 @@ app.get("/api/facultytodaystimetable", (req, res) => {
         t.TimetableID,
         s.SubjectName,
         c.CourseName, 
-        st.Stud_YearOfStudy,  -- YearOfStudy is from the student table
         t.StartTime,
         t.EndTime,
         t.RoomNumber,
         t.LectureNumber,
         t.DayOfWeek,
-        st.Section,
         t.LectureDate
     FROM 
         timetable AS t
@@ -604,6 +603,8 @@ app.get("/api/facultytodaystimetable", (req, res) => {
     res.json(results);
   });
 });
+
+//
 app.get("/api/facultyondateselectionattendance", (req, res) => {
   const { facultyID, LectureDate } = req.query;
 
@@ -620,13 +621,12 @@ app.get("/api/facultyondateselectionattendance", (req, res) => {
     SELECT DISTINCT
       s.SubjectName,
       c.CourseName, 
-      st.Stud_YearOfStudy,  -- YearOfStudy is from the student table
+      s.SubjectID,
       t.StartTime,
       t.EndTime,
       t.RoomNumber,
       t.LectureNumber,
-      t.DayOfWeek,
-      st.Section
+      t.DayOfWeek
     FROM 
       timetable AS t
     JOIN 
@@ -682,7 +682,6 @@ app.get("/api/getstudentsoflectureondate", (req, res) => {
   );
 });
 
-
 // Update the attendance
 app.post("/api/markattendance", (req, res) => {
   const { attendanceData } = req.body;
@@ -693,16 +692,14 @@ app.post("/api/markattendance", (req, res) => {
 
   // Prepare the query to update attendance for all students
   const query = `
-    UPDATE attendance 
-    SET Status = CASE 
-      ${attendanceData.map((item, index) => 
-        `WHEN StudentID = ${db.escape(item.studentID)} AND LectureDate = ${db.escape(item.lectureDate)} AND LectureNumber = ${db.escape(item.lectureNumber)} 
-         THEN ${db.escape(item.status)}`
-      ).join(' ')}
-    END
-    WHERE (${attendanceData.map(item => 
-      `StudentID = ${db.escape(item.studentID)} AND LectureDate = ${db.escape(item.lectureDate)} AND LectureNumber = ${db.escape(item.lectureNumber)}`
-    ).join(') OR (')})
+    INSERT INTO attendance (RollNO, LectureDate, LectureNumber, AttendanceStatus, SubjectID, FacultyID)
+    VALUES
+      ${attendanceData.map((item) => 
+        `(${db.escape(item.studentID)}, ${db.escape(item.lectureDate)}, ${db.escape(item.lectureNumber)}, ${db.escape(item.status)}, ${db.escape(item.subjectID)}, ${db.escape(item.facultyID)})`
+      ).join(', ')}
+    AS attendance_data
+    ON DUPLICATE KEY UPDATE 
+      AttendanceStatus = attendance_data.AttendanceStatus
   `;
 
   // Execute the query
@@ -715,6 +712,8 @@ app.post("/api/markattendance", (req, res) => {
     res.json({ message: "Attendance updated successfully" });
   });
 });
+
+
 
 
 
