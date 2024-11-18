@@ -130,10 +130,11 @@ body {
   .navbar-end {
     display: flex;
     align-items: center;
+    margin-right:3rem;
   }
   
   .navbar-item {
-    margin-right: 30px;
+    margin-right: 2rem;
     font-size: 18px;
     color: #090909;
     font-weight: 600;
