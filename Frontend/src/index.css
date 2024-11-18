@@ -101,9 +101,8 @@ body {
     }
 }
 
-
-/* navbar */
-
+/* nav bar */
+/* Navbar Styling */
 .navbar {
     background-color: transparent;
     width: 100%;
@@ -113,91 +112,451 @@ body {
     justify-content: space-between;
     align-items: center;
     position: fixed;
-    /* Ensures the navbar stays at the top and spans full width */
     top: 0;
-    /* Sticks the navbar to the top of the screen */
     left: 0;
-    /* Ensures it starts at the far left */
-    box-sizing: border-box;
-    /* Ensures padding is considered in width */
     z-index: 1000;
-    /* Keeps navbar on top of other content */
-}
-
-.navbar-brand {
+  }
+  
+  .navbar-brand {
     display: flex;
     align-items: center;
-}
-
-.navbar-brand img {
-    width: 8rem;
-    height: 4rem;
-    margin-left: 2rem;
-}
-
-.navbar-menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navbar-start {
+  }
+  
+  .navbar-start {
     display: flex;
     align-items: center;
-}
-
-.navbar-end {
+  }
+  
+  .navbar-end {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-}
-
-.navbar-item {
-    margin-right: 40px;
-    font-size: 20px;
+    margin-right:3rem;
+  }
+  
+  .navbar-item {
+    margin-right: 2rem;
+    font-size: 18px;
     color: #090909;
     font-weight: 600;
     text-decoration: none;
-}
-
-.navbar-item:hover {
+  }
+  
+  .navbar-item:hover {
     color: #6b6767;
+  }
+  
+  /* Profile Container */
+  .profile-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #090909;
+    font-weight: 600;
+    margin-left: 20px;
+  }
+  
+  .profile-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .profile-name i {
+    transition: transform 0.3s;
+  }
+  
+  .profile-name .rotate {
+    transform: rotate(180deg);
+  }
+  
+  /* Dropdown Menu Styling */
+  .profile-dropdown {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 1000;
+    min-width: 200px;
+  }
+  
+  .dropdown-item {
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #4f4f4f;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #d1c4e9;
+    color: #2f1044;
+  }
+  
+  .dropdown-item i {
+    font-size: 1.2rem;
+    color: #2f1044;
+  }
+  /* Profile Container */
+.profile-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #090909;
+    font-weight: 600;
+    margin-left: 10px;  /* Decreased margin to reduce spacing */
+  }
+  
+  /* Profile Image Circle with Icon */
+  .profile-container .profile-img {
+    width: 40px; /* Circle size */
+    height: 40px; /* Same as width to maintain circle shape */
+    border-radius: 50%;
+    margin-right: 8px; /* Reduced right margin */
+    background-color: #d1d1d1; /* Circle background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #090909; /* Optional border */
+  }
+  
+  /* Profile Icon inside the Circle */
+  .profile-container .profile-img i {
+    font-size: 20px; /* Icon size */
+    color: #090909;  /* Icon color */
+  }
+  
+  /* Navbar Item Styling */
+  .navbar-item {
+    margin-right: 20px; /* Adjusted for equal spacing */
+    font-size: 18px;
+    color: #090909;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  /* Last Navbar Item (to avoid extra margin on the last item) */
+  .navbar-end .navbar-item:last-child {
+    margin-right: 0; /* Removes the right margin on the last item */
+  }
+  
+  /* Profile Dropdown Styling */
+  .profile-dropdown {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 1000;
+    min-width: 200px;
+  }
+  /* Search Bar Container */
+.search-container {
+  display: flex;
+  align-items: center;
+  border: 2px solid black; /* Thicker black border */
+  border-radius: 30px; /* Rounded corners */
+  padding: 5px 15px; /* Inner padding */
+  width: 300px; /* Width of the search bar */
+  height: 40px; /* Height of the search bar */
+  background-color: #e3e3ea; /* Match the background color of the surrounding container */
+  box-sizing: border-box; /* Include padding in size calculations */
 }
 
-.navbar-burger {
-    display: none;
+/* Search Icon */
+.search-container .icon {
+  margin-right: 10px; /* Space between icon and input */
+  font-size: 18px; /* Icon size */
+  color: black; /* Icon color */
 }
 
-@media (max-width: 768px) {
-    .navbar-burger {
-        display: block;
-        cursor: pointer;
-    }
-    .navbar-menu {
-        display: none;
-    }
-    .navbar-menu.is-active {
-        display: block;
-        position: absolute;
-        top: 50px;
-        left: 0;
-        width: 100%;
-        background-color: #2f1044;
-        padding: 1rem;
-    }
-    .navbar-start {
-        flex-direction: column;
-    }
+/* Search Input */
+.search-container .search-bar {
+  border: none; /* Remove input border */
+  outline: none; /* Remove input outline */
+  font-size: 16px; /* Input text size */
+  flex: 1; /* Make input take remaining space */
+  color: black; /* Input text color */
+  background-color: transparent; /* Make input transparent to match parent */
+}
+
+/* Add focus effect */
+.search-container .search-bar:focus {
+  outline: none;
+}
+/* Modal and Overlay Styling */
+.grievance-form-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark background for the modal overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .form-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Slightly transparent background */
+  }
+  
+  /* Grievance Form Styling */
+  .grievance-form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    z-index: 10000;
+    border: 2px solid #d1d1d1; /* Light border around the form */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .grievance-form h3 {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
+    color: #2f1044;
+    font-weight: bold;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: #4caf50; /* Green border on focus */
+    outline: none;
+  }
+  
+  .form-group textarea {
+    min-height: 120px;
+    resize: vertical; /* Allow vertical resizing */
+  }
+  
+  /* Buttons Styling */
+  .button-container {
+    display: flex;
+    justify-content: space-between;  /* Space between the buttons */
+    align-items: center;
+  }
+  
+  .submit-btn,
+  .cancel-btn {
+    padding: 10px 15px;  /* Smaller buttons */
+    font-size: 14px; /* Text size of buttons */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .submit-btn {
+    background-color: #4caf50;
+    color: white;
+    border: 2px solid #4caf50;
+    transition: background-color 0.3s;
+    width: 45%; /* Button takes 45% width for symmetry */
+  }
+  
+  .submit-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .cancel-btn {
+    background-color: #f44336;
+    color: white;
+    border: 2px solid #f44336;
+    transition: background-color 0.3s;
+    width: 45%; /* Button takes 45% width for symmetry */
+  }
+  
+  .cancel-btn:hover {
+    background-color: #e53935;
+  }
+  
+  .button-container .cancel-btn {
+    text-align: left; /* Align the cancel button text to the left */
+  }
+  
+  .button-container .submit-btn {
+    text-align: right; /* Align the submit button text to the right */
+  }
+  /* Dropdown and Form Fields */
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+  
+  /* Focus Effect for Select Dropdown */
+  .form-group select:focus {
+    border-color: #4caf50;
+    outline: none;
+  }
+  
+  .grievance-form-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .form-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .grievance-form {
+    background: white;
+    padding: 20px; /* Reduced padding to decrease height */
+    border-radius: 8px;
+    width: 60%;
+    max-width: 800px;
+    border: 2px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    max-height: 650px; /* Set a max-height to restrict the height of the form */
+    overflow-y: auto; /* Allow scrolling if the content exceeds max height */
+  }
+  
+  .grievance-form h3 {
+    text-align: center;
+    font-size: 22px; /* Slightly smaller title */
+    margin-bottom: 15px; /* Reduced margin */
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 12px; /* Reduced margin */
+  }
+  
+  .form-group label {
+    font-size: 15px; /* Slightly smaller label font size */
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 8px; /* Reduced padding */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .form-group textarea {
+    resize: vertical;
+    height: 80px; /* Reduced textarea height */
+  }
+  
+  .submit-btn,
+  .cancel-btn {
+    width: 45%;
+    padding: 8px 12px; /* Reduced padding */
+    font-size: 15px; /* Reduced button text size */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .submit-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .cancel-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .submit-btn:hover,
+  .cancel-btn:hover {
+    opacity: 0.9;
+  }
+  
+  .submit-btn:active,
+  .cancel-btn:active {
+    opacity: 0.7;
+  }
+  
+  .submit-btn,
+  .cancel-btn {
+    transition: all 0.3s ease;
+  }
+  
+
+
+  /* Responsive Media Queries */
+  @media (max-width: 768px) {
     .navbar-end {
-        flex-direction: column;
+      flex-direction: column;
+      align-items: flex-start;
     }
     .navbar-item {
-        margin-right: 0;
-        margin-bottom: 10px;
+      margin-bottom: 10px;
     }
-}
-
-
+    .profile-dropdown {
+      right: 0;
+    }
+  }
+  
+  
 /* StudentDashboard.css */
 
 .dashboard {
@@ -425,9 +784,23 @@ body {
 
 .btnshowmore {
     border: none;
-    padding-top: 0.7rem;
-    background-color: white;
+    background-color: white; /* Default background color */
+    color: #003366; /* Default text color (blue) */
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* Hover effect */
+.btnshowmore:hover {
+    background-color: #003366; /* Dark blue background on hover */
+    color: white; /* White text on hover */
+}
+
 
 .btnshowmore:hover {
     color: rgb(98, 98, 224);

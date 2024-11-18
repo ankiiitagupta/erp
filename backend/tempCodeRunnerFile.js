@@ -1,1 +1,1 @@
-/api/batchmateofstud
+/api/getstudentsoflectureondate

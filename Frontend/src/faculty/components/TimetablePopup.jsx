@@ -1,80 +1,97 @@
 import React, { useState, useEffect } from 'react';
+import { API_URL } from "../../axios";
 import '../stylesheets/TimetablePopup.css';
+import axios from "axios";
+import PropTypes from 'prop-types';
 
-const TimetablePopup = ({ timetable, onClose }) => {
-  const dummyTimetable = [
-    { Subject: "Mathematics", Period: "1", From: "09:00 AM", Till: "09:50 AM", RoomNo: "101" },
-    { Subject: "Physics", Period: "2", From: "10:00 AM", Till: "10:50 AM", RoomNo: "102" },
-    { Subject: "Chemistry", Period: "3", From: "11:00 AM", Till: "11:50 AM", RoomNo: "103" },
-    { Subject: "Biology", Period: "4", From: "01:00 PM", Till: "01:50 PM", RoomNo: "104" },
-  ];
-
-  const currentTimetable = timetable.length > 0 ? timetable : dummyTimetable;
-
+const TimetablePopup = ({ facultyID, onClose }) => {
+  const [timetable, setTimetable] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [nextClassIndex, setNextClassIndex] = useState(null);
 
-
-  
-
+  // Fetch timetable data
   useEffect(() => {
-    const now = new Date();
-    const currentTotalMinutes = now.getHours() * 60 + now.getMinutes();
+    const fetchTimetable = async () => {
+      try {
+        const response = await axios.get(
+          `${API_URL}/api/facultytodaystimetable?facultyID=${facultyID}`
+        );
+        if (Array.isArray(response.data)) {
+          setTimetable(response.data);
+        } else {
+          throw new Error('Invalid response format');
+        }
+      } catch (err) {
+        setError('Failed to fetch timetable data');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Find the next upcoming class
-    const upcomingIndex = currentTimetable.findIndex((slot) => {
-      const [startHour, startMinute] = slot.From.split(':');
-      const startMeridian = slot.From.slice(-2);
-      const startTotalMinutes = (parseInt(startHour) % 12 + (startMeridian === 'PM' ? 12 : 0)) * 60 + parseInt(startMinute);
+    fetchTimetable();
+  }, [facultyID]);
 
-      return startTotalMinutes > currentTotalMinutes;
-    });
+  // Calculate the next class
+  useEffect(() => {
+    if (timetable.length > 0) {
+      const now = new Date();
+      const currentTotalMinutes = now.getHours() * 60 + now.getMinutes();
 
-    setNextClassIndex(upcomingIndex);
-  }, [currentTimetable]);
+      const upcomingIndex = timetable.findIndex((slot) => {
+        const [startHour, startMinute] = slot.StartTime.split(':').map(Number);
+        const startTotalMinutes = startHour * 60 + startMinute;
+        return startTotalMinutes > currentTotalMinutes;
+      });
 
-
-
-
-  const handleOverlayClick = (event) => {
-    if (event.target.className === 'popup-overlay') {
-      onClose();
+      setNextClassIndex(upcomingIndex);
     }
-  };
+  }, [timetable]);
 
   return (
-    <div className="popup-overlay" onClick={handleOverlayClick}>
+    <div className="popup-overlay" onClick={() => onClose()}>
       <div className="popup-content">
-        <h4>Today's Timetable</h4>
-        <div className="timetable-header">
-          <span>Period</span>
-          <span>From</span>
-          <span>Till</span>
-          <span>Subjects</span>
-          <span>Room Number</span>
-          
-        </div>
-        {currentTimetable.length === 0 ? (
+        {/* Heading for the popup */}
+        <h4 className="popup-heading">Today's Timetable</h4>
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>{error}</p>
+        ) : timetable.length === 0 ? (
           <p>No classes scheduled for today.</p>
         ) : (
-          currentTimetable.map((slot, index) => (
-            <div
-              key={index}
-              className={`timetable-slot ${nextClassIndex === index ? 'highlight' : ''}`}
-            >
-              <span>{slot.Period}</span>
-              <span>{slot.From}</span>
-              <span>{slot.Till}</span>
-              <span>{slot.Subject}</span>
-              <span>{slot.RoomNo}</span>
-              
-                
+          <>
+            <div className="timetable-header">
+              <span>Period</span>
+              <span>From</span>
+              <span>Till</span>
+              <span>Subjects</span>
+              <span>Room Number</span>
             </div>
-          ))
+            {timetable.map((slot, index) => (
+              <div
+                key={index}
+                className={`timetable-slot ${nextClassIndex === index ? 'highlight' : ''}`}
+              >
+                <span>{slot.LectureNumber}</span>
+                <span>{slot.StartTime}</span>
+                <span>{slot.EndTime}</span>
+                <span>{slot.SubjectName}</span>
+                <span>{slot.RoomNumber}</span>
+              </div>
+            ))}
+          </>
         )}
         <button className="close-button" onClick={onClose}>Close</button>
       </div>
     </div>
   );
+};
+
+TimetablePopup.propTypes = {
+  facultyID: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default TimetablePopup;

@@ -122,7 +122,7 @@ const FacultyDashboard = () => {
           
         ) : MarkAttendanceFlag ? (
           <div className="MarkAttendance-Detail">
-            <MarkStudentAttendance FacultyID={FacultyID} />
+            <MarkStudentAttendance facultyID={FacultyID} />
           </div>
         ) : EmpdetailFlag ? (
           <div className="Employee-Detail">
@@ -131,7 +131,7 @@ const FacultyDashboard = () => {
         ) : (
           <div className="faculty-section">
             {showPopup && (
-              <TimetablePopup timetable={todayTimetable} onClose={closePopup} />
+              <TimetablePopup facultyID={FacultyID} onClose={closePopup} />
             )}
             {error && <p className="error">{error}</p>}
             <div className="faculty-details-section">

@@ -52,7 +52,7 @@ function Login() {
     <MDBContainer className="main">
       <MDBRow className="login-container">
         <MDBCol col='12'>
-          <div className="d-flex flex-column ms-5">
+          <div className="d-flex flex-column m-5">
             <div className="text-center">
               <h4 className="mt-1 mb-5 pb-2">Welcome to MPGI</h4>
             </div>
