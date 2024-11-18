@@ -115,14 +115,34 @@ const Header = () => {
         <a href="#contact" className="navbar-item">Contact</a>
         <a href="#privacy" className="navbar-item">Privacy Policy</a>
 
-
         {/* Profile Dropdown */}
         {showProfile && (
-          <div className="profile-container">
+          <div className="profile-container" onClick={toggleDropdown}>
             <div className="profile-img">
               <i className="fas fa-user"></i> {/* Font Awesome Profile Icon */}
             </div>
-            <span className="profile-name">Profile</span>
+            <span className="profile-name">
+              Profile <i className={`fas fa-chevron-down ${isDropdownOpen ? 'rotate' : ''}`}></i>
+            </span>
+            {isDropdownOpen && (
+              <div className="profile-dropdown">
+                <a href="#" className="dropdown-item">
+                  <i className="fas fa-user"></i> My Profile
+                </a>
+                <a href="#" className="dropdown-item">
+                  <i className="fas fa-cog"></i> Settings
+                </a>
+                <a href="#" className="dropdown-item" onClick={handleLogout}>
+                  <i className="fas fa-sign-out-alt"></i> Log Out
+                </a>
+                <a href="#" className="dropdown-item" onClick={toggleGrievanceForm}>
+                  <i className="fas fa-envelope"></i> Submit Grievance
+                </a>
+                <a href="#" className="dropdown-item">
+                  <i className="fas fa-comment-dots"></i> Feedback
+                </a>
+              </div>
+            )}
           </div>
         )}
       </div>
