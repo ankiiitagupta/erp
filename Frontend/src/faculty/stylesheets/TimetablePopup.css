@@ -1,4 +1,3 @@
-   
 /* Popup overlay - covers part of the screen */
 .popup-overlay {
   position: fixed;
@@ -16,23 +15,26 @@
 /* Content of the popup */
 .popup-content {
   background-color: white;
-  padding: 1.2rem;
-  width: 50%;
-  max-width: 35rem;
-  height: 60%; /* Adjusted height */
+  padding: 2rem;  /* Increased padding for more internal space */
+  width: 65%;  /* Increased width */
+  max-width: 45rem;  /* Adjusted max-width */
+  height: 75%;  /* Increased height */
   border-radius: 1rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-y: auto; /* Enables vertical scrolling */
-  max-height: 600px; /* Adjusted height for scroll */
+  max-height: 700px; /* Adjusted max-height for scroll */
+  border: 3px solid #ddd; /* Grey border around the entire popup */
+  padding: 2rem; /* Added padding to make space around the content */
+  box-sizing: border-box; /* Ensures padding is included in the total size */
 }
 
 /* Heading for the timetable */
 .popup-heading {
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
+  font-size: 1.9rem;  /* Increased font size */
+  margin-bottom: 2rem;  /* More space below heading */
   text-align: center;
   font-weight: bold;
   color: #333;
@@ -44,19 +46,19 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 2fr 1fr;
   gap: 0;
-  padding: 0.6rem 0;
+  padding: 1rem 0;  /* Increased padding for header */
   text-align: center;
   font-weight: bold;
-  border-bottom: 1px solid #ddd;
-  border-top: 1px solid #ddd;
+  border-bottom: 2px solid #ddd;  /* Slightly thicker bottom border */
+  border-top: 2px solid #ddd;     /* Slightly thicker top border */
   width: 100%;
 }
 
 /* Column headings */
 .timetable-header span {
   border-right: 1px solid #ddd;
-  padding: 0.6rem;
-  font-size: 1rem;
+  padding: 1rem;  /* Increased padding for more space */
+  font-size: 1.1rem; /* Increased font size for better readability */
   word-wrap: break-word;  /* Allow text to break into new lines */
   white-space: normal;    /* Ensure wrapping happens in the column headers */
 }
@@ -72,7 +74,7 @@
   grid-template-columns: 1fr 1fr 1fr 2fr 1fr;
   gap: 0;
   text-align: center;
-  padding: 0.6rem 0;
+  padding: 1.2rem 0;  /* Increased padding for better spacing */
   border-bottom: 1px solid #ddd;
   width: 100%;
   word-wrap: break-word;  /* Allow text to break into new lines */
@@ -82,7 +84,7 @@
 /* Add vertical lines between columns */
 .timetable-slot span {
   border-right: 1px solid #ddd;
-  padding: 0.6rem;
+  padding: 1.2rem;  /* Increased padding for more space */
   word-wrap: break-word;
   white-space: normal;
 }
@@ -124,14 +126,14 @@
 
 /* Close button styles */
 .close-button {
-  padding: 0.6rem 2rem;
+  padding: 0.8rem 3rem;  /* Increased padding for larger button */
   background-color: #4CAF50;
   color: white;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  margin-top: 1.5rem;
-  font-size: 1.1rem;
+  margin-top: 2rem;  /* Added more space above the button */
+  font-size: 1.3rem;  /* Increased font size */
 }
 
 .close-button:hover {

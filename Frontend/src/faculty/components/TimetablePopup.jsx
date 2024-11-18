@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { API_URL } from "../../axios";
 import '../stylesheets/TimetablePopup.css';
@@ -69,8 +68,6 @@ const TimetablePopup = ({ facultyID, onClose }) => {
               <span>Till</span>
               <span>Subjects</span>
               <span>Room Number</span>
-              <span>Year</span>
-              <span>Section</span>
             </div>
             {timetable.map((slot, index) => (
               <div
@@ -82,8 +79,6 @@ const TimetablePopup = ({ facultyID, onClose }) => {
                 <span>{slot.EndTime}</span>
                 <span>{slot.SubjectName}</span>
                 <span>{slot.RoomNumber}</span>
-                <span>{slot.Stud_YearOfStudy}</span>
-                <span>{slot.Section}</span>
               </div>
             ))}
           </>
@@ -100,4 +95,3 @@ TimetablePopup.propTypes = {
 };
 
 export default TimetablePopup;
-
