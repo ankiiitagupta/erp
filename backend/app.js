@@ -198,7 +198,7 @@ WHERE
     AND t.LectureDate = CURDATE()  -- Replace with dynamic date input
    
 ORDER BY 
-    t.StartTime;
+    t.LectureNumber;
 `,
     [RollNO, formattedDate],
     (err, results) => {
@@ -250,7 +250,7 @@ app.get("/api/weekstimetable", (req, res) => {
                 DATE_SUB(?, INTERVAL WEEKDAY(?) DAY)  
                 AND DATE_ADD(DATE_SUB(?, INTERVAL WEEKDAY(?) DAY), INTERVAL 6 DAY) 
         ORDER BY 
-            t.LectureDate, t.StartTime;`,
+            t.LectureDate, t.LectureNumber;`,
     [RollNO, formattedDate, formattedDate, formattedDate, formattedDate],
     (err, results) => {
       if (err) {
@@ -305,7 +305,7 @@ app.get("/api/timetablebydate", (req, res) => {
               AND t.LectureDate = CURDATE()  -- Replace with dynamic date input
             
           ORDER BY 
-              t.StartTime;`,
+              t.LectureNuber;`,
     [RollNO, LectureDate],
     (err, results) => {
       if (err) {
@@ -590,7 +590,7 @@ app.get("/api/facultytodaystimetable", (req, res) => {
         t.FacultyID = ? -- Replace with the FacultyID of the desired faculty
         AND t.LectureDate = CURDATE() -- Filters for today’s date
     ORDER BY 
-        t.StartTime;
+        t.LectureNumber;
 
         `;
 
@@ -640,7 +640,7 @@ app.get("/api/facultyondateselectionattendance", (req, res) => {
       t.FacultyID = ? 
       AND t.LectureDate = ? -- Filters for the selected date
     ORDER BY 
-      t.StartTime;
+      t.LectureNumber;
   `;
 
   db.query(query, [facultyID, formattedDate], (err, results) => {
