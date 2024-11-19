@@ -6,7 +6,7 @@ const app = express();
 const port = 3006; // Make sure to use the same port here
 
 app.use(cors());
-app.use(express.json()); 
+app.use(express.json());
 
 const db = mysql.createConnection({
   host: "localhost",
@@ -373,8 +373,6 @@ app.get("/api/attendencebymonthforsub", (req, res) => {
   });
 });
 
-
-
 // Student Performance Record
 app.get("/api/studentperformancerecord", (req, res) => {
   const { RollNO } = req.query;
@@ -407,8 +405,6 @@ app.get("/api/studentperformancerecord", (req, res) => {
     }
   );
 });
-
-
 
 // Subjects and SubjectId of student
 app.get("/api/subjectandsubjectidofstud", (req, res) => {
@@ -480,14 +476,10 @@ app.get("/api/batchmateofstud", (req, res) => {
   );
 });
 
-
-
-
 /*
  * ********************************************************************
  *                             Faculty                            *
  * ********************************************************************/
-
 
 // Employee Detail api
 
@@ -521,6 +513,37 @@ app.get("/api/EmployeeDetails", (req, res) => {
   );
 });
 
+// Faculty Roles
+
+// Extract FacultyID from the query parameter
+
+app.get("/api/roles", (req, res) => {
+  const { facultyID } = req.query;
+
+  db.query(
+    `
+      
+      SELECT 
+      f.FacultyID, 
+       r.role_ID,
+      r.role_name
+    FROM 
+      faculty f
+    JOIN 
+      role_assignments ra ON f.FacultyID = ra.FacultyID
+    JOIN 
+      roles r ON ra.role_id = r.role_id
+    WHERE 
+      f.FacultyID = ?
+  ;`,
+
+    [facultyID],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
 
 // Faculty Timetable
 
@@ -605,7 +628,6 @@ app.get("/api/facultytodaystimetable", (req, res) => {
   });
 });
 
-
 // Faculty TWeeks Timetable
 app.get("/api/facultyweekstimetable", (req, res) => {
   const { facultyID } = req.query;
@@ -661,7 +683,7 @@ app.get("/api/facultyondateselectionattendance", (req, res) => {
   }
 
   // Ensure the LectureDate is in the correct format (YYYY-MM-DD)
-  const formattedDate = new Date(LectureDate).toISOString().split('T')[0];
+  const formattedDate = new Date(LectureDate).toISOString().split("T")[0];
 
   // Query to get timetable details for the specific faculty
   const query = `
@@ -731,14 +753,15 @@ app.get("/api/getstudentsoflectureondate", (req, res) => {
     (err, results) => {
       if (err) {
         console.error("Error fetching students with attendance:", err);
-        res.status(500).json({ error: "Failed to fetch students with attendance" });
+        res
+          .status(500)
+          .json({ error: "Failed to fetch students with attendance" });
         return;
       }
       res.json(results);
     }
   );
 });
-
 
 // Update the attendance
 app.post("/api/markattendance", (req, res) => {
@@ -752,9 +775,16 @@ app.post("/api/markattendance", (req, res) => {
   const query = `
     INSERT INTO attendance (RollNO, LectureDate, LectureNumber, AttendanceStatus, SubjectID, FacultyID)
     VALUES
-      ${attendanceData.map((item) => 
-        `(${db.escape(item.studentID)}, ${db.escape(item.lectureDate)}, ${db.escape(item.lectureNumber)}, ${db.escape(item.status)}, ${db.escape(item.subjectID)}, ${db.escape(item.facultyID)})`
-      ).join(', ')}
+      ${attendanceData
+        .map(
+          (item) =>
+            `(${db.escape(item.studentID)}, ${db.escape(
+              item.lectureDate
+            )}, ${db.escape(item.lectureNumber)}, ${db.escape(
+              item.status
+            )}, ${db.escape(item.subjectID)}, ${db.escape(item.facultyID)})`
+        )
+        .join(", ")}
     AS attendance_data
     ON DUPLICATE KEY UPDATE 
       AttendanceStatus = attendance_data.AttendanceStatus
@@ -771,7 +801,7 @@ app.post("/api/markattendance", (req, res) => {
   });
 });
 
-// Subjects taught by faculty 
+// Subjects taught by faculty
 app.get("/api/subjectoffaculty", (req, res) => {
   const { facultyID } = req.query;
 
@@ -786,7 +816,6 @@ app.get("/api/subjectoffaculty", (req, res) => {
     }
   );
 });
-
 
 // Start the server on the specified port
 app.listen(port, () => {

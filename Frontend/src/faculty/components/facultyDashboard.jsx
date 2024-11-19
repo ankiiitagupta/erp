@@ -70,6 +70,7 @@ const FacultyDashboard = () => {
     setShowPopup(false);
   };
 
+  
   // Function to render faculty details section
   const renderFacultyDetails = () => {
     if (faculty.length === 0) return <p>No faculty data available.</p>;
@@ -123,7 +124,7 @@ const FacultyDashboard = () => {
         setAcademicFlag={setAcademicFlag}
       />
       <div className="main-content">
-        <Header />
+        <Header facultyID={FacultyID}/>
         {AcademicFlag ? (
           <AcademicsDashboard facultyID={FacultyID} />
           

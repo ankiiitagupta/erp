@@ -2,7 +2,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
-import FacultyDashboard from './faculty/components/FacultyDashboard';
+import FacultyDashboard from './faculty/components/facultyDashboard';
 import TodaysAttendance from './faculty/components/TodaysAttendance';
 import StudentDashboard from './Student/Components/StudentDashboard';
 

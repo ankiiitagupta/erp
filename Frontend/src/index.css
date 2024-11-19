@@ -183,6 +183,8 @@ body {
     min-width: 200px;
   }
   
+
+
   .dropdown-item {
     padding: 12px 20px;
     text-decoration: none;
@@ -305,6 +307,24 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 9999;
+  }
+  .role-selector {
+    margin-left: auto;
+    padding: 0 3rem; /* 15px -> 1.5rem */
+  }
+  
+  .role-selector label{
+    font-size: 1rem;
+    font-weight: 500;
+    
+    text-transform: capitalize;
+   
+  }
+  .role-dropdown {
+    padding: 0.5rem; /* 5px -> 0.5rem */
+    font-size: 1rem; /* 14px -> 1.4rem */
+    border: 0.1rem solid #030303; /* 1px -> 0.1rem */
+    border-radius: 0.4rem; /* 4px -> 0.4rem */
   }
   
   .form-overlay {

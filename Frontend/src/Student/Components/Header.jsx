@@ -1,28 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import logo from '../../assets/logo.png';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-const Header = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+import axios from "axios";
+import { API_URL } from "../../axios.js";
+
+
+const Header = ({facultyID}) => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isGrievanceFormOpen, setIsGrievanceFormOpen] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(true);
+  const [showroleselector, setshowroleselector] = useState(true);
+  
   const [showProfile, setShowProfile] = useState(true);
   const location = useLocation();
   const [grievanceData, setGrievanceData] = useState({
-    name: '',
-    rollNumber: '',
-    category: '',
-    subject: '',
+    name: "",
+    rollNumber: "",
+    category: "",
+    subject: "",
     document: null,
-    query: '',
+    query: "",
   });
+  const [roles, setRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState("");
+
+  
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/api/roles?facultyID=${facultyID}`)
+      .then((response) => {
+        setRoles(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        setError("Failed to fetch roles data");
+        console.error(error);
+      });
+    }, [facultyID]);
 
   useEffect(() => {
     // Toggle search bar and profile visibility based on current path
-    const isLoginPage = location.pathname.toLowerCase() === '/';
+    const isLoginPage = location.pathname.toLowerCase() === "/";
     setShowSearchBar(!isLoginPage);
     setShowProfile(!isLoginPage);
+    setshowroleselector(!isLoginPage);
   }, [location]);
 
   // Function to handle search
@@ -30,12 +52,30 @@ const Header = () => {
     e.preventDefault();
     const section = document.getElementById(searchTerm.toLowerCase());
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
     } else {
-      alert('Section not found');
+      alert("Section not found");
     }
-    setSearchTerm('');
+    setSearchTerm("");
   };
+
+  const handleRoleChange = (event) => {
+    const role = event.target.value;
+  
+    const userConfirmed = confirm(
+      `Are you sure you want to change your role to ${role}?`
+    );
+  
+    if (userConfirmed) {
+      console.log(`Role is selected to ${role}`);
+      setSelectedRole(role); // Update the selected role state
+    } else {
+      console.log("Role not changed.");
+      // Optionally reset the dropdown to the previous value
+      event.target.value = selectedRole; // Ensure dropdown reflects current role
+    }
+  };
+  
 
   // Toggle dropdown visibility
   const toggleDropdown = () => {
@@ -44,10 +84,10 @@ const Header = () => {
 
   // Logout function
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
     sessionStorage.clear();
-    alert('You have been logged out.');
-    window.location.href = '/'; // Redirect to home or login page
+    alert("You have been logged out.");
+    window.location.href = "/"; // Redirect to home or login page
   };
 
   // Function to handle grievance form toggle
@@ -108,12 +148,45 @@ const Header = () => {
         )}
       </div>
 
+      {showroleselector && (
+      <div className="role-selector">
+        <label htmlFor="faculty-roles">
+          <strong>Select Role:</strong>
+        </label>
+        <select
+          id="faculty-roles"
+          className="role-dropdown"
+          value={selectedRole}
+          onChange={handleRoleChange}
+        >
+          <option value="">-- Choose Role --</option>
+          {roles.map((role) => (
+            <option key={role.role_id} value={role.role_name} 
+            >
+              {role.role_name}
+            </option>
+          ))}
+        </select>
+        
+      </div>
+    )} 
+
       {/* Right side: Navigation links and Profile Dropdown */}
+      
       <div className="navbar-end">
-        <a href="/" className="navbar-item">Home</a>
-        <a href="https://www.mpgi.edu.in/" className="navbar-item">About</a>
-        <a href="#contact" className="navbar-item">Contact</a>
-        <a href="#privacy" className="navbar-item">Privacy Policy</a>
+      
+        <a href="/" className="navbar-item">
+          Home
+        </a>
+        <a href="https://www.mpgi.edu.in/" className="navbar-item">
+          About
+        </a>
+        <a href="#contact" className="navbar-item">
+          Contact
+        </a>
+        <a href="#privacy" className="navbar-item">
+          Privacy Policy
+        </a>
 
         {/* Profile Dropdown */}
         {showProfile && (
@@ -122,8 +195,14 @@ const Header = () => {
               <i className="fas fa-user"></i> {/* Font Awesome Profile Icon */}
             </div>
             <span className="profile-name">
-              Profile <i className={`fas fa-chevron-down ${isDropdownOpen ? 'rotate' : ''}`}></i>
+              Profile{" "}
+              <i
+                className={`fas fa-chevron-down ${
+                  isDropdownOpen ? "rotate" : ""
+                }`}
+              ></i>
             </span>
+
             {isDropdownOpen && (
               <div className="profile-dropdown">
                 <a href="#" className="dropdown-item">
@@ -135,7 +214,11 @@ const Header = () => {
                 <a href="#" className="dropdown-item" onClick={handleLogout}>
                   <i className="fas fa-sign-out-alt"></i> Log Out
                 </a>
-                <a href="#" className="dropdown-item" onClick={toggleGrievanceForm}>
+                <a
+                  href="#"
+                  className="dropdown-item"
+                  onClick={toggleGrievanceForm}
+                >
                   <i className="fas fa-envelope"></i> Submit Grievance
                 </a>
                 <a href="#" className="dropdown-item">
@@ -143,6 +226,8 @@ const Header = () => {
                 </a>
               </div>
             )}
+
+            {/* Right side role selector */}
           </div>
         )}
       </div>
@@ -226,8 +311,16 @@ const Header = () => {
               />
             </div>
 
-            <button type="submit" className="submit-btn">Submit</button>
-            <button type="button" className="cancel-btn" onClick={toggleGrievanceForm}>Cancel</button>
+            <button type="submit" className="submit-btn">
+              Submit
+            </button>
+            <button
+              type="button"
+              className="cancel-btn"
+              onClick={toggleGrievanceForm}
+            >
+              Cancel
+            </button>
           </form>
         </div>
       )}
