@@ -105,6 +105,7 @@ const FacultyDashboard = () => {
     if (timetable.length === 0) return <p>No timetable data available.</p>;
 
     return (
+      
       <div className="timetable">
         <h4>Faculty Timetable</h4>
         <FacultyTimeTable facultyID={FacultyID} timetable={timetable}  setEmpdetailFlag={setEmpdetailFlag}
