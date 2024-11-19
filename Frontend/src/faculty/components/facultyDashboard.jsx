@@ -107,7 +107,7 @@ const FacultyDashboard = () => {
     return (
       <div className="timetable">
         <h4>Faculty Timetable</h4>
-        <FacultyTimeTable facultyID={FacultyID} timetable={timetable}  setEmpdetailFlag={setEmpdetailFlag}
+        <FacultyTimeTable FacultyID={FacultyID} timetable={timetable}  setEmpdetailFlag={setEmpdetailFlag}
         setMarkAttendanceFlag={setMarkAttendanceFlag}
         setAcademicFlag={setAcademicFlag}/>
       </div>
@@ -124,7 +124,7 @@ const FacultyDashboard = () => {
       <div className="main-content">
         <Header />
         {AcademicFlag ? (
-          <AcademicsDashboard FacultyID={FacultyID} />
+          <AcademicsDashboard facultyID={FacultyID} />
           
         ) : MarkAttendanceFlag ? (
           <div className="MarkAttendance-Detail">

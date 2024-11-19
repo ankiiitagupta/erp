@@ -365,3 +365,39 @@ th.out-of-header {
 .progress-percentage {
   font-weight: bold;
 }
+
+
+/* =================================================NOTES.CSS=========================================================================== */
+
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.subject-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.subject-code {
+  font-size: 16px;
+  color: gray;
+}
+
+.upload-button {
+  background-color: #825a5a;
+  border: 1px solid gray;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload-icon {
+  height: 20px;
+}
+

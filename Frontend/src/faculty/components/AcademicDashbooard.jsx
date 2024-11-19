@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // import useEffect as well
 import "../stylesheets/AcademicsDashboard.css";
+import axios from "axios";
+import { API_URL } from "../../axios.js";
 import noteclip from "../../assets/AcademicDashboardsvg/noteclip.png";
 import Marksclip from "../../assets/AcademicDashboardsvg/Markclip.png";
 import syllabus from "../../assets/AcademicDashboardsvg/syllabus.png";
@@ -7,10 +9,15 @@ import Assignment from "../../assets/AcademicDashboardsvg/Assignment.png";
 import Projects from "../../assets/AcademicDashboardsvg/Projects.png";
 import meeting from "../../assets/AcademicDashboardsvg/meeting.png";
 
-const AcademicsDashboard = (FacultyID) => {
+const AcademicsDashboard = ({ facultyID }) => {
+  // Destructure FacultyID from props
   const [showMarks, setShowMarks] = useState(false);
   const [showSyllabus, setshowSyllabus] = useState(false);
+  const [showNotes, setshowNotes] = useState(false);
+  const [Error, setError] = useState(false);
+  const [subjects, setSubjects] = useState([""]);
   const [applyOutOfToAll, setApplyOutOfToAll] = useState(false);
+  const [selectedActiveSubject, setActiveSelectedSubject] = useState(false);
   const [marksData, setMarksData] = useState([
     {
       rollNo: "12345",
@@ -19,11 +26,9 @@ const AcademicsDashboard = (FacultyID) => {
       marks: "",
       outOf: "",
     },
-    // Add more students as needed
   ]);
-   
 
-  // State for placeholder selections
+  const [NotesSelectedSubject, setNotesSelectedSubject] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedExam, setSelectedExam] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
@@ -51,46 +56,142 @@ const AcademicsDashboard = (FacultyID) => {
     }
   };
 
-  const renderSyllabusStudent = () => {
-  
-      const subjects = [
-        { name: "MATHEMATICS", subjectCode: "(SUBJECT CODE)", course: "BTECH-CSE", progress: 50 },
-        { name: "MATHEMATICS", subjectCode: "(SUBJECT CODE)", course: "BTECH-CSE", progress: 50 },
-        { name: "MATHEMATICS", subjectCode: "(SUBJECT CODE)", course: "BTECH-CSE", progress: 50 },
-        { name: "MATHEMATICS", subjectCode: "(SUBJECT CODE)", course: "BTECH-CSE", progress: 50 },
-      ];
-    
-      return (
-        <div className="syllabus-dashboard">
-          
-    
-          <div className="syllabus-content">
-            <h1 className="syllabus-title">SYLLABUS</h1>
-            {subjects.map((subject, index) => (
-              <div key={index} className="subject-card">
-                <div className="subject-details">
-                  <span className="subject-name">{subject.name}</span>
-                  <span className="subject-code">{subject.subjectCode}</span>
-                  <span className="course-code">{subject.course}</span>
-                </div>
-                <div className="progress-bar-container">
-                  <div
-                    className="progress-bar"
-                    style={{ width: `${subject.progress}%` }}
-                  ></div>
-                </div>
-                <button className="update-progress-button">Update</button>
-                <span className="progress-percentage">{subject.progress}%</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
+  // Example data for subjects and notes
+  const notessubjects = [
+    { name: "MATHEMATICS", code: "MATH101" },
+    { name: "PHYSICS", code: "PHYS101" },
+    { name: "CHEMISTRY", code: "CHEM101" },
+  ];
 
-    
-  }
+  const subjectnotes = [
+    { unit: "UNIT-1", topic: "ALGEBRA" },
+    { unit: "UNIT-2", topic: "TRIGONOMETRY" },
+    { unit: "UNIT-3", topic: "GEOMETRY" },
+    { unit: "UNIT-4", topic: "CALCULUS" },
+  ];
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/api/subjectoffaculty?facultyID=${facultyID}`)
+      .then((response) => {
+        setSubjects(response.data);
+      })
+      .catch((error) => {
+        setError("Failed to fetch subjects data");
+        console.error(error);
+      });
+  }, [facultyID]);
+
+  const renderNotesPerSubject = (selectedSubject) => {
+    return (
+      <div className="main-content">
+        <div className="header">
+          <div className="header-left">
+            <h1 className="subject-title">
+              {selectedSubject.SubjectName || "Subject Name"}
+            </h1>
+            <span className="subject-code">
+              {selectedSubject.SubjectID || "Subject Code"}
+            </span>
+          </div>
+          <button className="upload-button">UPLOAD</button>
+        </div>
+        <hr style={{ border: "1px solid black", margin: "20px 20px", backgroundColor: "black" }} />
+
+        {/* <div className="notes-grid">
+        {notes.map((note, index) => (
+          <div className="note-card" key={index}
+            >
+            <img src={fileIcon} alt="File" className="file-icon" />
+            <p className="note-title">{`${note.unit} ${note.topic}`}</p>
+            <button className="download-button">
+              <i className="fa fa-download"></i>
+            </button>
+          </div>
+        ))}
+      </div> */}
+      </div>
+    );
+  };
+
+  const renderNotesStudent = () => {
+    return (
+      <div className="main-content">
+        <h2 className="content-title">Notes</h2>
+        <div className="icon-grid">
+          {subjects.map((subject, index) => (
+            <div
+              className="icon-card"
+              key={index}
+              onClick={() => {
+                setActiveSelectedSubject(true);
+                setNotesSelectedSubject(subject);
+              }}
+            >
+              <img src={noteclip} alt="Notes" className="icon" />
+              <p>{subject.SubjectName}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderSyllabusStudent = () => {
+    const subjects = [
+      {
+        name: "MATHEMATICS",
+        subjectCode: "(SUBJECT CODE)",
+        course: "BTECH-CSE",
+        progress: 50,
+      },
+      {
+        name: "MATHEMATICS",
+        subjectCode: "(SUBJECT CODE)",
+        course: "BTECH-CSE",
+        progress: 50,
+      },
+      {
+        name: "MATHEMATICS",
+        subjectCode: "(SUBJECT CODE)",
+        course: "BTECH-CSE",
+        progress: 50,
+      },
+      {
+        name: "MATHEMATICS",
+        subjectCode: "(SUBJECT CODE)",
+        course: "BTECH-CSE",
+        progress: 50,
+      },
+    ];
+
+    return (
+      <div className="syllabus-dashboard">
+        <div className="syllabus-content">
+          <h1 className="syllabus-title">SYLLABUS</h1>
+          {subjects.map((subject, index) => (
+            <div key={index} className="subject-card">
+              <div className="subject-details">
+                <span className="subject-name">{subject.name}</span>
+                <span className="subject-code">{subject.subjectCode}</span>
+                <span className="course-code">{subject.course}</span>
+              </div>
+              <div className="progress-bar-container">
+                <div
+                  className="progress-bar"
+                  style={{ width: `${subject.progress}%` }}
+                ></div>
+              </div>
+              <button className="update-progress-button">Update</button>
+              <span className="progress-percentage">{subject.progress}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   const renderMarksStudent = () => {
-    // Condition to check if all dropdowns are selected
     const allFieldsSelected =
       selectedCourse && selectedExam && selectedSection && selectedSubject;
 
@@ -210,8 +311,15 @@ const AcademicsDashboard = (FacultyID) => {
 
   return (
     <div className="academics-dashboard">
-      {showSyllabus ? renderSyllabusStudent():
-      showMarks ? (
+      {showNotes ? (
+        selectedActiveSubject ? (
+          renderNotesPerSubject(NotesSelectedSubject)
+        ) : (
+          renderNotesStudent()
+        )
+      ) : showSyllabus ? (
+        renderSyllabusStudent()
+      ) : showMarks ? (
         renderMarksStudent()
       ) : (
         <div className="main-content">
@@ -233,7 +341,7 @@ const AcademicsDashboard = (FacultyID) => {
               </span>
             </div>
 
-            <div className="icon-card">
+            <div className="icon-card" onClick={() => setshowNotes(true)}>
               <img src={noteclip} alt="Notes" className="icon" />
               <p>NOTES</p>
               <span className="tooltip">Download and Provide class notes</span>
