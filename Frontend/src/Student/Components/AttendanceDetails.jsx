@@ -157,7 +157,7 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
             <span className="label">Gender:</span>{" "}
             <span className="value">{student.Stud_Gender}</span>
             <form className="formsub">
-              <label htmlFor="month" className="form-label"></label>
+            
 
               <label htmlFor="Subject" className="form-label">
                 Subject:
