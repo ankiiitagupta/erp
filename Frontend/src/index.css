@@ -889,6 +889,17 @@ th {
 
 
 /* attendencedetails component css */
+.attbox-main{
+ 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 14rem;
+    align-items: stretch;
+    border:2px solid 2px;
+    /* Ensure all boxes have the same height */
+
+}
 
 .attbox {
     display: flex;
@@ -907,6 +918,7 @@ th {
     border: 2px solid black;
     border-radius: 00%;
     display: flex;
+    margin-top:14rem;
     flex-direction: column;
     justify-content: space-between;
     box-sizing: content-box;
@@ -925,6 +937,7 @@ th {
     display: flex;
     flex-direction: row;
     justify-content: left;
+
     /* margin-top: 4rem; */
     /* margin-left: 10rem; */
 }
@@ -1056,6 +1069,9 @@ th {
     color: #090909;
 }
 
+label{
+  margin:0;
+}
 .form-value {
     flex-grow: 1;
     /* Allow select to grow and take available space */
@@ -1064,6 +1080,8 @@ th {
 }
 
 .form-button {
+   display:flex;
+   flex-direction: row;
     margin-left: 15rem;
 }
 
@@ -1224,7 +1242,8 @@ th {
 
 .daily-topsection {
     position: relative;
-    margin-top: 0;
+    margin-top: 10rem;
+    margin-right: 35rem;
 }
 
 .dailyattpiechartcontainer {
