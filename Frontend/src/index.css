@@ -793,6 +793,7 @@ body {
     width: 150px;
     height: 50px;
     transition: background-color 0.3s ease, color 0.3s ease;
+    margin-left:67rem;
 }
 
 /* Hover effect */
@@ -1130,6 +1131,9 @@ label{
   overflow-y: auto; /* Enable vertical scrolling */
   padding: 10px; /* Optional padding for better aesthetics */
   box-sizing: border-box; /* Include padding and border in height/width */
+}
+label {
+   margin: 0rem;
 }
 
 

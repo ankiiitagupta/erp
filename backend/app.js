@@ -771,9 +771,21 @@ app.post("/api/markattendance", (req, res) => {
   });
 });
 
+// Subjects taught by faculty 
+app.get("/api/subjectoffaculty", (req, res) => {
+  const { facultyID } = req.query;
 
-
-
+  db.query(
+    `
+        SELECT SubjectName from subject where FacultyID=?;
+`,
+    [facultyID],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
 
 
 // Start the server on the specified port
