@@ -9,8 +9,6 @@ import TimetablePopup from "./TimetablePopup.jsx";
 import EmployeeDetail from "./EmployeeDetail.jsx";
 import MarkStudentAttendance from "./MarkStudentAttendance.jsx"; // Ensure this component is correctly imported
 import AcademicsDashboard from "./AcademicDashbooard.jsx";
-import ReactCalendar from "react-calendar";
-import '../stylesheets/AcademicCalendar.css';
 
 
 // Inline style for name box layout
@@ -109,15 +107,12 @@ const FacultyDashboard = () => {
     return (
       <div className="timetable">
         <h4>Faculty Timetable</h4>
-        <FacultyTimeTable timetable={timetable}  setEmpdetailFlag={setEmpdetailFlag}
+        <FacultyTimeTable facultyID={FacultyID} timetable={timetable}  setEmpdetailFlag={setEmpdetailFlag}
         setMarkAttendanceFlag={setMarkAttendanceFlag}
         setAcademicFlag={setAcademicFlag}/>
       </div>
     );
   };
-
-  
-  
 
   return (
     <div className="dashboard">

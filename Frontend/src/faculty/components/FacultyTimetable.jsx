@@ -26,33 +26,12 @@ const FacultyTimeTable = ({
     { start: "03:55 PM", end: "04:45 PM" },
   ];
 
-  // useEffect(() => {
-  //   const fetchTimetable = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `${API_URL}/api/facultytodaystimetable?facultyID=${facultyID}`
-  //       );
-  //       if (Array.isArray(response.data)) {
-  //         setTimetable(response.data);
-  //       } else {
-  //         throw new Error('Invalid response format');
-  //       }
-  //     } catch (err) {
-  //       setError('Failed to fetch timetable data');
-  //       console.error(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchTimetable();
-  // }, [facultyID]);
-
   useEffect(() => {
     axios
-      .get(`${API_URL}/api/facultytimetable?facultyID=${facultyID}`)
+      .get(`${API_URL}/api/facultyweekstimetable?facultyID=${facultyID}`)
       .then((response) => {
         setPeriods(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         setError("Failed to fetch timetable data");
