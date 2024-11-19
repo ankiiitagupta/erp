@@ -1,0 +1,29 @@
+.calendar-section{
+        margin-top: 20px;
+        font-family: Arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        background-color: #fff;
+    border-radius: 0.5rem;
+}
+
+ h4 .cal-heading {
+    margin-top:1rem;
+}
+
+.custom-calendar {
+    width: 300px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  
+  .custom-calendar .react-calendar__tile {
+    padding: 8px;
+  }
+  
+  .custom-calendar .react-calendar__navigation button {
+    font-size: 14px;
+  }
+  

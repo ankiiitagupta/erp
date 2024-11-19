@@ -20,10 +20,33 @@ const FacultyTimeTable = ({
     { start: "10:35 AM", end: "11:25 AM" },
     { start: "11:25 AM", end: "12:20 PM" },
     { start: "12:20 PM", end: "01:10 PM" },
+    { start: "01:10 PM", end: "02:05 PM" },
     { start: "02:05 PM", end: "02:55 PM" },
     { start: "03:00 PM", end: "03:50 PM" },
     { start: "03:55 PM", end: "04:45 PM" },
   ];
+
+  // useEffect(() => {
+  //   const fetchTimetable = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${API_URL}/api/facultytodaystimetable?facultyID=${facultyID}`
+  //       );
+  //       if (Array.isArray(response.data)) {
+  //         setTimetable(response.data);
+  //       } else {
+  //         throw new Error('Invalid response format');
+  //       }
+  //     } catch (err) {
+  //       setError('Failed to fetch timetable data');
+  //       console.error(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchTimetable();
+  // }, [facultyID]);
 
   useEffect(() => {
     axios
@@ -163,3 +186,5 @@ const FacultyTimeTable = ({
 };
 
 export default FacultyTimeTable;
+
+
