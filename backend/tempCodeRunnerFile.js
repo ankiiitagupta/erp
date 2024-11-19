@@ -1,1 +1,1 @@
-AttendanceStatus
+/api/timetablebydate

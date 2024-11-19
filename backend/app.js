@@ -302,10 +302,10 @@ app.get("/api/timetablebydate", (req, res) => {
                   AND a.LectureDate = t.LectureDate
           WHERE 
               st.RollNO = ?  -- Replace with dynamic input from API
-              AND t.LectureDate = CURDATE()  -- Replace with dynamic date input
+              AND t.LectureDate = ?  -- Replace with dynamic date input
             
           ORDER BY 
-              t.LectureNuber;`,
+              t.StartTime;`,
     [RollNO, LectureDate],
     (err, results) => {
       if (err) {
@@ -724,6 +724,9 @@ app.post("/api/markattendance", (req, res) => {
     res.json({ message: "Attendance updated successfully" });
   });
 });
+
+
+
 
 
 
