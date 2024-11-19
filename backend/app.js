@@ -605,6 +605,52 @@ app.get("/api/facultytodaystimetable", (req, res) => {
   });
 });
 
+
+// Faculty TWeeks Timetable
+app.get("/api/facultyweekstimetable", (req, res) => {
+  const { facultyID } = req.query;
+
+  // Query to get timetable details for the specific faculty
+  const query = `
+        SELECT DISTINCT
+        t.TimetableID,
+        s.SubjectName,
+        c.CourseName, 
+        t.StartTime,
+        t.EndTime,
+        t.RoomNumber,
+        t.LectureNumber,
+        t.DayOfWeek,
+        t.LectureDate
+    FROM 
+        timetable AS t
+    JOIN 
+        subject AS s ON t.SubjectID = s.SubjectID
+    JOIN 
+        course AS c ON t.CourseID = c.CourseID
+    JOIN 
+        student AS st ON st.Section = t.Section
+    WHERE 
+        t.FacultyID = ? -- Replace with the FacultyID of the desired faculty
+        AND t.LectureDate BETWEEN '2024-11-18' AND '2024-11-23'
+    ORDER BY 
+        t.LectureDate, 
+        t.LectureNumber;
+
+
+        `;
+
+  db.query(query, [facultyID], (err, results) => {
+    if (err) {
+      console.error("Error fetching timetable data:", err);
+      return res.status(500).json({ error: "Failed to fetch timetable data" });
+    }
+
+    // Send the timetable data to the frontend
+    res.json(results);
+  });
+});
+
 //on selection the lecture
 app.get("/api/facultyondateselectionattendance", (req, res) => {
   const { facultyID, LectureDate } = req.query;
