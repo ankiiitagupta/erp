@@ -198,7 +198,7 @@ WHERE
     AND t.LectureDate = CURDATE()  -- Replace with dynamic date input
    
 ORDER BY 
-    t.StartTime;
+    t.LectureNumber;
 `,
     [RollNO, formattedDate],
     (err, results) => {
@@ -250,7 +250,7 @@ app.get("/api/weekstimetable", (req, res) => {
                 DATE_SUB(?, INTERVAL WEEKDAY(?) DAY)  
                 AND DATE_ADD(DATE_SUB(?, INTERVAL WEEKDAY(?) DAY), INTERVAL 6 DAY) 
         ORDER BY 
-            t.LectureDate, t.StartTime;`,
+            t.LectureDate, t.LectureNumber;`,
     [RollNO, formattedDate, formattedDate, formattedDate, formattedDate],
     (err, results) => {
       if (err) {
@@ -288,21 +288,22 @@ app.get("/api/timetablebydate", (req, res) => {
           JOIN 
               course AS c ON e.CourseID = c.CourseID
           JOIN 
-              timetable AS t ON c.DepartmentID = t.DepartmentID
-                AND t.YearOfStudy = st.Stud_YearOfStudy
-                AND t.Section = st.Section
-          JOIN 
+              timetable AS t ON t.CourseID = c.CourseID
+                  AND t.YearOfStudy = st.Stud_YearOfStudy
+                  AND t.Section = st.Section
+                  AND t.DepartmentID = c.DepartmentID
+          LEFT JOIN 
               subject AS s ON t.SubjectID = s.SubjectID
-          JOIN 
+          LEFT JOIN 
               faculty AS f ON s.FacultyID = f.FacultyID
           LEFT JOIN 
-              attendance AS a ON st.RollNO = a.RollNO 
-                AND t.SubjectID = a.SubjectID 
-                AND t.LectureNumber = a.LectureNumber 
-                AND t.LectureDate = a.LectureDate  -- Ensure the date matches the attendance record
+              attendance AS a ON a.RollNo = st.RollNO
+                  AND a.LectureNumber = t.LectureNumber
+                  AND a.LectureDate = t.LectureDate
           WHERE 
-              st.RollNO = ? 
-              AND t.LectureDate = ?  
+              st.RollNO = ?  -- Replace with dynamic input from API
+              AND t.LectureDate = ?  -- Replace with dynamic date input
+            
           ORDER BY 
               t.StartTime;`,
     [RollNO, LectureDate],
@@ -589,7 +590,53 @@ app.get("/api/facultytodaystimetable", (req, res) => {
         t.FacultyID = ? -- Replace with the FacultyID of the desired faculty
         AND t.LectureDate = CURDATE() -- Filters for today’s date
     ORDER BY 
-        t.StartTime;
+        t.LectureNumber;
+
+        `;
+
+  db.query(query, [facultyID], (err, results) => {
+    if (err) {
+      console.error("Error fetching timetable data:", err);
+      return res.status(500).json({ error: "Failed to fetch timetable data" });
+    }
+
+    // Send the timetable data to the frontend
+    res.json(results);
+  });
+});
+
+
+// Faculty TWeeks Timetable
+app.get("/api/facultyweekstimetable", (req, res) => {
+  const { facultyID } = req.query;
+
+  // Query to get timetable details for the specific faculty
+  const query = `
+        SELECT DISTINCT
+        t.TimetableID,
+        s.SubjectName,
+        c.CourseName, 
+        t.StartTime,
+        t.EndTime,
+        t.RoomNumber,
+        t.LectureNumber,
+        t.DayOfWeek,
+        t.LectureDate
+    FROM 
+        timetable AS t
+    JOIN 
+        subject AS s ON t.SubjectID = s.SubjectID
+    JOIN 
+        course AS c ON t.CourseID = c.CourseID
+    JOIN 
+        student AS st ON st.Section = t.Section
+    WHERE 
+        t.FacultyID = ? -- Replace with the FacultyID of the desired faculty
+        AND t.LectureDate BETWEEN '2024-11-18' AND '2024-11-23'
+    ORDER BY 
+        t.LectureDate, 
+        t.LectureNumber;
+
 
         `;
 
@@ -639,7 +686,7 @@ app.get("/api/facultyondateselectionattendance", (req, res) => {
       t.FacultyID = ? 
       AND t.LectureDate = ? -- Filters for the selected date
     ORDER BY 
-      t.StartTime;
+      t.LectureNumber;
   `;
 
   db.query(query, [facultyID, formattedDate], (err, results) => {

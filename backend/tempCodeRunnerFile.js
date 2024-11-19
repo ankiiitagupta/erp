@@ -1,1 +1,1 @@
-/api/getstudentsoflectureondate
+/api/timetablebydate

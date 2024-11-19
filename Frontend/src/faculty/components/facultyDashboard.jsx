@@ -10,6 +10,7 @@ import EmployeeDetail from "./EmployeeDetail.jsx";
 import MarkStudentAttendance from "./MarkStudentAttendance.jsx"; // Ensure this component is correctly imported
 import AcademicsDashboard from "./AcademicDashbooard.jsx";
 
+
 // Inline style for name box layout
 const namebox = {
   display: "flex",
@@ -28,6 +29,9 @@ const FacultyDashboard = () => {
   const [EmpdetailFlag, setEmpdetailFlag] = useState(false); // Flag for showing employee details
   const [MarkAttendanceFlag, setMarkAttendanceFlag] = useState(false); // Flag for showing attendance mark section
   const [AcademicFlag, setAcademicFlag] = useState(false);
+  
+
+
   useEffect(() => {
     // Fetch faculty details using Faculty ID
     axios
@@ -103,7 +107,9 @@ const FacultyDashboard = () => {
     return (
       <div className="timetable">
         <h4>Faculty Timetable</h4>
-        <FacultyTimeTable timetable={timetable} />
+        <FacultyTimeTable facultyID={FacultyID} timetable={timetable}  setEmpdetailFlag={setEmpdetailFlag}
+        setMarkAttendanceFlag={setMarkAttendanceFlag}
+        setAcademicFlag={setAcademicFlag}/>
       </div>
     );
   };
@@ -138,6 +144,7 @@ const FacultyDashboard = () => {
               {renderFacultyDetails()}
             </div>
             <div className="timetable-section">{renderTimetable()}</div>
+            
           </div>
         )}
       </div>
