@@ -1,31 +1,34 @@
-// FacultyTimetable.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../axios";
 import axios from "axios";
-import '../stylesheets/FacultyTimetable.css'; // Ensure the CSS file is imported
+import "../stylesheets/FacultyTimetable.css";
 
-const FacultyTimeTable = ({ facultyID, setEmpdetailFlag , setMarkAttendanceFlag, setAcademicFlag}) => {
+const FacultyTimeTable = ({
+  facultyID,
+  setEmpdetailFlag,
+  setMarkAttendanceFlag,
+  setAcademicFlag,
+}) => {
   const navigate = useNavigate();
   const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const [periods, setPeriods] = useState(null);
   const [error, setError] = useState(null);
 
   const timeSlots = [
-    "09:45 AM - 10:35 AM",
-    "10:35 AM - 11:25 AM",
-    "11:25 AM - 12:20 PM",
-    "12:20 PM - 01:10 PM",
-    "02:05 PM - 02:55 PM",
-    "03:00 PM - 03:50 PM",
-    "03:55 PM - 04:45 PM",
+    { start: "09:45 AM", end: "10:35 AM" },
+    { start: "10:35 AM", end: "11:25 AM" },
+    { start: "11:25 AM", end: "12:20 PM" },
+    { start: "12:20 PM", end: "01:10 PM" },
+    { start: "02:05 PM", end: "02:55 PM" },
+    { start: "03:00 PM", end: "03:50 PM" },
+    { start: "03:55 PM", end: "04:45 PM" },
   ];
 
   useEffect(() => {
     axios
       .get(`${API_URL}/api/facultytimetable?facultyID=${facultyID}`)
       .then((response) => {
-        console.log(response.data);
         setPeriods(response.data);
       })
       .catch((error) => {
@@ -34,21 +37,34 @@ const FacultyTimeTable = ({ facultyID, setEmpdetailFlag , setMarkAttendanceFlag,
       });
   }, [facultyID]);
 
-  const getPeriodForLecture = (startTime) => {
-    switch (startTime) {
-      case "09:00:00": return 0;
-      case "10:00:00": return 1;
-      case "11:00:00": return 2;
-      case "12:00:00": return 3;
-      case "14:00:00": return 4;
-      case "15:00:00": return 5;
-      case "16:00:00": return 6;
-      default: return -1;
-    }
+  const isCurrentTimeInSlot = (slot) => {
+    const now = new Date();
+    const [startHours, startMinutes] = parseTime(slot.start);
+    const [endHours, endMinutes] = parseTime(slot.end);
+
+    const startDateTime = new Date();
+    startDateTime.setHours(startHours, startMinutes, 0);
+
+    const endDateTime = new Date();
+    endDateTime.setHours(endHours, endMinutes, 0);
+
+    return now >= startDateTime && now <= endDateTime;
   };
 
-  const handleTodaysAttendance = (lecture ,setEmpdetailFlag , setMarkAttendanceFlag, setAcademicFlag) => {
-    navigate(`/todaysattendance`, { state: { lecture ,setEmpdetailFlag , setMarkAttendanceFlag, setAcademicFlag  } });
+  const parseTime = (timeStr) => {
+    const [time, period] = timeStr.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+
+    if (period === "PM" && hours !== 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+
+    return [hours, minutes];
+  };
+
+  const handleTodaysAttendance = (lecture, setEmpdetailFlag, setMarkAttendanceFlag, setAcademicFlag ) => {
+    navigate(`/todaysattendance`, {
+      state: { lecture, setEmpdetailFlag, setMarkAttendanceFlag, setAcademicFlag },
+    });
   };
 
   const today = new Date().toLocaleString("en-us", { weekday: "long" });
@@ -63,7 +79,9 @@ const FacultyTimeTable = ({ facultyID, setEmpdetailFlag , setMarkAttendanceFlag,
           <tr className="table-header">
             <th>Day</th>
             {timeSlots.map((slot, index) => (
-              <th key={index} className="time-slot-header">{slot}</th>
+              <th key={index} className="time-slot-header">
+                {slot.start} - {slot.end}
+              </th>
             ))}
           </tr>
         </thead>
@@ -75,7 +93,11 @@ const FacultyTimeTable = ({ facultyID, setEmpdetailFlag , setMarkAttendanceFlag,
             const lecturePeriods = new Array(timeSlots.length).fill(null);
 
             lecturesForDay.forEach((lecture) => {
-              const periodIndex = getPeriodForLecture(lecture.StartTime);
+              const periodIndex = timeSlots.findIndex(
+                (slot) =>
+                  lecture.StartTime ===
+                  `${parseTime(slot.start).join(":")}:00`
+              );
               if (periodIndex !== -1) lecturePeriods[periodIndex] = lecture;
             });
 
@@ -85,25 +107,52 @@ const FacultyTimeTable = ({ facultyID, setEmpdetailFlag , setMarkAttendanceFlag,
                 className={`day-row ${day === today ? "today-highlight" : ""}`}
               >
                 <td className="day-name">{day}</td>
-                {lecturePeriods.map((lecture, index) => (
-                  <td key={index} className={`lecture-cell ${lecture ? "has-lecture" : "no-lecture"}`}>
-                    {lecture ? (
-                      <>
-                        <div className="subject-name"><strong>{lecture.SubjectName}</strong></div>
-                        <div className="course-name">Course: {lecture.ClassName}</div>
-                        <div className="room-name">Room: {lecture.RoomNumber}</div>
-                        <button
-                          className="attendance-button"
-                          onClick={() => handleTodaysAttendance(lecture)}
-                        >
-                          Mark Attendance
-                        </button>
-                      </>
-                    ) : (
-                      <div className="no-lecture-message" onClick={() => handleTodaysAttendance(lecture)}>No Lecture</div>
-                    )}
-                  </td>
-                ))}
+                {lecturePeriods.map((lecture, index) => {
+                  const isCurrentSlot =
+                    day === today && isCurrentTimeInSlot(timeSlots[index]);
+                  return (
+                    <td
+                      key={index}
+                      className={`lecture-cell ${
+                        lecture ? "has-lecture" : "no-lecture"
+                      }`}
+                    >
+                      {lecture ? (
+                        <>
+                          <div className="subject-name">
+                            <strong>{lecture.SubjectName}</strong>
+                          </div>
+                          <div className="course-name">
+                            Course: {lecture.ClassName}
+                          </div>
+                          <div className="room-name">
+                            Room: {lecture.RoomNumber}
+                          </div>
+                          {isCurrentSlot && (
+                            <button
+                              className="attendance-button"
+                              onClick={() => handleTodaysAttendance(lecture)}
+                            >
+                              Mark Attendance
+                            </button>
+                          )}
+                        </>
+                      ) : (
+                        <div className="insidecontent">
+                          <div className="no-lecture-message">No Lecture</div>
+                          {isCurrentSlot && (
+                            <button
+                              className="attendance-button"
+                              onClick={() => handleTodaysAttendance(lecture)}
+                            >
+                              Mark Attendance
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             );
           })}

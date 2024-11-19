@@ -894,7 +894,7 @@ th {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    margin-top: 14rem;
+    margin-top: 2rem;
     align-items: stretch;
     /* Ensure all boxes have the same height */
 }
@@ -953,7 +953,7 @@ th {
 /* Add these styles */
 
 .top-left {
-    position: fixed;
+  
     margin-left: 5rem;
     margin-top: 4rem;
     top: 2em;
@@ -1052,7 +1052,7 @@ th {
 
 .form-label {
     font-weight: bold;
-    margin-right: 0.rem;
+   
     color: #090909;
 }
 
@@ -1107,6 +1107,13 @@ th {
     margin-left: 3rem;
     margin-top: 1.6rem;
 }
+.attddetex {
+  height: 100vh; /* Full viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 10px; /* Optional padding for better aesthetics */
+  box-sizing: border-box; /* Include padding and border in height/width */
+}
+
 
 
  
