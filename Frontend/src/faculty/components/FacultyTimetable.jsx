@@ -37,8 +37,6 @@ const FacultyTimeTable = ({ FacultyID }) => {
         console.log("Fetching timetable from:", apiUrl);
         const response = await axios.get(apiUrl);
   
-        console.log("Timetable response:", response.data);
-  
         if (!Array.isArray(response.data)) {
           throw new Error("API returned invalid format");
         }

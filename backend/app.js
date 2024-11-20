@@ -817,6 +817,85 @@ app.get("/api/subjectoffaculty", (req, res) => {
   );
 });
 
+// Subjects taught by faculty
+app.get("/api/subjectandsectionofaculty", (req, res) => {
+  const { facultyID } = req.query;
+
+  db.query(
+    `
+    SELECT 
+    s.SubjectName, 
+    st.Section
+      FROM 
+          Faculty f 
+      JOIN 
+          Subject s ON f.FacultyID = s.FacultyID 
+      JOIN 
+          Enrollment e ON s.CourseID = e.CourseID 
+      JOIN 
+          Student st ON st.RollNO = e.RollNO 
+      WHERE 
+          f.FacultyID = ? 
+      GROUP BY 
+          f.Faculty_Name, s.SubjectName, st.Section
+      ORDER BY 
+          f.Faculty_Name, s.SubjectName, st.Section;
+
+    `,
+    [facultyID],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+
+// list of students their section and the attendance of particaular subject
+app.get("/api/listofstudentsandattendanceofsubject", (req, res) => {
+  const { facultyID ,SubjectID,Section} = req.query;
+
+  db.query(
+    `
+    SELECT 
+    st.Stud_name,
+    st.RollNO,
+    s.SubjectName,
+    SUM(CASE WHEN at.AttendanceStatus = 1 THEN 1 ELSE 0 END) AS TotalPresent,
+    SUM(CASE WHEN at.AttendanceStatus = 0 THEN 1 ELSE 0 END) AS TotalAbsent
+    FROM 
+        Faculty f
+    JOIN 
+        Subject s ON f.FacultyID = s.FacultyID
+    JOIN 
+        Enrollment e ON s.CourseID = e.CourseID
+    JOIN 
+        Student st ON st.RollNO = e.RollNO
+    LEFT JOIN 
+        Attendance at ON at.RollNO = st.RollNO 
+                      AND at.SubjectID = s.SubjectID 
+                      AND at.FacultyID = f.FacultyID
+    WHERE 
+        f.FacultyID = ?  -- Replace with the faculty you are targeting
+        AND s.SubjectID = ?  -- Replace with the SubjectID you are targeting
+        AND st.Section = ?  -- Replace with the section you are targeting
+        AND CEIL(s.Semester / 2) = st.Stud_YearOfStudy  -- Match semester to year of study
+    GROUP BY 
+        st.Stud_name, st.RollNO, s.SubjectName
+    ORDER BY 
+        st.Stud_name;
+
+
+    `,
+    [facultyID, SubjectID,Section],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+
 // Start the server on the specified port
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
