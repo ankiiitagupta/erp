@@ -853,7 +853,7 @@ app.get("/api/subjectandsectionofaculty", (req, res) => {
 
 // list of students their section and the attendance of particaular subject
 app.get("/api/listofstudentsandattendanceofsubject", (req, res) => {
-  const { facultyID ,SubjectID,Section} = req.query;
+  const { facultyID ,SubjectName,Section} = req.query;
 
   db.query(
     `
@@ -877,7 +877,7 @@ app.get("/api/listofstudentsandattendanceofsubject", (req, res) => {
                       AND at.FacultyID = f.FacultyID
     WHERE 
         f.FacultyID = ?  -- Replace with the faculty you are targeting
-        AND s.SubjectID = ?  -- Replace with the SubjectID you are targeting
+        AND s.SubjectName = ?  -- Replace with the SubjectName you are targeting
         AND st.Section = ?  -- Replace with the section you are targeting
         AND CEIL(s.Semester / 2) = st.Stud_YearOfStudy  -- Match semester to year of study
     GROUP BY 
@@ -887,7 +887,7 @@ app.get("/api/listofstudentsandattendanceofsubject", (req, res) => {
 
 
     `,
-    [facultyID, SubjectID,Section],
+    [facultyID, SubjectName,Section],
     (err, results) => {
       if (err) throw err;
       res.json(results);

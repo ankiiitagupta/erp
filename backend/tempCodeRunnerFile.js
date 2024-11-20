@@ -1,1 +1,1 @@
-t.RollNO;
+/api/subjectandsectionofaculty

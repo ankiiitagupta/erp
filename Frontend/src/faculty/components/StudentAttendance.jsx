@@ -45,7 +45,7 @@ const StudentAttendance = ({ facultyID }) => {
         <MarkStudentAttendance facultyID={facultyID} />
       )}
       {view === "showAttendance" && (
-        <ShowAttBySub setView={setView} /> // Corrected component name
+        <ShowAttBySub facultyID={facultyID} setView={setView} /> // Corrected component name
       )}
     </div>
   );
