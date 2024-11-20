@@ -9,7 +9,7 @@ import TimetablePopup from "./TimetablePopup.jsx";
 import EmployeeDetail from "./EmployeeDetail.jsx";
 import MarkStudentAttendance from "./MarkStudentAttendance.jsx"; // Ensure this component is correctly imported
 import AcademicsDashboard from "./AcademicDashbooard.jsx";
-
+import FacultyallTimeTable from "./facultyalltimetable.jsx";
 
 // Inline style for name box layout
 const namebox = {
@@ -19,7 +19,7 @@ const namebox = {
   gap: "25rem",
 };
 
-const FacultyDashboard = () => {
+const FacultyDashboard = ({ roles = "faculty" }) => {
   const { FacultyID } = useParams(); // Get Faculty ID from URL parameters
   const [faculty, setFaculty] = useState([]); // State for faculty details
   const [timetable, setTimetable] = useState([]); // State for faculty timetable
@@ -29,8 +29,7 @@ const FacultyDashboard = () => {
   const [EmpdetailFlag, setEmpdetailFlag] = useState(false); // Flag for showing employee details
   const [MarkAttendanceFlag, setMarkAttendanceFlag] = useState(false); // Flag for showing attendance mark section
   const [AcademicFlag, setAcademicFlag] = useState(false);
-  
-
+  const [AllTimetableFlag, setAllTimetableFlag] = useState(false);
 
   useEffect(() => {
     // Fetch faculty details using Faculty ID
@@ -70,7 +69,6 @@ const FacultyDashboard = () => {
     setShowPopup(false);
   };
 
-  
   // Function to render faculty details section
   const renderFacultyDetails = () => {
     if (faculty.length === 0) return <p>No faculty data available.</p>;
@@ -106,12 +104,15 @@ const FacultyDashboard = () => {
     if (timetable.length === 0) return <p>No timetable data available.</p>;
 
     return (
-      
       <div className="timetable">
         <h4>Faculty Timetable</h4>
-        <FacultyTimeTable FacultyID={FacultyID} timetable={timetable}  setEmpdetailFlag={setEmpdetailFlag}
-        setMarkAttendanceFlag={setMarkAttendanceFlag}
-        setAcademicFlag={setAcademicFlag}/>
+        <FacultyTimeTable
+          FacultyID={FacultyID}
+          timetable={timetable}
+          setEmpdetailFlag={setEmpdetailFlag}
+          setMarkAttendanceFlag={setMarkAttendanceFlag}
+          setAcademicFlag={setAcademicFlag}
+        />
       </div>
     );
   };
@@ -122,12 +123,14 @@ const FacultyDashboard = () => {
         setEmpdetailFlag={setEmpdetailFlag}
         setMarkAttendanceFlag={setMarkAttendanceFlag}
         setAcademicFlag={setAcademicFlag}
+        setAllTimetableFlag={setAllTimetableFlag}
       />
       <div className="main-content">
-        <Header facultyID={FacultyID}/>
-        {AcademicFlag ? (
+        <Header facultyID={FacultyID} />
+        {AllTimetableFlag ? (
+          <FacultyallTimeTable facultyID={FacultyID} roles={roles}/>
+        ) : AcademicFlag ? (
           <AcademicsDashboard facultyID={FacultyID} />
-          
         ) : MarkAttendanceFlag ? (
           <div className="MarkAttendance-Detail">
             <MarkStudentAttendance facultyID={FacultyID} />
@@ -146,7 +149,6 @@ const FacultyDashboard = () => {
               {renderFacultyDetails()}
             </div>
             <div className="timetable-section">{renderTimetable()}</div>
-            
           </div>
         )}
       </div>

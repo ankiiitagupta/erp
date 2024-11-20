@@ -4,14 +4,13 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../axios.js";
 
-
-const Header = ({facultyID}) => {
+const Header = ({ facultyID }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isGrievanceFormOpen, setIsGrievanceFormOpen] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(true);
   const [showroleselector, setshowroleselector] = useState(true);
-  
+
   const [showProfile, setShowProfile] = useState(true);
   const location = useLocation();
   const [grievanceData, setGrievanceData] = useState({
@@ -23,21 +22,31 @@ const Header = ({facultyID}) => {
     query: "",
   });
   const [roles, setRoles] = useState([]);
-  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedRole, setSelectedRole] = useState("faculty");
 
-  
   useEffect(() => {
     axios
       .get(`${API_URL}/api/roles?facultyID=${facultyID}`)
       .then((response) => {
-        setRoles(response.data);
-        console.log(response.data);
+        // Normalize roles to lowercase to avoid case-sensitive duplicates
+        const apiRoles = response.data.map((role) =>
+          role.role_name.toLowerCase()
+        );
+        const uniqueRoles = Array.from(new Set(["faculty", ...apiRoles])); // Ensure 'faculty' is included and unique
+
+        // Capitalize each role for a consistent dropdown display
+        const capitalizedRoles = uniqueRoles.map(
+          (role) => role.charAt(0).toUpperCase() + role.slice(1)
+        );
+
+        setRoles(capitalizedRoles);
+        console.log("Processed Roles:", capitalizedRoles); // Debug: Check processed roles
       })
       .catch((error) => {
         setError("Failed to fetch roles data");
         console.error(error);
       });
-    }, [facultyID]);
+  }, [facultyID]);
 
   useEffect(() => {
     // Toggle search bar and profile visibility based on current path
@@ -61,11 +70,11 @@ const Header = ({facultyID}) => {
 
   const handleRoleChange = (event) => {
     const role = event.target.value;
-  
+
     const userConfirmed = confirm(
       `Are you sure you want to change your role to ${role}?`
     );
-  
+
     if (userConfirmed) {
       console.log(`Role is selected to ${role}`);
       setSelectedRole(role); // Update the selected role state
@@ -75,7 +84,6 @@ const Header = ({facultyID}) => {
       event.target.value = selectedRole; // Ensure dropdown reflects current role
     }
   };
-  
 
   // Toggle dropdown visibility
   const toggleDropdown = () => {
@@ -149,32 +157,28 @@ const Header = ({facultyID}) => {
       </div>
 
       {showroleselector && (
-      <div className="role-selector">
-        <label htmlFor="faculty-roles">
-          <strong>Select Role:</strong>
-        </label>
-        <select
-          id="faculty-roles"
-          className="role-dropdown"
-          value={selectedRole}
-          onChange={handleRoleChange}
-        >
-          <option value="">-- Choose Role --</option>
-          {roles.map((role) => (
-            <option key={role.role_id} value={role.role_name} 
-            >
-              {role.role_name}
-            </option>
-          ))}
-        </select>
-        
-      </div>
-    )} 
+        <div className="role-selector">
+          <label htmlFor="faculty-roles">
+            <strong>Select Role:</strong>
+          </label>
+          <select
+            id="faculty-roles"
+            className="role-dropdown"
+            value={selectedRole}
+            onChange={handleRoleChange}
+          >
+            {roles.map((role, index) => (
+              <option key={index} value={role.toLowerCase()}>
+                {role} {/* Capitalized role names for display */}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Right side: Navigation links and Profile Dropdown */}
-      
+
       <div className="navbar-end">
-      
         <a href="/" className="navbar-item">
           Home
         </a>

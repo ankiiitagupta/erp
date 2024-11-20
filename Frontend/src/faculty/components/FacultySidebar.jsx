@@ -9,7 +9,13 @@ import {
   CDBSidebarMenuItem,
 } from "cdbreact";
 
-const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setMarkAttendanceFlag, setAcademicFlag }) => {
+const FacultySidebar = ({
+  setEmpdetailFlag,
+  setNoticeFlag,
+  setMarkAttendanceFlag,
+  setAcademicFlag,
+  setAllTimetableFlag,
+}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
@@ -28,8 +34,8 @@ const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setMarkAttendanceFlag
       >
         <CDBSidebarHeader
           prefix={
-            <i 
-              className={`fa ${isCollapsed ? "fa-times" : "fa-bars"} fa-lg`} 
+            <i
+              className={`fa ${isCollapsed ? "fa-times" : "fa-bars"} fa-lg`}
               onClick={toggleSidebar}
             ></i>
           }
@@ -50,45 +56,56 @@ const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setMarkAttendanceFlag
             </NavLink>
             <NavLink
               to="#"
-              onClick={() => setEmpdetailFlag(true)} 
+              onClick={() => setEmpdetailFlag(true)}
               activeClassName="activeClicked"
             >
-              <CDBSidebarMenuItem icon="user">Employee Detail</CDBSidebarMenuItem>
-            </NavLink>
-
-            <NavLink to="#" 
-              onClick={() => setMarkAttendanceFlag(true)}
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="book">Mark Attendance</CDBSidebarMenuItem>
-            </NavLink>
-
-            <NavLink to="#" 
-              onClick={() => setAcademicFlag(true)}
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="chart-line">Academic</CDBSidebarMenuItem>
-            </NavLink>
-
-            <NavLink
-              to="/hero404"
-              target="_blank"
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="exclamation-circle">Student Attendance</CDBSidebarMenuItem>
-            </NavLink>
-
-            <NavLink
-              to="/hero404"
-              target="_blank"
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="exclamation-circle">Timetable</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="user">
+                Employee Detail
+              </CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink
               to="#"
-              onClick={() => setNoticeFlag(true)} 
+              onClick={() => setMarkAttendanceFlag(true)}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="book">
+                Mark Attendance
+              </CDBSidebarMenuItem>
+            </NavLink>
+
+            <NavLink
+              to="#"
+              onClick={() => setAcademicFlag(true)}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="chart-line">
+                Academic
+              </CDBSidebarMenuItem>
+            </NavLink>
+
+            <NavLink
+              to="/hero404"
+             
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="exclamation-circle">
+                Student Attendance
+              </CDBSidebarMenuItem>
+            </NavLink>
+
+            <NavLink
+              to="#"
+              onClick={() => setAllTimetableFlag(true)}
+              
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="table">Timetable</CDBSidebarMenuItem>
+            </NavLink>
+
+            <NavLink
+              to="#"
+              onClick={() => setNoticeFlag(true)}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="bell">Notices</CDBSidebarMenuItem>
