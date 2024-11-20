@@ -9,17 +9,15 @@ import {
   CDBSidebarMenuItem,
 } from "cdbreact";
 
-const FacultySidebar = ({
-  setEmpdetailFlag,
-  setNoticeFlag,
-  setMarkAttendanceFlag,
-  setAcademicFlag,
-  setAllTimetableFlag,
-}) => {
+const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setStudAttendanceFlag, setAcademicFlag ,resetFlags ,FacultyID ,setAllTimetableFlag,}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
+  };
+  const handleMenuClick = (action) => {
+    resetFlags();
+    if (action) action();
   };
 
   return (
@@ -34,8 +32,8 @@ const FacultySidebar = ({
       >
         <CDBSidebarHeader
           prefix={
-            <i
-              className={`fa ${isCollapsed ? "fa-times" : "fa-bars"} fa-lg`}
+            <i 
+              className={`fa ${isCollapsed ? "fa-times" : "fa-bars"} fa-lg`} 
               onClick={toggleSidebar}
             ></i>
           }
@@ -51,61 +49,42 @@ const FacultySidebar = ({
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
-            <NavLink to="/" activeClassName="activeClicked">
+            <NavLink activeClassName="activeClicked" onClick={() => handleMenuClick( () => navigate(`/facultydashboard/${FacultyID}`)) }>
               <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
             </NavLink>
             <NavLink
-              to="#"
-              onClick={() => setEmpdetailFlag(true)}
+              onClick={() => handleMenuClick( () =>setEmpdetailFlag(true) ) } 
               activeClassName="activeClicked"
             >
-              <CDBSidebarMenuItem icon="user">
-                Employee Detail
-              </CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="user">Employee Detail</CDBSidebarMenuItem>
+            </NavLink>
+
+            <NavLink 
+              onClick={() => handleMenuClick( () => setStudAttendanceFlag(true))}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="book">Mark Attendance</CDBSidebarMenuItem>
+            </NavLink>
+
+            <NavLink 
+              onClick={() => handleMenuClick( () => setAcademicFlag(true)) }
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="chart-line">Academic</CDBSidebarMenuItem>
+            </NavLink>
+
+            
+
+            <NavLink
+              onClick={() => handleMenuClick( () => setAllTimetableFlag(true))}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="exclamation-circle">Timetable</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink
-              to="#"
-              onClick={() => setMarkAttendanceFlag(true)}
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="book">
-                Mark Attendance
-              </CDBSidebarMenuItem>
-            </NavLink>
-
-            <NavLink
-              to="#"
-              onClick={() => setAcademicFlag(true)}
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="chart-line">
-                Academic
-              </CDBSidebarMenuItem>
-            </NavLink>
-
-            <NavLink
-              to="/hero404"
-             
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="exclamation-circle">
-                Student Attendance
-              </CDBSidebarMenuItem>
-            </NavLink>
-
-            <NavLink
-              to="#"
-              onClick={() => setAllTimetableFlag(true)}
               
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="table">Timetable</CDBSidebarMenuItem>
-            </NavLink>
-
-            <NavLink
-              to="#"
-              onClick={() => setNoticeFlag(true)}
+              onClick={() => setNoticeFlag(true)} 
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="bell">Notices</CDBSidebarMenuItem>

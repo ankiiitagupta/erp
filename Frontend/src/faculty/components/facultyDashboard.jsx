@@ -10,6 +10,8 @@ import EmployeeDetail from "./EmployeeDetail.jsx";
 import MarkStudentAttendance from "./MarkStudentAttendance.jsx"; // Ensure this component is correctly imported
 import AcademicsDashboard from "./AcademicDashbooard.jsx";
 import FacultyallTimeTable from "./facultyalltimetable.jsx";
+import StudentAttendance from "./StudentAttendance.jsx";
+
 
 // Inline style for name box layout
 const namebox = {
@@ -30,6 +32,17 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
   const [MarkAttendanceFlag, setMarkAttendanceFlag] = useState(false); // Flag for showing attendance mark section
   const [AcademicFlag, setAcademicFlag] = useState(false);
   const [AllTimetableFlag, setAllTimetableFlag] = useState(false);
+  const [StudAttendanceFlag, setStudAttendanceFlag] = useState(false);
+  const resetFlags = () => {
+    setStudAttendanceFlag(false);
+    setAcademicFlag(false);
+    setEmpdetailFlag(false);
+    setShowPopup(false);
+    setAllTimetableFlag(false);
+  };
+  
+  
+
 
   useEffect(() => {
     // Fetch faculty details using Faculty ID
@@ -121,9 +134,11 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
     <div className="dashboard">
       <FacultySidebar
         setEmpdetailFlag={setEmpdetailFlag}
-        setMarkAttendanceFlag={setMarkAttendanceFlag}
+        setStudAttendanceFlag={setStudAttendanceFlag}
         setAcademicFlag={setAcademicFlag}
         setAllTimetableFlag={setAllTimetableFlag}
+        FacultyID={FacultyID}
+        resetFlags={resetFlags}
       />
       <div className="main-content">
         <Header facultyID={FacultyID} />
@@ -131,9 +146,10 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
           <FacultyallTimeTable facultyID={FacultyID} roles={roles}/>
         ) : AcademicFlag ? (
           <AcademicsDashboard facultyID={FacultyID} />
-        ) : MarkAttendanceFlag ? (
+        ) : StudAttendanceFlag ? (
           <div className="MarkAttendance-Detail">
-            <MarkStudentAttendance facultyID={FacultyID} />
+            <StudentAttendance facultyID={FacultyID}/>
+            {/* <MarkStudentAttendance facultyID={FacultyID} /> */}
           </div>
         ) : EmpdetailFlag ? (
           <div className="Employee-Detail">
