@@ -63,7 +63,7 @@ const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setStudAttendanceFlag
               onClick={() => handleMenuClick( () => setStudAttendanceFlag(true))}
               activeClassName="activeClicked"
             >
-              <CDBSidebarMenuItem icon="book">Mark Attendance</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="book">Student Attendance</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink 
