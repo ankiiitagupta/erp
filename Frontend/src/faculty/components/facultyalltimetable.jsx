@@ -53,6 +53,9 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
   const filterTimetable = () => {
     let filtered = timetable;
 
+    // If the faculty is a coordinator, filter only the classes they are in charge of
+  
+
     // Apply classroom filter
     if (selectedClassroom) {
       filtered = filtered.filter(lecture => lecture.RoomNumber === selectedClassroom);
@@ -65,7 +68,7 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
       );
     }
 
-    // Apply student group filter
+    // Apply location filter (Student Group)
     if (selectedLocation) {
       filtered = filtered.filter(lecture => lecture.Location === selectedLocation);
     }
@@ -82,7 +85,7 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
 
   useEffect(() => {
     filterTimetable(); // Re-filter timetable whenever a filter option is changed
-  }, [selectedClassroom, selectedSubject, selectedLocation, selectedSubstitute]);
+  }, [selectedClassroom, selectedSubject, selectedLocation, selectedSubstitute, roles]);
 
   // Event handler to trigger filtering on Enter key press
   const handleKeyPress = (e) => {
@@ -229,7 +232,7 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
               value={selectedLocation}
               onChange={(e) => setSelectedLocation(e.target.value)}
               onKeyPress={handleKeyPress}  // Trigger filter on Enter
-              placeholder="Enter Student Group"
+              placeholder="Enter Room Number"
             />
             <button onClick={filterTimetable}>Search</button>  {/* Search button */}
           </div>

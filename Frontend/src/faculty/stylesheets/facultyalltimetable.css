@@ -7,19 +7,20 @@
     box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
     margin: 3rem auto;
     max-width: 80rem; /* Remains constant */
-  }
-  
-  /* Filter tab styling */
-  .filter-tabs {
+    width: 100%;
+}
+
+/* Filter tab styling */
+.filter-tabs {
     display: flex;
     justify-content: space-between;
     margin-bottom: 2rem;
     font-size: 0.8rem;
     flex-wrap: wrap;
     gap: 1rem;
-  }
-  
-  .tab {
+}
+
+.tab {
     padding: 1.2rem 2rem;
     background-color: #ffffff;
     border-radius: 0.1rem;
@@ -28,146 +29,185 @@
     font-size: 0.8rem;
     color: #333;
     transition: background-color 0.3s ease;
-  }
-  
-  .tab:hover {
+    flex: 1 0 48%; /* Allows for better responsiveness */
+}
+
+.tab:hover {
     background-color: #e3f2fd;
-  }
-  
-  .active-tab {
+}
+
+.active-tab {
     background-color: #1976d2;
     color: white;
     font-weight: bold;
     font-size: 0.8rem;
-  }
-  
-  /* Filter option styles */
-  .filter-options {
-    width: 75rem;
-    
+}
+
+/* Filter option styles */
+.filter-options {
+    width: 100%;
+    max-width: 75rem;
     background-color: #ffffff;
     padding: 2rem;
-    
     margin-top: 1rem;
     border-radius: 0.8rem;
     box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
-  }
-  
-  .filter-options h2 {
+    margin: 0 auto;
+}
+
+.filter-options h2 {
     color: #1976d2;
     margin-bottom: 1.5rem;
-  }
-  
-  .filter-options input {
-   
+}
+
+.filter-options input {
     width: 100%;
     padding: 1rem;
     font-size: 1rem;
     border-radius: 0.5rem;
     border: 0.1rem solid #ccc;
     margin-top: 0.5rem;
-  }
-  
-  .filter-options input:focus {
+}
+
+.filter-options input:focus {
     border-color: #1976d2;
     outline: none;
-  }
-  
-  /* Timetable table styles */
-  .timetable-table {
+}
+
+/* Timetable table styles */
+.timetable-table {
     width: 100%;
     border-collapse: collapse;
     background-color: #ffffff;
     margin-top: 3rem;
     border-radius: 0.8rem;
     overflow: hidden;
-  }
-  
-  .timetable-table th, .timetable-table td {
+}
+
+.timetable-table th, .timetable-table td {
     padding: 1rem;
     text-align: center;
     border-bottom: 0.1rem solid #ddd;
-  }
-  
-  .timetable-table th {
-    background-color: #1976d2;
-    color: white;
-  }
-  
-  .lecture-cell {
-    background-color: #e3f2fd;
-  }
-  
-  .empty-cell {
-    background-color: #f9f9f9;
-  }
-  
-  .loading-message, .error-message {
-    text-align: center;
-    font-size: 1.125rem;
-    color: #555;
-    padding: 2rem;
-  }
-
-  /* Timetable table styles */
-.timetable-table th,
-.timetable-table td {
-  padding: 1rem;
-  text-align: center;
-  border-bottom: 0.1rem solid #ddd;
 }
 
 .timetable-table th {
-  background-color: #1976d2;
-  color: white;
+    background-color: #1976d2;
+    color: white;
 }
 
 .lecture-cell {
-  background-color: #e3f2fd; /* Light blue for lectures */
-  transition: background-color 0.3s ease;
+    background-color: #e3f2fd; /* Light blue for lectures */
+    transition: background-color 0.3s ease;
 }
 
 .lecture-cell:hover {
-  background-color: #90caf9; /* Slightly darker blue on hover */
+    background-color: #90caf9; /* Slightly darker blue on hover */
 }
 
 .empty-cell {
-  background-color: #f9f9f9; /* Light gray for empty cells */
+    background-color: #f9f9f9; /* Light gray for empty cells */
 }
 
 .no-lecture-cell {
-  background-color: #f5f5f5; /* Very light gray for 'No Lecture' cells */
+    background-color: #f5f5f5; /* Very light gray for 'No Lecture' cells */
 }
 
 .loading-message,
 .error-message {
-  text-align: center;
-  font-size: 1.125rem;
-  color: #555;
-  padding: 2rem;
+    text-align: center;
+    font-size: 1.125rem;
+    color: #555;
+    padding: 2rem;
 }
 
 /* Highlighting the cells with actual lectures */
 .lecture-cell .highlighted {
-  font-weight: bold;
-  color: #1976d2;
+    font-weight: bold;
+    color: #1976d2;
 }
 
-  
-  /* Responsive Design */
-  @media (max-width: 48rem) {
+/* Responsive Design */
+@media (max-width: 48rem) {
+    /* For small screens, adjust filter tabs layout */
     .filter-tabs {
-      flex-direction: column;
-      align-items: stretch;
+        flex-direction: column;
+        align-items: stretch;
     }
-  
+
     .tab {
-      width: 100%;
-      text-align: left;
+        width: 100%;
+        text-align: left;
     }
-  
+
+    /* Adjust timetable container padding */
     .faculty-timetable-container {
-      padding: 1.5rem;
+        padding: 1.5rem;
     }
-  }
-  
+
+    /* Adjust filter options width for smaller screens */
+    .filter-options {
+        width: 100%;
+        padding: 1.5rem;
+    }
+
+    .filter-options h2 {
+        font-size: 1.2rem; /* Slightly smaller text */
+    }
+
+    /* Ensure timetable table is responsive */
+    .timetable-table {
+        font-size: 0.85rem;
+    }
+
+    .timetable-table th, .timetable-table td {
+        padding: 0.8rem;
+    }
+
+    .lecture-cell, .empty-cell {
+        padding: 0.8rem;
+    }
+
+    .timetable-table th {
+        font-size: 0.75rem; /* Adjust for smaller devices */
+    }
+
+    .timetable-table td {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 32rem) {
+    /* For even smaller screens, further adjustments */
+    .faculty-timetable-container {
+        padding: 1rem;
+    }
+
+    .filter-options {
+        padding: 1rem;
+    }
+
+    .filter-options input {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .timetable-table th, .timetable-table td {
+        padding: 0.6rem;
+    }
+
+    .lecture-cell, .empty-cell {
+        padding: 0.6rem;
+    }
+
+    .timetable-table th {
+        font-size: 0.7rem; /* Further reduce size for small screens */
+    }
+
+    .timetable-table td {
+        font-size: 0.7rem;
+    }
+
+    .loading-message, .error-message {
+        font-size: 1rem;
+    }
+}
