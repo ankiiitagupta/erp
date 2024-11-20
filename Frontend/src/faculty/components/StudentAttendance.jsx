@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../stylesheets/AcademicsDashboard.css";
-import markAttendanceIcon from "../../assets/AcademicDashboardsvg/meeting.png";
-import showAttendanceIcon from "../../assets/AcademicDashboardsvg/meeting.png";
+import markAttendanceIcon from "../../assets/AcademicDashboardsvg/Markatt1.png";
+import showAttendanceIcon from "../../assets/AcademicDashboardsvg/Markatt2.png";
 import MarkStudentAttendance from "./MarkStudentAttendance"; // Import the component
 import ShowAttBySub from "./showattbysub"; // Corrected import
 
