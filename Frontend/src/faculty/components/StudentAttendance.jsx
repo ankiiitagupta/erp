@@ -22,7 +22,7 @@ const StudentAttendance = ({ facultyID }) => {
       ) : (
         <>
           <h2 className="content-title">Attendance</h2>
-          <div className="icon-grid">
+          <div className="icon-grid-2">
             <div className="icon-card" onClick={handleMarkAttendance}>
               <img
                 src={markAttendanceIcon}
