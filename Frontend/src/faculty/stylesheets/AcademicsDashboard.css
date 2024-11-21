@@ -407,3 +407,18 @@ th.out-of-header {
   height: 20px;
 }
 
+/* =================================================Attendance.CSS=========================================================================== */
+/* Example styling */
+.download-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.download-button:hover {
+  background-color: #45a049;
+}

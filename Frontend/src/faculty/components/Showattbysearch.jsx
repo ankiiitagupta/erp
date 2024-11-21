@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../stylesheets/AcademicsDashboard.css"; // Same stylesheet for consistent styling
+import * as XLSX from "xlsx"; // Import xlsx library for Excel generation
+import { API_URL } from "../../axios";
 
 const SearchStudents = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -8,7 +10,7 @@ const SearchStudents = () => {
   // Fetch matching students from the backend
   const fetchStudents = async (query) => {
     try {
-      const response = await fetch(`http://localhost:3006/api/searchstudentsbyname?query=${query}`);
+      const response = await fetch(`${API_URL}/api/searchstudentsbyname?query=${query}`);
       const data = await response.json();
       setStudents(data);
     } catch (error) {
@@ -28,6 +30,14 @@ const SearchStudents = () => {
     }
   };
 
+  // Function to generate and download Excel sheet
+  const generateExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(students); // Convert students data to a sheet
+    const wb = XLSX.utils.book_new(); // Create a new workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Students"); // Append the sheet to the workbook
+    XLSX.writeFile(wb, "students_data.xlsx"); // Trigger the file download
+  };
+
   return (
     <div className="show-attendance-page">
       <h2 className="content-title">Search Students</h2>
@@ -42,6 +52,7 @@ const SearchStudents = () => {
           onChange={handleSearchChange}
         />
       </div>
+
       {students.length > 0 && (
         <div className="students-list">
           <h3>Search Results</h3>
@@ -75,6 +86,10 @@ const SearchStudents = () => {
               ))}
             </tbody>
           </table>
+          {/* Button to generate Excel sheet */}
+          <button onClick={generateExcel} className="download-button">
+            Download as Excel
+          </button>
         </div>
       )}
       {!students.length && searchValue && <p className="no-results">No students found.</p>}

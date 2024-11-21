@@ -1,63 +1,113 @@
 import React, { useState, useEffect } from "react";
+import * as XLSX from "xlsx";
+import "../stylesheets/AcademicsDashboard.css"; // Same stylesheet for consistent styling
+import { API_URL } from "../../axios";
+
+const exportToExcel = (students) => {
+  const formattedData = students.map((student) => {
+    return {
+      Name: student.Stud_name,
+      "Roll Number": student.RollNO,
+      "Year of Study": student.Stud_YearOfStudy,
+      Section: student.Section,
+      "Attendance %": student.AttendancePercentage, // Use the calculated attendance percentage
+    };
+  });
+
+  const worksheet = XLSX.utils.json_to_sheet(formattedData);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Students Attendance");
+
+  XLSX.writeFile(workbook, "Students_Attendance.xlsx");
+};
 
 const ShowAttByClass = ({ setView }) => {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
-  const [studentList, setStudentList] = useState([]);
+  const [students, setStudents] = useState([]);
   const [courses, setCourses] = useState([]);
   const [sections, setSections] = useState([]);
+  const [sortOption, setSortOption] = useState("");
 
+  // Fetching courses
   useEffect(() => {
-    // Fetching courses and durations
-    fetch("http://localhost:3006/api/courseandduration")
+    fetch(`${API_URL}/api/courseandduration`)
       .then((response) => response.json())
       .then((data) => setCourses(data))
       .catch((err) => console.error("Error fetching courses:", err));
   }, []);
 
+  // Fetching sections for selected year
   useEffect(() => {
-    // Fetching sections for the selected year
     if (selectedYear) {
-      fetch(`http://localhost:3006/api/getsectionsofYear?yearofstudy=${selectedYear}`)
+      fetch(
+        `${API_URL}/api/getsectionsofYear?yearofstudy=${selectedYear}`
+      )
         .then((response) => response.json())
         .then((data) => setSections(data))
         .catch((err) => console.error("Error fetching sections:", err));
     }
   }, [selectedYear]);
 
+  // Fetch students whenever course, year, or section changes
+  useEffect(() => {
+    if (selectedCourse && selectedYear && selectedSection) {
+      fetch(
+        `${API_URL}/api/attendanceofallstudentsofsection?CourseName=${selectedCourse}&yearofstudy=${selectedYear}&section=${selectedSection}`
+      )
+        .then((response) => response.json())
+        .then((data) => setStudents(data))
+        .catch((err) => console.error("Error fetching students:", err));
+    }
+  }, [selectedCourse, selectedYear, selectedSection]);
+
   const handleCourseChange = (event) => {
     setSelectedCourse(event.target.value);
     setSelectedYear("");
     setSelectedSection("");
-    setStudentList([]);
   };
 
   const handleYearChange = (event) => {
     setSelectedYear(event.target.value);
     setSelectedSection("");
-    setStudentList([]);
   };
 
   const handleSectionChange = (event) => {
     setSelectedSection(event.target.value);
   };
 
-  const handleShowList = () => {
-    // Call the API to get the student attendance data based on selected parameters
-    fetch(
-      `http://localhost:3006/api/attendanceofallstudentsofsection?CourseName=${selectedCourse}&yearofstudy=${selectedYear}&section=${selectedSection}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setStudentList(data);
-        console.log("Filtered Students:", data); // Debugging to check the fetched students
-      })
-      .catch((err) => console.error("Error fetching student data:", err));
-  };
+  const handleSortChange = (event) => {
+    const option = event.target.value;
+    setSortOption(option);
 
-  const handleBackToDashboard = () => {
-    setView("dashboard");
+    let sortedStudents = [...students];
+    switch (option) {
+      case "More than 90":
+        sortedStudents = students.filter(
+          (student) => student.AttendancePercentage > 90
+        );
+        break;
+      case "Less than 90":
+        sortedStudents = students.filter(
+          (student) => student.AttendancePercentage < 90
+        );
+        break;
+      case "Low to High":
+        sortedStudents = sortedStudents.sort(
+          (a, b) => a.AttendancePercentage - b.AttendancePercentage
+        );
+        break;
+      case "High to Low":
+        sortedStudents = sortedStudents.sort(
+          (a, b) => b.AttendancePercentage - a.AttendancePercentage
+        );
+        break;
+      default:
+        sortedStudents = students;
+    }
+
+    setStudents(sortedStudents);
   };
 
   return (
@@ -125,31 +175,60 @@ const ShowAttByClass = ({ setView }) => {
         </div>
       )}
 
-      {/* Show List Button */}
-      {selectedSection && (
-        <button onClick={handleShowList} className="show-list-button">
-          Show List
-        </button>
+      {/* Sorting */}
+      {students.length > 0 && (
+        <div className="sort-container">
+          <label htmlFor="sort">Sort By:</label>
+          <select
+            id="sort"
+            value={sortOption}
+            onChange={handleSortChange}
+          >
+            <option value="">Select Sorting Option</option>
+            <option value="More than 90">More than 90% Attendance</option>
+            <option value="Less than 90">Less than 90% Attendance</option>
+            <option value="Low to High">Attendance (Low to High)</option>
+            <option value="High to Low">Attendance (High to Low)</option>
+          </select>
+        </div>
       )}
 
       {/* Display Student List */}
-      {studentList.length > 0 ? (
-        <div className="student-list">
+      {students.length > 0 ? (
+        <div className="students-list">
           <h3>Student List</h3>
-          <ul>
-            {studentList.map((student) => (
-              <li key={student.RollNO}>
-                {student.RollNO}. {student.Stud_name} - Attendance: {student.AttendancePercentage}%
-              </li>
-            ))}
-          </ul>
+          <button onClick={() => exportToExcel(students)} className="export-btn">
+            Export to Excel
+          </button>
+          <table className="students-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Roll Number</th>
+                <th>Year</th>
+                <th>Section</th>
+                <th>Attendance (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student) => (
+                <tr key={student.RollNO}>
+                  <td>{student.Stud_name}</td>
+                  <td>{student.RollNO}</td>
+                  <td>{student.Stud_YearOfStudy}</td>
+                  <td>{student.Section}</td>
+                  <td>{student.AttendancePercentage}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         selectedSection &&
-        studentList.length === 0 && <p>No students found for this selection.</p>
+        students.length === 0 && <p>No students found for this selection.</p>
       )}
 
-      <button onClick={handleBackToDashboard} className="back-button">
+      <button onClick={() => setView("dashboard")} className="back-button">
         Back to Dashboard
       </button>
     </div>
