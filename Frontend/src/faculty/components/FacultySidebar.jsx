@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -20,40 +21,28 @@ const FacultySidebar = ({
   setReportsFlag,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [selectedMenuItem, setSelectedMenuItem] = useState('Dashboard');
   const navigate = useNavigate(); // For navigation
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
-  const handleMenuClick = (action) => {
+  const handleMenuClick = (menuItem,action) => {
+    setSelectedMenuItem(menuItem);
     resetFlags();
     if (action) action();
   };
 
   return (
-    <div
-      style={{ display: "flex", height: "100vh", overflow: "scroll initial" }}
-    >
-      <CDBSidebar
-        textColor="#fff"
-        backgroundColor="#001F54"
-        toggled={!isCollapsed}
-        collapse={isCollapsed}
-      >
+    <div style={{ display: "flex", height: "100vh", overflow: "scroll initial" }}>
+      <CDBSidebar textColor="#fff" backgroundColor="#001F54" toggled={!isCollapsed} collapse={isCollapsed}>
         <CDBSidebarHeader
           prefix={
-            <i
-              className={`fa ${isCollapsed ? "fa-times" : "fa-bars"} fa-lg`}
-              onClick={toggleSidebar}
-            ></i>
+            <i className={`fa ${isCollapsed ? "fa-times" : "fa-bars"} fa-lg`} onClick={toggleSidebar}></i>
           }
         >
-          <a
-            href="/"
-            className="text-decoration-none"
-            style={{ color: "inherit" }}
-          >
+          <a href="/" className="text-decoration-none" style={{ color: "inherit" }}>
             MPGI
           </a>
         </CDBSidebarHeader>
@@ -61,51 +50,56 @@ const FacultySidebar = ({
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
             <NavLink
-              onClick={() =>
-                handleMenuClick(() => navigate(`/facultydashboard/${FacultyID}`))
-              }
+              className={selectedMenuItem === 'Dashboard' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('Dashboard',() => navigate(`/facultydashboard/${FacultyID}`))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
             </NavLink>
+
             <NavLink
-              onClick={() => handleMenuClick(() => setEmpdetailFlag(true))}
+              className={selectedMenuItem === 'EmpDetail' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('EmpDetail',() => setEmpdetailFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="user">Employee Detail</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink
-              onClick={() => handleMenuClick(() => setStudAttendanceFlag(true))}
+              className={selectedMenuItem === 'StudAttendance' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('StudAttendance',() => setStudAttendanceFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="book">Student Attendance</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink
-              onClick={() => handleMenuClick(() => setAcademicFlag(true))}
+              className={selectedMenuItem === 'Academic' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('Academic',() => setAcademicFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="chart-line">Academic</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink
-              onClick={() => handleMenuClick(() => setAllTimetableFlag(true))}
+              className={selectedMenuItem === 'AllTimetable' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('AllTimetable',() => setAllTimetableFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="calendar">Timetable</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink
-              onClick={() => handleMenuClick(() => setNoticeFlag(true))}
+              className={selectedMenuItem === 'Notice' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('Notice',() => setNoticeFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="bell">Notices</CDBSidebarMenuItem>
             </NavLink>
 
-            {/* Add Reports Menu Item */}
             <NavLink
-              onClick={() => handleMenuClick(() => setReportsFlag(true))}
+              className={selectedMenuItem === 'Reports' ? 'activeClicked' : ''}
+              onClick={() => handleMenuClick('Reports',() => setReportsFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="file-alt">Reports</CDBSidebarMenuItem>
