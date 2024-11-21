@@ -1,35 +1,30 @@
-import React, { useState } from "react";
-//import "../stylesheets/ShowAttByClass.css";
+import React, { useState, useEffect } from "react";
 
 const ShowAttByClass = ({ setView }) => {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [studentList, setStudentList] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [sections, setSections] = useState([]);
 
-  // Mock student data with attendance
-  const mockStudentData = [
-    { id: 1, name: "Alice Johnson", course: "B.TECH", year: "1st Year", section: "A", attendance: "95%" },
-    { id: 2, name: "Bob Smith", course: "B.TECH", year: "1st Year", section: "A", attendance: "85%" },
-    { id: 3, name: "Charlie Brown", course: "B.TECH", year: "2nd Year", section: "B", attendance: "90%" },
-    { id: 4, name: "David Miller", course: "BBA", year: "2nd Year", section: "C", attendance: "88%" },
-    { id: 5, name: "Eve Davis", course: "MCA", year: "2nd Year", section: "D", attendance: "92%" },
-    { id: 6, name: "Frank Wilson", course: "BCA", year: "3rd Year", section: "B", attendance: "80%" },
-    { id: 7, name: "Grace Lee", course: "MBA", year: "1st Year", section: "A", attendance: "75%" },
-    { id: 8, name: "Hannah Moore", course: "BBA", year: "1st Year", section: "A", attendance: "85%" },
-    { id: 9, name: "Isaac Wright", course: "B.TECH", year: "4th Year", section: "D", attendance: "89%" },
-    { id: 10, name: "Jack Hill", course: "B.TECH", year: "3rd Year", section: "C", attendance: "82%" },
-  ];
+  useEffect(() => {
+    // Fetching courses and durations
+    fetch("http://localhost:3006/api/courseandduration")
+      .then((response) => response.json())
+      .then((data) => setCourses(data))
+      .catch((err) => console.error("Error fetching courses:", err));
+  }, []);
 
-  const courseYearOptions = {
-    "B.TECH": ["1st Year", "2nd Year", "3rd Year", "4th Year"],
-    BBA: ["1st Year", "2nd Year", "3rd Year"],
-    BCA: ["1st Year", "2nd Year", "3rd Year"],
-    MBA: ["1st Year", "2nd Year"],
-    MCA: ["1st Year", "2nd Year"],
-  };
-
-  const sectionOptions = ["A", "B", "C", "D"];
+  useEffect(() => {
+    // Fetching sections for the selected year
+    if (selectedYear) {
+      fetch(`http://localhost:3006/api/getsectionsofYear?yearofstudy=${selectedYear}`)
+        .then((response) => response.json())
+        .then((data) => setSections(data))
+        .catch((err) => console.error("Error fetching sections:", err));
+    }
+  }, [selectedYear]);
 
   const handleCourseChange = (event) => {
     setSelectedCourse(event.target.value);
@@ -49,18 +44,16 @@ const ShowAttByClass = ({ setView }) => {
   };
 
   const handleShowList = () => {
-    const filteredStudents = mockStudentData.filter(
-      (student) =>
-        student.course === selectedCourse &&
-        student.year === selectedYear &&
-        student.section === selectedSection
-    );
-    setStudentList(filteredStudents);
-
-    console.log("Filtered Students:", filteredStudents); // Debugging to check the matched students
-    console.log("Selected Course:", selectedCourse);
-    console.log("Selected Year:", selectedYear);
-    console.log("Selected Section:", selectedSection);
+    // Call the API to get the student attendance data based on selected parameters
+    fetch(
+      `http://localhost:3006/api/attendanceofallstudentsofsection?CourseName=${selectedCourse}&yearofstudy=${selectedYear}&section=${selectedSection}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setStudentList(data);
+        console.log("Filtered Students:", data); // Debugging to check the fetched students
+      })
+      .catch((err) => console.error("Error fetching student data:", err));
   };
 
   const handleBackToDashboard = () => {
@@ -82,9 +75,9 @@ const ShowAttByClass = ({ setView }) => {
           <option value="" disabled>
             Choose a course
           </option>
-          {Object.keys(courseYearOptions).map((course) => (
-            <option key={course} value={course}>
-              {course}
+          {courses.map((course) => (
+            <option key={course.CourseName} value={course.CourseName}>
+              {course.CourseName} ({course.Duration} Years)
             </option>
           ))}
         </select>
@@ -102,7 +95,7 @@ const ShowAttByClass = ({ setView }) => {
             <option value="" disabled>
               Choose a year
             </option>
-            {courseYearOptions[selectedCourse].map((year) => (
+            {["1st Year", "2nd Year", "3rd Year", "4th Year"].map((year) => (
               <option key={year} value={year}>
                 {year}
               </option>
@@ -123,9 +116,9 @@ const ShowAttByClass = ({ setView }) => {
             <option value="" disabled>
               Choose a section
             </option>
-            {sectionOptions.map((section) => (
-              <option key={section} value={section}>
-                {section}
+            {sections.map((section) => (
+              <option key={section.Section} value={section.Section}>
+                {section.Section}
               </option>
             ))}
           </select>
@@ -145,8 +138,8 @@ const ShowAttByClass = ({ setView }) => {
           <h3>Student List</h3>
           <ul>
             {studentList.map((student) => (
-              <li key={student.id}>
-                {student.id}. {student.name} - Attendance: {student.attendance}
+              <li key={student.RollNO}>
+                {student.RollNO}. {student.Stud_name} - Attendance: {student.AttendancePercentage}%
               </li>
             ))}
           </ul>

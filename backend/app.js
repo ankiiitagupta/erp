@@ -982,6 +982,50 @@ app.get("/api/attendanceofallstudentsofsection", (req, res) => {
   );
 });
 
+// This API fetches the students by name along with their attendance
+app.get("/api/searchstudentsbyname", (req, res) => {
+  const { query } = req.query; // Capture search input from the request query parameter
+
+  db.query(
+    `
+    SELECT 
+      S.RollNO,
+      S.Stud_name,
+      S.Stud_Contact,
+      S.Stud_YearOfStudy,
+      S.Section,
+      CO.CourseName,
+      SUM(A.AttendanceStatus) AS TotalAttendance,
+      COUNT(A.AttendanceStatus) AS TotalLectures,
+      (SUM(A.AttendanceStatus) / COUNT(A.AttendanceStatus)) * 100 AS AttendancePercentage
+    FROM 
+      Student S
+    JOIN 
+      Enrollment E ON S.RollNO = E.RollNO
+    JOIN 
+      Course CO ON E.CourseID = CO.CourseID
+    LEFT JOIN 
+      Attendance A ON S.RollNO = A.RollNO
+    WHERE 
+      S.Stud_name LIKE CONCAT( ?, '%')  -- Match partially with the name
+    GROUP BY 
+      S.RollNO, S.Stud_name, S.Stud_Email, S.Stud_Contact, S.Stud_YearOfStudy, S.Section, CO.CourseName
+    ORDER BY 
+      S.Stud_name ASC;
+    `,
+    [query],
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching data:", err);
+        return res.status(500).json({ error: "Server error" });
+      }
+      res.json(results); // Return matching results with attendance data
+    }
+  );
+});
+
+
+
 // Start the server on the specified port
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
