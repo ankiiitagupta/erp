@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import "../stylesheets/AcademicsDashboard.css";
 import markAttendanceIcon from "../../assets/AcademicDashboardsvg/Markatt1.png";
-import showAttendanceIcon from "../../assets/AcademicDashboardsvg/Markatt2.png";
+import showAttendanceBySubjectIcon from "../../assets/AcademicDashboardsvg/Markatt2.png";
+import showAttendanceByClassIcon from "../../assets/AcademicDashboardsvg/Markatt2.png"; // Placeholder icon
+import showAttendanceBySearchIcon from "../../assets/AcademicDashboardsvg/Markatt2.png"; // Placeholder for search icon
 import MarkStudentAttendance from "./MarkStudentAttendance"; // Import the component
 import ShowAttBySub from "./showattbysub"; // Corrected import
+import ShowAttByClass from "./Showattbyclass"; // New component import
+import ShowAttBySearch from "./Showattbysearch"; // New search page component import
 
 const StudentAttendance = ({ facultyID }) => {
   const [view, setView] = useState("dashboard");
@@ -12,8 +16,16 @@ const StudentAttendance = ({ facultyID }) => {
     setView("markAttendance");
   };
 
-  const handleShowAttendance = () => {
-    setView("showAttendance");
+  const handleShowAttendanceBySubject = () => {
+    setView("showAttendanceBySubject");
+  };
+
+  const handleShowAttendanceByClass = () => {
+    setView("showAttendanceByClass");
+  };
+
+  const handleShowAttendanceBySearch = () => {
+    setView("showAttendanceBySearch");
   };
 
   return (
@@ -30,13 +42,29 @@ const StudentAttendance = ({ facultyID }) => {
               />
               <p>Mark Attendance</p>
             </div>
-            <div className="icon-card" onClick={handleShowAttendance}>
+            <div className="icon-card" onClick={handleShowAttendanceBySubject}>
               <img
-                src={showAttendanceIcon}
-                alt="Show Attendance"
+                src={showAttendanceBySubjectIcon}
+                alt="Show Attendance by Subject"
                 className="icon"
               />
-              <p>Show Attendance</p>
+              <p>Show Attendance by Subject</p>
+            </div>
+            <div className="icon-card" onClick={handleShowAttendanceByClass}>
+              <img
+                src={showAttendanceByClassIcon}
+                alt="Show Attendance by Class"
+                className="icon"
+              />
+              <p>Show Attendance by Class</p>
+            </div>
+            <div className="icon-card" onClick={handleShowAttendanceBySearch}>
+              <img
+                src={showAttendanceBySearchIcon}
+                alt="Show Attendance by Search"
+                className="icon"
+              />
+              <p>Show Attendance by Search</p>
             </div>
           </div>
         </>
@@ -44,8 +72,14 @@ const StudentAttendance = ({ facultyID }) => {
       {view === "markAttendance" && (
         <MarkStudentAttendance facultyID={facultyID} />
       )}
-      {view === "showAttendance" && (
-        <ShowAttBySub facultyID={facultyID} setView={setView} /> // Corrected component name
+      {view === "showAttendanceBySubject" && (
+        <ShowAttBySub facultyID={facultyID} setView={setView} />
+      )}
+      {view === "showAttendanceByClass" && (
+        <ShowAttByClass setView={setView} />
+      )}
+      {view === "showAttendanceBySearch" && (
+        <ShowAttBySearch setView={setView} />
       )}
     </div>
   );
