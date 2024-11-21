@@ -4,7 +4,6 @@ import axios from "axios";
 import { API_URL } from "../../axios";
 
 import "../stylesheets/facultyalltimetable.css";
-
 const FacultyallTimeTable = ({ facultyID, roles }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Timetable");
@@ -16,7 +15,7 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
   const [selectedClassroom, setSelectedClassroom] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedSubstitute, setSelectedSubstitute] = useState("");
+  const [selectedFaculty, setSelectedFaculty] = useState(""); // Add state for faculty filter
 
   const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
   const timeSlots = [
@@ -53,39 +52,40 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
   const filterTimetable = () => {
     let filtered = timetable;
 
-    // If the faculty is a coordinator, filter only the classes they are in charge of
-  
-
     // Apply classroom filter
     if (selectedClassroom) {
-      filtered = filtered.filter(lecture => lecture.RoomNumber === selectedClassroom);
+      filtered = filtered.filter(
+        (lecture) => lecture.RoomNumber === selectedClassroom
+      );
     }
 
     // Apply subject filter
     if (selectedSubject) {
-      filtered = filtered.filter(lecture => 
-        lecture.SubjectName.toLowerCase() === selectedSubject.toLowerCase()
+      filtered = filtered.filter(
+        (lecture) =>
+          lecture.SubjectName.toLowerCase() === selectedSubject.toLowerCase()
       );
     }
 
     // Apply location filter (Student Group)
     if (selectedLocation) {
-      filtered = filtered.filter(lecture => lecture.Location === selectedLocation);
+      filtered = filtered.filter((lecture) => lecture.Location === selectedLocation);
     }
 
-    // Apply substitute filter (only show lectures where the current faculty is a substitute)
-    if (selectedSubstitute) {
-      filtered = filtered.filter(lecture => 
-        lecture.Substitute && lecture.Substitute === facultyID
+    // Apply faculty filter
+    if (selectedFaculty) {
+      filtered = filtered.filter(
+        (lecture) => lecture.FacultyID && lecture.FacultyID === selectedFaculty
       );
     }
 
     setFilteredTimetable(filtered);
+    renderTimetable();
   };
 
   useEffect(() => {
     filterTimetable(); // Re-filter timetable whenever a filter option is changed
-  }, [selectedClassroom, selectedSubject, selectedLocation, selectedSubstitute, roles]);
+  }, [selectedClassroom, selectedSubject, selectedLocation, selectedFaculty]);
 
   // Event handler to trigger filtering on Enter key press
   const handleKeyPress = (e) => {
@@ -123,7 +123,8 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
               lecturesForDay.forEach((lecture) => {
                 const slotIndex = timeSlots.findIndex(
                   (slot) =>
-                    lecture.StartTime >= slot.start && lecture.EndTime <= slot.end
+                    lecture.StartTime >= slot.start &&
+                    lecture.EndTime <= slot.end
                 );
                 if (slotIndex !== -1) lectureSlots[slotIndex] = lecture;
               });
@@ -188,10 +189,10 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
           Filter by Location
         </button>
         <button
-          className={activeTab === "Substitute" ? "active-tab" : "tab"}
-          onClick={() => setActiveTab("Substitute")}
+          className={activeTab === "Faculty" ? "active-tab" : "tab"}
+          onClick={() => setActiveTab("Faculty")}
         >
-          Substitute Timetable
+          Facultywise Timetable
         </button>
       </div>
 
@@ -205,10 +206,11 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
               type="text"
               value={selectedClassroom}
               onChange={(e) => setSelectedClassroom(e.target.value)}
-              onKeyPress={handleKeyPress}  // Trigger filter on Enter
+              onKeyPress={handleKeyPress} // Trigger filter on Enter
               placeholder="Enter Classroom Number"
             />
-            <button onClick={filterTimetable}>Search</button>  {/* Search button */}
+            <button onClick={filterTimetable}>Search</button>{" "}
+            {/* Search button */}
           </div>
         )}
         {activeTab === "Subject" && (
@@ -218,10 +220,11 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
               type="text"
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
-              onKeyPress={handleKeyPress}  // Trigger filter on Enter
+              onKeyPress={handleKeyPress} // Trigger filter on Enter
               placeholder="Enter Subject Name"
             />
-            <button onClick={filterTimetable}>Search</button>  {/* Search button */}
+            <button onClick={filterTimetable}>Search</button>{" "}
+            {/* Search button */}
           </div>
         )}
         {activeTab === "Location" && (
@@ -231,17 +234,25 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
               type="text"
               value={selectedLocation}
               onChange={(e) => setSelectedLocation(e.target.value)}
-              onKeyPress={handleKeyPress}  // Trigger filter on Enter
+              onKeyPress={handleKeyPress} // Trigger filter on Enter
               placeholder="Enter Room Number"
             />
-            <button onClick={filterTimetable}>Search</button>  {/* Search button */}
+            <button onClick={filterTimetable}>Search</button>{" "}
+            {/* Search button */}
           </div>
         )}
-        {activeTab === "Substitute" && (
+        {activeTab === "Faculty" && (
           <div className="filter-options">
-            <h2>Substitute Timetable</h2>
-            <p>Showing timetable for classes where you are the substitute.</p>
-            {/* No input needed for substitute */}
+            <h2>Filter by Faculty</h2>
+            <input
+              type="text"
+              value={selectedFaculty}
+              onChange={(e) => setSelectedFaculty(e.target.value)}
+              onKeyPress={handleKeyPress} // Trigger filter on Enter
+              placeholder="Enter Faculty ID"
+            />
+            <button onClick={filterTimetable}>Search</button>{" "}
+            {/* Search button */}
           </div>
         )}
       </div>

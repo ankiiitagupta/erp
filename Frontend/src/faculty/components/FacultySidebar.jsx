@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -9,12 +9,23 @@ import {
   CDBSidebarMenuItem,
 } from "cdbreact";
 
-const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setStudAttendanceFlag, setAcademicFlag ,resetFlags ,FacultyID ,setAllTimetableFlag,}) => {
+const FacultySidebar = ({
+  setEmpdetailFlag,
+  setNoticeFlag,
+  setStudAttendanceFlag,
+  setAcademicFlag,
+  resetFlags,
+  FacultyID,
+  setAllTimetableFlag,
+  setReportsFlag,
+}) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const navigate = useNavigate(); // For navigation
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
+
   const handleMenuClick = (action) => {
     resetFlags();
     if (action) action();
@@ -32,8 +43,8 @@ const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setStudAttendanceFlag
       >
         <CDBSidebarHeader
           prefix={
-            <i 
-              className={`fa ${isCollapsed ? "fa-times" : "fa-bars"} fa-lg`} 
+            <i
+              className={`fa ${isCollapsed ? "fa-times" : "fa-bars"} fa-lg`}
               onClick={toggleSidebar}
             ></i>
           }
@@ -49,45 +60,55 @@ const FacultySidebar = ({ setEmpdetailFlag, setNoticeFlag, setStudAttendanceFlag
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
-            <NavLink activeClassName="activeClicked" onClick={() => handleMenuClick( () => navigate(`/facultydashboard/${FacultyID}`)) }>
+            <NavLink
+              onClick={() =>
+                handleMenuClick(() => navigate(`/facultydashboard/${FacultyID}`))
+              }
+              activeClassName="activeClicked"
+            >
               <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
             </NavLink>
             <NavLink
-              onClick={() => handleMenuClick( () =>setEmpdetailFlag(true) ) } 
+              onClick={() => handleMenuClick(() => setEmpdetailFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="user">Employee Detail</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink 
-              onClick={() => handleMenuClick( () => setStudAttendanceFlag(true))}
+            <NavLink
+              onClick={() => handleMenuClick(() => setStudAttendanceFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="book">Student Attendance</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink 
-              onClick={() => handleMenuClick( () => setAcademicFlag(true)) }
+            <NavLink
+              onClick={() => handleMenuClick(() => setAcademicFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="chart-line">Academic</CDBSidebarMenuItem>
             </NavLink>
 
-            
-
             <NavLink
-              onClick={() => handleMenuClick( () => setAllTimetableFlag(true))}
+              onClick={() => handleMenuClick(() => setAllTimetableFlag(true))}
               activeClassName="activeClicked"
             >
-              <CDBSidebarMenuItem icon="exclamation-circle">Timetable</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="calendar">Timetable</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink
-              
-              onClick={() => setNoticeFlag(true)} 
+              onClick={() => handleMenuClick(() => setNoticeFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="bell">Notices</CDBSidebarMenuItem>
+            </NavLink>
+
+            {/* Add Reports Menu Item */}
+            <NavLink
+              onClick={() => handleMenuClick(() => setReportsFlag(true))}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="file-alt">Reports</CDBSidebarMenuItem>
             </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>

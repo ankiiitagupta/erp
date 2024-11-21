@@ -8,6 +8,8 @@ import StudentDashboard from './Student/Components/StudentDashboard';
 
 
 function App() {
+  
+
   return (
     <>
       <BrowserRouter>
@@ -24,6 +26,8 @@ function App() {
           <Route path="/facultydashboard/:FacultyID" element={<FacultyDashboard />} />
           <Route path="/todaysattendance" element={<TodaysAttendance />} />
           <Route path="/studentdashboard/:RollNO" element={<StudentDashboard />} />
+                      {/* <Route path="/facultyreport" element={<FacultyReport />} /> */}
+
           <Route path="/studentdashboard/:RollNO" element={<StudentDashboard />} />
         </Routes>
       </BrowserRouter>

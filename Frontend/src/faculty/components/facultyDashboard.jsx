@@ -7,11 +7,11 @@ import { API_URL } from "../../axios.js";
 import FacultyTimeTable from "./FacultyTimetable.jsx";
 import TimetablePopup from "./TimetablePopup.jsx";
 import EmployeeDetail from "./EmployeeDetail.jsx";
-import MarkStudentAttendance from "./MarkStudentAttendance.jsx"; // Ensure this component is correctly imported
+import MarkStudentAttendance from "./MarkStudentAttendance.jsx";
 import AcademicsDashboard from "./AcademicDashbooard.jsx";
 import FacultyallTimeTable from "./facultyalltimetable.jsx";
 import StudentAttendance from "./StudentAttendance.jsx";
-
+import FacultyReport from "./FacultyReport.jsx"; // Import the Reports page
 
 // Inline style for name box layout
 const namebox = {
@@ -33,16 +33,17 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
   const [AcademicFlag, setAcademicFlag] = useState(false);
   const [AllTimetableFlag, setAllTimetableFlag] = useState(false);
   const [StudAttendanceFlag, setStudAttendanceFlag] = useState(false);
+  const [reportsFlag, setReportsFlag] = useState(false); // Flag for showing the Reports section
+
+  // Reset all flags
   const resetFlags = () => {
     setStudAttendanceFlag(false);
     setAcademicFlag(false);
     setEmpdetailFlag(false);
     setShowPopup(false);
     setAllTimetableFlag(false);
+    setReportsFlag(false); // Reset Reports flag
   };
-  
-  
-
 
   useEffect(() => {
     // Fetch faculty details using Faculty ID
@@ -70,7 +71,7 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
       });
   }, [FacultyID]);
 
-  // Function to filter classes for today from timetable data
+  // Filter classes for today from timetable data
   const filterTodayTimetable = (data) => {
     const today = new Date().toLocaleString("en-us", { weekday: "long" });
     const todayClasses = data.filter((slot) => slot.Day === today);
@@ -82,7 +83,7 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
     setShowPopup(false);
   };
 
-  // Function to render faculty details section
+  // Render faculty details section
   const renderFacultyDetails = () => {
     if (faculty.length === 0) return <p>No faculty data available.</p>;
 
@@ -112,7 +113,7 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
     ));
   };
 
-  // Function to render the timetable section
+  // Render timetable section
   const renderTimetable = () => {
     if (timetable.length === 0) return <p>No timetable data available.</p>;
 
@@ -125,6 +126,7 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
           setEmpdetailFlag={setEmpdetailFlag}
           setMarkAttendanceFlag={setMarkAttendanceFlag}
           setAcademicFlag={setAcademicFlag}
+          setReportsFlag={setReportsFlag}
         />
       </div>
     );
@@ -137,23 +139,27 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
         setStudAttendanceFlag={setStudAttendanceFlag}
         setAcademicFlag={setAcademicFlag}
         setAllTimetableFlag={setAllTimetableFlag}
+        setReportsFlag={setReportsFlag} // Pass the Reports flag setter
         FacultyID={FacultyID}
         resetFlags={resetFlags}
       />
       <div className="main-content">
         <Header facultyID={FacultyID} />
         {AllTimetableFlag ? (
-          <FacultyallTimeTable facultyID={FacultyID} roles={roles}/>
+          <FacultyallTimeTable facultyID={FacultyID} roles={roles} />
         ) : AcademicFlag ? (
           <AcademicsDashboard facultyID={FacultyID} />
         ) : StudAttendanceFlag ? (
           <div className="MarkAttendance-Detail">
-            <StudentAttendance facultyID={FacultyID}/>
-            {/* <MarkStudentAttendance facultyID={FacultyID} /> */}
+            <StudentAttendance facultyID={FacultyID} />
           </div>
         ) : EmpdetailFlag ? (
           <div className="Employee-Detail">
             <EmployeeDetail FacultyID={FacultyID} />
+          </div>
+        ) : reportsFlag ? ( // Conditionally render the Reports page
+          <div className="reports">
+            <FacultyReport /> {/* Render the Reports component */}
           </div>
         ) : (
           <div className="faculty-section">

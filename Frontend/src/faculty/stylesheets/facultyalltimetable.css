@@ -1,160 +1,171 @@
 /* General container for the faculty timetable */
 .faculty-timetable-container {
-    font-family: 'Arial', sans-serif;
-    background: #f4f7fc;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
-    margin: 3rem auto;
-    max-width: 80rem; /* Remains constant */
-    width: 100%;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to bottom, #f9fafb, #eef1f7);
+    padding: 2.5rem;
+    border-radius: 1.2rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+    max-width: 80rem;
+    width: 95%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.faculty-timetable-container:hover {
+    transform: translateY(-0.2rem);
+    box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.15);
 }
 
 /* Filter tab styling */
 .filter-tabs {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     margin-bottom: 2rem;
-    font-size: 0.8rem;
-    flex-wrap: wrap;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .tab {
-    padding: 1.2rem 2rem;
+    padding: 1rem 1.5rem;
     background-color: #ffffff;
-    border-radius: 0.1rem;
+    border-radius: 0.4rem;
     border: 0.1rem solid #ddd;
     cursor: pointer;
-    font-size: 0.8rem;
-    color: #333;
-    transition: background-color 0.3s ease;
-    flex: 1 0 48%; /* Allows for better responsiveness */
+    font-size: 0.85rem;
+    color: #2a2929;
+    font-weight: 500;
+    text-align: center;
+   
+    flex: 1 0 20%;
 }
 
 .tab:hover {
-    background-color: #e3f2fd;
+    background-color: #e8f4fd;
+    color: #001f54;
+   
 }
 
 .active-tab {
-    background-color: #1976d2;
+    background-color: #001f54;
     color: white;
     font-weight: bold;
-    font-size: 0.8rem;
+    box-shadow: 0 0.2rem 0.6rem #001f54
 }
 
-/* Filter option styles */
+/* Filter options */
 .filter-options {
-    width: 100%;
-    max-width: 75rem;
     background-color: #ffffff;
-    padding: 2rem;
-    margin-top: 1rem;
-    border-radius: 0.8rem;
-    box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
+    padding: 2.5rem;
+    margin-top: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
 }
 
 .filter-options h2 {
-    color: #1976d2;
+    font-size: 1.4rem;
+    color: #001f54;
     margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 .filter-options input {
     width: 100%;
-    padding: 1rem;
+    padding: 0.8rem;
     font-size: 1rem;
-    border-radius: 0.5rem;
-    border: 0.1rem solid #ccc;
+    border-radius: 0.4rem;
+    border: 0.1rem solid #ddd;
     margin-top: 0.5rem;
+    transition: border-color 0.3s ease;
 }
 
 .filter-options input:focus {
-    border-color: #1976d2;
+    border-color: #001f54;
     outline: none;
+    box-shadow: 0 0 0.4rem rgba(21, 101, 192, 0.2);
 }
 
-/* Timetable table styles */
+/* Timetable table */
 .timetable-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #ffffff;
-    margin-top: 3rem;
+    margin-top: 2rem;
+    background: #ffffff;
     border-radius: 0.8rem;
     overflow: hidden;
-}
-
-.timetable-table th, .timetable-table td {
-    padding: 1rem;
-    text-align: center;
-    border-bottom: 0.1rem solid #ddd;
+    box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
 }
 
 .timetable-table th {
-    background-color: #1976d2;
+    background: #001f54;
     color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 1rem;
+    text-transform: uppercase;
+}
+
+.timetable-table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 0.1rem solid #f0f0f0;
+    font-size: 0.95rem;
 }
 
 .lecture-cell {
-    background-color: #e3f2fd; /* Light blue for lectures */
-    transition: background-color 0.3s ease;
+    background-color: #e3f7ff;
+    font-weight: 500;
+    color: #001f54;
+    transition: all 0.3s ease;
 }
 
 .lecture-cell:hover {
-    background-color: #90caf9; /* Slightly darker blue on hover */
+    background-color: #c8e8ff;
+    transform: scale(1.05);
 }
 
 .empty-cell {
-    background-color: #f9f9f9; /* Light gray for empty cells */
+    background-color: #f9f9f9;
+    color: #252424;
 }
 
 .no-lecture-cell {
-    background-color: #f5f5f5; /* Very light gray for 'No Lecture' cells */
+    background-color: #f5f5f5;
+    color: #920404;
+    font-style: italic;
 }
 
-.loading-message,
-.error-message {
+.loading-message, .error-message {
     text-align: center;
-    font-size: 1.125rem;
-    color: #555;
+    font-size: 1.2rem;
+    color: #0e0d0d;
     padding: 2rem;
 }
 
 /* Highlighting the cells with actual lectures */
 .lecture-cell .highlighted {
     font-weight: bold;
-    color: #1976d2;
+    font-size: 1.1rem;
 }
 
 /* Responsive Design */
 @media (max-width: 48rem) {
-    /* For small screens, adjust filter tabs layout */
     .filter-tabs {
         flex-direction: column;
-        align-items: stretch;
     }
 
     .tab {
         width: 100%;
-        text-align: left;
+        margin-bottom: 0.5rem;
     }
 
-    /* Adjust timetable container padding */
     .faculty-timetable-container {
         padding: 1.5rem;
     }
 
-    /* Adjust filter options width for smaller screens */
     .filter-options {
-        width: 100%;
         padding: 1.5rem;
     }
 
-    .filter-options h2 {
-        font-size: 1.2rem; /* Slightly smaller text */
-    }
-
-    /* Ensure timetable table is responsive */
     .timetable-table {
         font-size: 0.85rem;
     }
@@ -162,27 +173,10 @@
     .timetable-table th, .timetable-table td {
         padding: 0.8rem;
     }
-
-    .lecture-cell, .empty-cell {
-        padding: 0.8rem;
-    }
-
-    .timetable-table th {
-        font-size: 0.75rem; /* Adjust for smaller devices */
-    }
-
-    .timetable-table td {
-        font-size: 0.75rem;
-    }
 }
 
 @media (max-width: 32rem) {
-    /* For even smaller screens, further adjustments */
     .faculty-timetable-container {
-        padding: 1rem;
-    }
-
-    .filter-options {
         padding: 1rem;
     }
 
@@ -193,18 +187,6 @@
 
     .timetable-table th, .timetable-table td {
         padding: 0.6rem;
-    }
-
-    .lecture-cell, .empty-cell {
-        padding: 0.6rem;
-    }
-
-    .timetable-table th {
-        font-size: 0.7rem; /* Further reduce size for small screens */
-    }
-
-    .timetable-table td {
-        font-size: 0.7rem;
     }
 
     .loading-message, .error-message {
