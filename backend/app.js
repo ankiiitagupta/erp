@@ -466,7 +466,8 @@ app.get("/api/batchmateofstud", (req, res) => {
       FROM student S1
       JOIN student S2 ON S1.Stud_YearOfStudy = S2.Stud_YearOfStudy
       WHERE S1.RollNO = ? 
-      AND S2.RollNO != ?;
+      AND S2.RollNO != ?
+      And S2.Section = S1.Section;
 `,
     [RollNO, RollNO],
     (err, results) => {
@@ -556,8 +557,7 @@ app.get("/api/facultytimetable", (req, res) => {
     tt.LectureDate, 
     tt.LectureNumber, 
     s.SubjectName, 
-    c.CourseName AS ClassName, 
-    tt.RoomNumber, 
+    c.CourseName AS ClassName,
     DAYNAME(tt.LectureDate) AS DayOfWeek
 FROM 
     timetable tt
@@ -597,7 +597,6 @@ app.get("/api/facultytodaystimetable", (req, res) => {
         c.CourseName, 
         t.StartTime,
         t.EndTime,
-        t.RoomNumber,
         t.LectureNumber,
         t.DayOfWeek,
         t.LectureDate
@@ -640,7 +639,6 @@ app.get("/api/facultyweekstimetable", (req, res) => {
         c.CourseName, 
         t.StartTime,
         t.EndTime,
-        t.RoomNumber,
         t.LectureNumber,
         t.DayOfWeek,
         t.LectureDate
@@ -673,7 +671,7 @@ app.get("/api/facultyweekstimetable", (req, res) => {
   });
 });
 
-//on selection the lecture
+//on selection the lecture for marking attendance
 app.get("/api/facultyondateselectionattendance", (req, res) => {
   const { facultyID, LectureDate } = req.query;
 
@@ -693,7 +691,6 @@ app.get("/api/facultyondateselectionattendance", (req, res) => {
       s.SubjectID,
       t.StartTime,
       t.EndTime,
-      t.RoomNumber,
       t.LectureNumber,
       t.DayOfWeek
     FROM 
@@ -895,6 +892,95 @@ app.get("/api/listofstudentsandattendanceofsubject", (req, res) => {
   );
 });
 
+
+// get all course and duration
+app.get("/api/courseandduration", (req, res) => {
+  const { facultyID ,SubjectName,Section} = req.query;
+
+  db.query(
+    `
+    select CourseName,Duration from course;
+    `,
+    [facultyID, SubjectName,Section],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+// get all course and duration
+app.get("/api/courseandduration", (req, res) => {
+
+
+  db.query(
+    `
+    select CourseName,Duration from course;
+    `,
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+// get all section of year
+app.get("/api/getsectionsofYear", (req, res) => {
+  const { yearofstudy} = req.query;
+
+  db.query(
+    `
+    SELECT DISTINCT Section
+    FROM Student
+    WHERE Stud_YearOfStudy = ?;
+    `,
+    [yearofstudy],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+// get all the attendance and list of students of a section
+app.get("/api/attendanceofallstudentsofsection", (req, res) => {
+  const {CourseName, yearofstudy,section} = req.query;
+
+  db.query(
+    `
+        SELECT 
+    S.RollNO,
+    S.Stud_name,
+    S.Stud_Email,
+    S.Stud_Contact,
+    S.Stud_YearOfStudy,
+    S.Section,
+    CO.CourseName,
+    SUM(A.AttendanceStatus) AS TotalAttendance,
+    COUNT(A.AttendanceStatus) AS TotalLectures,
+    (SUM(A.AttendanceStatus) / COUNT(A.AttendanceStatus)) * 100 AS AttendancePercentage
+    FROM 
+        Student S
+    JOIN 
+        Enrollment E ON S.RollNO = E.RollNO
+    JOIN 
+        Course CO ON E.CourseID = CO.CourseID
+    JOIN 
+        Attendance A ON S.RollNO = A.RollNO
+    WHERE 
+        CO.CourseName = ?  -- Specify the course name if needed
+        AND S.Stud_YearOfStudy = ? 
+        AND S.Section = ?
+    GROUP BY 
+        S.RollNO;
+
+    `,
+    [CourseName, yearofstudy , section],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
 
 // Start the server on the specified port
 app.listen(port, () => {
