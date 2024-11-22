@@ -25,7 +25,7 @@ db.connect((err) => {
 //Login
 app.get("/api/login", (req, res) => {
   const { LoginID, PasswordHash } = req.query;
-  const isFaculty = LoginID.startsWith("f1");
+  const isFaculty = LoginID.startsWith("f");
   const isStudent = LoginID.startsWith("al");
 
   if (isFaculty) {
@@ -170,8 +170,7 @@ app.get("/api/todaystimetable", (req, res) => {
     s.SubjectName, 
     f.Faculty_Name, 
     t.StartTime, 
-    t.EndTime, 
-    t.RoomNumber, 
+    t.EndTime,
     t.LectureNumber,
     COALESCE(a.AttendanceStatus, 'Not Marked') AS AttendanceStatus  -- If no attendance is marked, show 'Not Marked'
 FROM 
@@ -225,8 +224,7 @@ app.get("/api/weekstimetable", (req, res) => {
             f.Faculty_Name, 
             t.DayOfWeek, 
             t.StartTime, 
-            t.EndTime, 
-            t.RoomNumber, 
+            t.EndTime,  
             t.LectureNumber, 
             s.SubjectID AS SubcdjectCode,
             t.LectureDate  
@@ -553,11 +551,18 @@ app.get("/api/facultytimetable", (req, res) => {
 
   // Query to get timetable details for the specific faculty
   const query = `
- SELECT 
+ SELECT
+    tt.Section, 
+    tt.YearOfStudy, 
+    tt.StartTime,
+    tt.EndTime,
     tt.LectureDate, 
     tt.LectureNumber, 
     s.SubjectName, 
-    c.CourseName AS ClassName,
+    c.CourseName,
+    f.Faculty_Name, 
+    f.faculty_alias,
+    r.RoomName,
     DAYNAME(tt.LectureDate) AS DayOfWeek
 FROM 
     timetable tt
@@ -567,8 +572,10 @@ JOIN
     faculty f ON f.FacultyID = s.FacultyID
 JOIN 
     course c ON c.CourseID = s.CourseID
+JOIN 
+    room AS r ON tt.RoomID = r.RoomID  
 WHERE 
-    f.FacultyID = 1
+    f.FacultyID = ?
 ORDER BY 
     tt.LectureDate, tt.LectureNumber;
 

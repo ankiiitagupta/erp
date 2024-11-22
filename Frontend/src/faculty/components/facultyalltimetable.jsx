@@ -24,7 +24,7 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
       }
   
       try {
-        const apiUrl = `${API_URL}/api/facultyweekstimetable?facultyID=${facultyID}`;
+        const apiUrl = `${API_URL}/api/facultytimetable?facultyID=${facultyID}`;
         console.log("Fetching timetable from:", apiUrl);
         const response = await axios.get(apiUrl);
   

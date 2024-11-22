@@ -60,9 +60,10 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
 
     // Fetch faculty timetable data
     axios
-      .get(`${API_URL}/api/facultyTimetable?FacultyID=${FacultyID}`)
+      .get(`${API_URL}/api/facultyTimetable?facultyID=${FacultyID}`)
       .then((response) => {
         setTimetable(response.data);
+        console.log(response.data)
         filterTodayTimetable(response.data); // Filter timetable for today's classes
       })
       .catch((error) => {
