@@ -10,7 +10,10 @@ const FacultyTimeTable = ({ FacultyID }) => {
   const [timetable, setTimetable] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const handleClick = (action) => {
+    
+    if (action) action();
+  };
   const timeSlots = [
     { start: "09:45:00", end: "10:35:00" },
     { start: "10:35:00", end: "11:25:00" },
@@ -138,11 +141,13 @@ const FacultyTimeTable = ({ FacultyID }) => {
                       {lecture ? (
                         <>
                           <div>{lecture.SubjectName}</div>
-                          <div>Room: {lecture.RoomNumber}</div>
-                          <div>Course: {lecture.CourseName}</div>
+                          <div style={{ fontSize: '1rem' }}>Room: {lecture.RoomName}</div>
+                          
+                          <div>Section: {lecture.CourseName}/{lecture.YearOfStudy}year/{lecture.Section}</div>
+                          <div>Faculty: {lecture.faculty_alias}</div>
                           {isCurrentSlot && (
                             <button
-                              onClick={() => handleAttendance(lecture)}
+                              onClick={ ()=>handleClick(()=>handleAttendance(lecture)) }
                               className="attendance-button"
                             >
                               Mark Attendance

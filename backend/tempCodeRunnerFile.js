@@ -1,1 +1,1 @@
-/api/subjectandsectionofaculty
+api/facultyweekstimetable

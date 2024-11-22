@@ -633,30 +633,40 @@ app.get("/api/facultyweekstimetable", (req, res) => {
 
   // Query to get timetable details for the specific faculty
   const query = `
-        SELECT DISTINCT
-        t.TimetableID,
-        s.SubjectName,
-        c.CourseName, 
-        t.StartTime,
-        t.EndTime,
-        t.LectureNumber,
-        t.DayOfWeek,
-        t.LectureDate
-    FROM 
-        timetable AS t
-    JOIN 
-        subject AS s ON t.SubjectID = s.SubjectID
-    JOIN 
-        course AS c ON t.CourseID = c.CourseID
-    JOIN 
-        student AS st ON st.Section = t.Section
-    WHERE 
-        t.FacultyID = ? -- Replace with the FacultyID of the desired faculty
-        AND t.LectureDate BETWEEN '2024-11-18' AND '2024-11-23'
-    ORDER BY 
-        t.LectureDate, 
-        t.LectureNumber;
+       SELECT DISTINCT
 
+    s.SubjectName,
+    c.CourseName,
+    t.Section, 
+    t.YearOfStudy,
+    t.StartTime,
+    t.EndTime,
+    t.LectureNumber,
+    t.DayOfWeek,
+    t.LectureDate,
+    f.Faculty_Name, 
+    f.faculty_alias,
+    r.RoomName
+               
+FROM 
+    timetable AS t
+JOIN 
+    subject AS s ON t.SubjectID = s.SubjectID
+JOIN 
+    course AS c ON t.CourseID = c.CourseID
+JOIN 
+    student AS st ON st.Section = t.Section
+JOIN 
+    faculty AS f ON t.FacultyID = f.FacultyID       -- Join to get the Faculty Name
+ -- Join to get the room assignment
+JOIN 
+    room AS r ON t.RoomID = r.RoomID                -- Join to get the Room Number
+WHERE 
+    t.FacultyID = ? -- Replace with the FacultyID of the desired faculty
+    AND t.LectureDate BETWEEN '2024-11-18' AND '2024-11-23'
+ORDER BY 
+    t.LectureDate, 
+    t.LectureNumber;
 
         `;
 
@@ -687,7 +697,8 @@ app.get("/api/facultyondateselectionattendance", (req, res) => {
   const query = `
     SELECT DISTINCT
       s.SubjectName,
-      c.CourseName, 
+      c.CourseName,
+     
       s.SubjectID,
       t.StartTime,
       t.EndTime,
@@ -1024,6 +1035,19 @@ app.get("/api/searchstudentsbyname", (req, res) => {
   );
 });
 
+
+
+app.get("/api/rooms", (req, res) => {
+  const query = "SELECT RoomName FROM room order by RoomDomain"; // Your SQL query to fetch room names
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching room data: ", err);
+      return res.status(500).json({ error: "Failed to fetch room data" });
+    }
+    res.json(results);
+  });
+});
 
 
 // Start the server on the specified port

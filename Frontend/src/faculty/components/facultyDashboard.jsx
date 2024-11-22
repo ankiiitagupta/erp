@@ -121,12 +121,7 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
       <div className="timetable">
         <h4>Faculty Timetable</h4>
         <FacultyTimeTable
-          FacultyID={FacultyID}
-          timetable={timetable}
-          setEmpdetailFlag={setEmpdetailFlag}
-          setMarkAttendanceFlag={setMarkAttendanceFlag}
-          setAcademicFlag={setAcademicFlag}
-          setReportsFlag={setReportsFlag}
+          FacultyID={FacultyID}         
         />
       </div>
     );
