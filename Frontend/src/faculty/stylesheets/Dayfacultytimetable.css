@@ -1,0 +1,58 @@
+.timetable-container {
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+    max-width: 100%;
+    margin: auto;
+  }
+  
+  .timetable-title {
+    text-align: center;
+    color: #4caf50;
+  }
+  
+  .error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .timetable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .timetable thead {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .timetable th,
+  .timetable td {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .timetable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .timetable tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .date-column {
+    font-weight: bold;
+  }
+  
+  .subject-cell {
+    color: #000;
+  }
+  
+  .free-slot {
+    color: black;
+    
+    font-style: italic;
+  }
+  

@@ -1,215 +1,101 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { API_URL } from "../../axios";
+
+import TimetableComponent from "./Dayfacultytimetable";
+import FacultyTimeTable from "./FacultyTimetable";
+// import "../stylesheets/FacultywiseTimetable.css";
 
 const FacultywiseTimetable = () => {
-  const [selectedDate, setSelectedDate] = useState("");
-  const[ faculty,setfaculty] = useState([" "])
-  const timetableData = [
-    {
-      faculty: "Dr. Smith",
-      date: "2024-11-22",
-      slots: [
-        { time: "10:00 AM - 11:00 AM", subject: "Maths" },
-        { time: "2:00 PM - 3:00 PM", subject: "Physics" },
-      ],
-    },
-    {
-      faculty: "Ms. Johnson",
-      date: "2024-11-22",
-      slots: [
-        { time: "11:00 AM - 12:00 PM", subject: "Chemistry" },
-        { time: "3:00 PM - 4:00 PM", subject: "Biology" },
-      ],
-    },
-    {
-      faculty: "Dr. Patel",
-      date: "2024-11-23",
-      slots: [
-        { time: "9:00 AM - 10:00 AM", subject: "Computer Science" },
-        { time: "1:00 PM - 2:00 PM", subject: "Data Structures" },
-      ],
-    },
-  ];
+  const [faculty, setFaculty] = useState(""); // Selected faculty name
+  const [facultyList, setFacultyList] = useState([]); // List of faculty
+  const [facultyID, setFacultyID] = useState(null); // Selected faculty ID
+  const [startDate, setStartDate] = useState(""); // Start date
+  const [endDate, setEndDate] = useState(""); // End date
 
-  const handleDateChange = (e) => setSelectedDate(e.target.value);
+  useEffect(() => {
+    const fetchFacultyList = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/facultyList`);
+        setFacultyList(response.data);
+      } catch (err) {
+        console.error("Error fetching faculty list:", err);
+      }
+    };
+    fetchFacultyList();
+  }, []);
 
-  const filteredTimetable = timetableData.filter(
-    (entry) => entry.date === selectedDate
-  );
-
-   const renderTimetable = () => {
-    if (loading) return <div className="loading-message">Loading...</div>;
-    if (error) return <div className="error-message">{error}</div>;
-
-    return (
-      <div className="faculty-timetable">
-        <table className="timetable-table">
-          <thead>
-            <tr>
-              <th>Day</th>
-              {timeSlots.map((slot, index) => (
-                <th key={index}>
-                  {slot.start} - {slot.end}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {daysOfWeek.map((day) => {
-              const lecturesForDay = filteredTimetable.filter(
-                (lecture) =>
-                  lecture.DayOfWeek.toLowerCase() === day.toLowerCase()
-              );
-
-              const lectureSlots = new Array(timeSlots.length).fill(null);
-
-              lecturesForDay.forEach((lecture) => {
-                const slotIndex = timeSlots.findIndex(
-                  (slot) =>
-                    lecture.StartTime >= slot.start &&
-                    lecture.EndTime <= slot.end
-                );
-                if (slotIndex !== -1) lectureSlots[slotIndex] = lecture;
-              });
-
-              return (
-                <tr key={day}>
-                  <td>{day}</td>
-                  {lectureSlots.map((lecture, index) => (
-                    <td
-                      key={index}
-                      className={`${lecture ? "lecture-cell" : "empty-cell"}`}
-                    >
-                      {lecture ? (
-                        <>
-                          <div>{lecture.SubjectName}</div>
-                          <div style={{ fontSize: "1rem" }}>
-                            Room: {lecture.RoomName}
-                          </div>
-                          <div>
-                            Section: {lecture.CourseName}/{lecture.YearOfStudy}
-                            year/{lecture.Section}
-                          </div>
-                          <div>Faculty: {lecture.faculty_alias}</div>
-                          {lecture.Substitute && (
-                            <div className="substitute-tag">Substitute</div>
-                          )}
-                        </>
-                      ) : (
-                        <div className="no-lecture-cell">No Lecture</div>
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    );
+  const handleFacultyChange = (event) => {
+    const selectedFacultyID = event.target.value;
+    const selectedFaculty = facultyList.find(
+      (faculty) => faculty.FacultyID === selectedFacultyID
+    )?.Faculty_Name;
+    setFaculty(selectedFaculty || "");
+    setFacultyID(selectedFacultyID || null);
   };
 
-  // Function to render the filtered timetable (based on selected filters)
-  const renderFilteredTimetable = () => {
-    if (loading) return <div className="loading-message">Loading...</div>;
-    if (error) return <div className="error-message">{error}</div>;
-
-    return (
-      <div className="faculty-timetable">
-        <table className="timetable-table">
-          <thead>
-            <tr>
-              <th>Day</th>
-              {timeSlots.map((slot, index) => (
-                <th key={index}>
-                  {slot.start} - {slot.end}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {daysOfWeek.map((day) => {
-              const lecturesForDay = filteredTimetable.filter(
-                (lecture) =>
-                  lecture.DayOfWeek.toLowerCase() === day.toLowerCase()
-              );
-
-              const lectureSlots = new Array(timeSlots.length).fill(null);
-
-              lecturesForDay.forEach((lecture) => {
-                const slotIndex = timeSlots.findIndex(
-                  (slot) =>
-                    lecture.StartTime >= slot.start &&
-                    lecture.EndTime <= slot.end
-                );
-                if (slotIndex !== -1) lectureSlots[slotIndex] = lecture;
-              });
-
-              return (
-                <tr key={day}>
-                  <td>{day}</td>
-                  {lectureSlots.map((lecture, index) => (
-                    <td
-                      key={index}
-                      className={`${lecture ? "lecture-cell" : "empty-cell"}`}
-                    >
-                      {lecture ? (
-                        <>
-                          <div>{lecture.SubjectName}</div>
-                          <div style={{ fontSize: "1rem" }}>
-                            Room: {lecture.RoomName}
-                          </div>
-                          <div>
-                            Section: {lecture.CourseName}/{lecture.YearOfStudy}
-                            year/{lecture.Section}
-                          </div>
-                          <div>Faculty: {lecture.faculty_alias}</div>
-                          {lecture.Substitute && (
-                            <div className="substitute-tag">Substitute</div>
-                          )}
-                        </>
-                      ) : (
-                        <div className="no-lecture-cell">No Lecture</div>
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    );
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value);
+    console.log(startDate);
   };
-
+  const handleEndDateChange = (event) => {
+    setEndDate(event.target.value);
+    console.log(endDate);
+  };
 
   return (
     <div>
       <h1>Faculty Timetable</h1>
-      <label htmlFor="date">Select Date: </label>
-      <input
-        type="date"
-        id="date"
-        value={selectedDate}
-        onChange={handleDateChange}
-      />
-      {filteredTimetable.length > 0 ? (
-        <div>
-          {filteredTimetable.map((entry, index) => (
-            <div key={index} style={{ marginBottom: "20px" }}>
-              <h2>{entry.faculty}</h2>
-              <ul>
-                {entry.slots.map((slot, idx) => (
-                  <li key={idx}>
-                    <strong>{slot.time}</strong> - {slot.subject}
-                  </li>
-                ))}
-              </ul>
-            </div>
+      <div className="filter-options">
+        {/* Faculty Dropdown */}
+        <select
+          id="faculty"
+          onChange={handleFacultyChange}
+          value={facultyID || ""}
+        >
+          <option value="">Select Faculty</option>
+          {facultyList.map((facultyItem) => (
+            <option key={facultyItem.FacultyID} value={facultyItem.FacultyID}>
+              {facultyItem.Faculty_Name}
+            </option>
           ))}
+        </select>
+
+        {/* Date Inputs */}
+        <div>
+          <input
+            type="date"
+            id="startDate"
+            value={startDate}
+            onChange={handleStartDateChange}
+          />
         </div>
-      ) : (
-        <p>No timetable available for the selected date.</p>
-      )}
+        <div>
+          <input
+            type="date"
+            id="endDate"
+            value={endDate}
+            onChange={handleEndDateChange}
+          />
+        </div>
+      </div>
+      {/* Display Selected Faculty */}
+      <div>{faculty && <h2>Timetable for: {faculty}</h2>}</div>
+
+      {/* Timetable */}
+      <div>
+        {facultyID && !(startDate && endDate) ? (
+          <FacultyTimeTable FacultyID={facultyID} />
+        ) : facultyID && startDate && endDate ? (
+          <TimetableComponent
+            facultyID={facultyID}
+            startDate={startDate}
+            endDate={endDate}
+          />
+        ) : (
+          <p>Please select a faculty to view the timetable.</p>
+        )}
+      </div>
     </div>
   );
 };

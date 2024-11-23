@@ -1,72 +1,124 @@
-
 import React, { useState, useEffect } from "react";
-import '../stylesheets/facultyreport.css';
+import axios from "axios";
+import "../stylesheets/facultyoccupency.css"; // Changed to a unique stylesheet name
+import { API_URL } from "../../axios";
 
-const FacultyOccupency = ({ facultyList, selectedDate }) => {
-  const [reportData, setReportData] = useState([]);
+const FacultyOccupency = ({ inputDate }) => {
+  const [data, setData] = useState([]);
+  const [groupedData, setGroupedData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  const timeSlots = [
+    "09:45 - 10:35",
+    "10:35 - 11:25",
+    "11:30 - 12:20",
+    "12:20 - 01:10",
+    "01:10 - 02:05",
+    "02:05 - 02:55",
+    "03:00 - 03:50",
+    "03:55 - 04:45",
+  ];
+
+  // Fetch data from API
   useEffect(() => {
-    if (selectedDate && facultyList) {
-      // Filter faculty data for the selected date and prepare the report
-      const filteredData = facultyList.map((faculty) => {
-        const filteredSchedule = faculty.schedule.filter(
-          (lecture) => lecture.date === selectedDate
-        );
-        return {
-          name: faculty.name,
-          schedule: filteredSchedule,
-        };
+    const fetchData = async () => {
+      try {
+        console.log("Fetching data from /allfacultyperdaytimetable...");
+        const response = await axios.get(`${API_URL}/api/allfacultyperdaytimetable`, {
+          params: { inputDate },
+        });
+
+        if (response.data && Array.isArray(response.data)) {
+          console.log("API Response:", response.data);
+          setData(response.data);
+          setLoading(false);
+        } else {
+          throw new Error("Unexpected API response format");
+        }
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError("Failed to fetch data. Please try again.");
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [inputDate]);
+
+  // Group data by FacultyID
+  useEffect(() => {
+    const groupByFaculty = (data) => {
+      if (!Array.isArray(data)) {
+        console.error("Expected an array, received:", data);
+        return {};
+      }
+
+      const grouped = {};
+      data.forEach((item) => {
+        if (!grouped[item.FacultyID]) {
+          grouped[item.FacultyID] = {
+            name: item.Faculty_Name,
+            lectures: [],
+          };
+        }
+        grouped[item.FacultyID].lectures.push(item);
       });
+      return grouped;
+    };
 
-      setReportData(filteredData);
-    }
-  }, [selectedDate, facultyList]);
+    setGroupedData(groupByFaculty(data));
+  }, [data]);
 
-  // Function to get all unique times for the selected date
-  const getUniqueTimes = () => {
-    const allTimes = facultyList
-      .flatMap(faculty => faculty.schedule)
-      .filter(lecture => lecture.date === selectedDate)
-      .map(lecture => lecture.time);
-
-    return [...new Set(allTimes)].sort();
+  // Map lectures to time slots
+  const mapLecturesToSlots = (lectures) => {
+    return timeSlots.map((slot) => {
+      const [start, end] = slot.split(" - ");
+      const lecture = lectures.find(
+        (lec) => lec.StartTime >= start && lec.StartTime < end
+      );
+      return lecture ? lecture.SubjectName : "Free";
+    });
   };
 
   return (
-    <div className="report-table-container">
-      <h3>Report for {selectedDate}</h3>
-      {reportData.length > 0 ? (
-        <table className="report-table">
+    <div className="faculty-occupency-container">
+      {loading ? (
+        <p className="faculty-occupency-loading">Loading...</p>
+      ) : error ? (
+        <p className="faculty-occupency-error">{error}</p>
+      ) : (
+        <table className="faculty-occupency-table">
           <thead>
             <tr>
-              <th>Faculty Name</th>
-              {/* Generate table columns based on unique times */}
-              {getUniqueTimes().map((time, index) => (
-                <th key={index}>{time}</th>
+              <th>Faculty (ID & Name)</th>
+              {timeSlots.map((slot, index) => (
+                <th key={index}>{slot}</th>
               ))}
+              <th>Faculty Load</th>
             </tr>
           </thead>
           <tbody>
-            {reportData.map((faculty, index) => (
-              <tr key={index}>
-                <td>{faculty.name}</td>
-                {/* For each time, find the matching schedule for the faculty */}
-                {getUniqueTimes().map((time, idx) => {
-                  const lecture = faculty.schedule.find(
-                    (lecture) => lecture.time === time
-                  );
-                  return (
-                    <td key={idx}>
-                      {lecture ? lecture.status : "No Class"}
+            {Object.keys(groupedData).map((facultyID) => {
+              const faculty = groupedData[facultyID];
+              const lectureCount = faculty.lectures.length;
+
+              const slots = mapLecturesToSlots(faculty.lectures);
+
+              return (
+                <tr key={facultyID}>
+                  <td>{`${facultyID} - ${faculty.name}`}</td>
+                  {slots.map((slot, index) => (
+                    <td key={index} className={slot === "Free" ? "faculty-occupency-slot-free" : "faculty-occupency-slot-filled"}>
+                      {slot}
                     </td>
-                  );
-                })}
-              </tr>
-            ))}
+                  ))}
+                  <td>{`${lectureCount} Lecture${lectureCount > 1 ? "s" : ""}`}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
-      ) : (
-        <p>No data available for the selected date.</p>
       )}
     </div>
   );

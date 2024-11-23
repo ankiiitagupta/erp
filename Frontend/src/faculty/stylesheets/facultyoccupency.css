@@ -1,0 +1,66 @@
+/* Container styling */
+.faculty-occupency-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 90%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Loading and error messages */
+  .faculty-occupency-loading,
+  .faculty-occupency-error {
+    text-align: center;
+    font-size: 1.2em;
+    color: #555;
+  }
+  
+  /* Table styling */
+  .faculty-occupency-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .faculty-occupency-table th,
+  .faculty-occupency-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .faculty-occupency-table th {
+   
+    font-weight: bold;
+  }
+  
+  .faculty-occupency-table tr:nth-child(even) {
+    background-color: #f7f7f7;
+  }
+  
+  .faculty-occupency-table tr:hover {
+    background-color: #eaeaea;
+  }
+  
+  /* Slot styling */
+  .faculty-occupency-slot-free {
+    background-color: #e0ffe0;
+    color: #006600;
+    font-weight: bold;
+  }
+  
+  .faculty-occupency-slot-filled {
+    background-color: #ffe0e0;
+    color: #660000;
+    font-weight: bold;
+  }
+  
+  /* Adjustments for responsive design */
+  @media screen and (max-width: 768px) {
+    .faculty-occupency-table th,
+    .faculty-occupency-table td {
+      font-size: 0.9em;
+      padding: 8px;
+    }
+  }
+  

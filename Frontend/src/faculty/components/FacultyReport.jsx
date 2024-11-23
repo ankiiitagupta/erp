@@ -1,74 +1,46 @@
-import React, { useState, useEffect } from "react";
-import FacultyOccupency from './FacultyOccupency'; // Adjust the path accordingly
-import '../stylesheets/facultyreport.css';
+import React, { useState } from "react";
+import FacultyOccupency from './FacultyOccupency'; 
+import '../stylesheets/facultyreport.css'; 
+
 
 const FacultyReport = () => {
-  const [selectedDate, setSelectedDate] = useState("");
-  const [facultyList, setFacultyList] = useState([]);
-
-  // Mock data for facultyList
-  const mockFacultyList = [
-    {
-      name: "John Doe",
-      schedule: [
-        { date: "2024-11-21", time: "09:00 AM", status: "free" },
-        { date: "2024-11-21", time: "10:00 AM", status: "occupied" },
-        { date: "2024-11-21", time: "11:00 AM", status: "occupied" },
-      ],
-    },
-    {
-      name: "Jane Smith",
-      schedule: [
-        { date: "2024-11-21", time: "09:00 AM", status: "occupied" },
-        { date: "2024-11-21", time: "10:00 AM", status: "free" },
-        { date: "2024-11-21", time: "02:00 PM", status: "occupied" },
-      ],
-    },
-    {
-      name: "Emily Johnson",
-      schedule: [
-        { date: "2024-11-21", time: "08:00 AM", status: "free" },
-        { date: "2024-11-21", time: "01:00 PM", status: "occupied" },
-      ],
-    },
-  ];
-
-  useEffect(() => {
-    setFacultyList(mockFacultyList);
-  }, []);
+  const [selectedDate, setSelectedDate] = useState(""); // State for the selected date
 
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
   };
 
   return (
-    <div className="report-container">
-      <h1 className="facultyheading">Faculty Report</h1>
-
-      {/* Faculty Occupancy Container */}
-      <div className="faculty-occupancy-container">
-        <h2 >Faculty Occupancy</h2>
-
-        {/* Date Selector within Faculty Occupancy */}
-        <div className="date-selector">
-          <label htmlFor="report-date">Select Date: </label>
-          <input
-            type="date"
-            id="report-date"
-            value={selectedDate}
-            onChange={handleDateChange}
-          />
-        </div>
-
-        {selectedDate && facultyList.length > 0 ? (
-        <FacultyOccupency facultyList={facultyList} selectedDate={selectedDate} />
-      ) : (
-        <p>No data available for the selected date.</p>
-      )}
+    <div className="faculty-report-container">
+      {/* Faculty Report Heading */}
+      <div className="faculty-report-heading">
+        <h1>Faculty Report</h1>
       </div>
 
-      {/* If a date is selected, show the occupancy report */}
       
+
+      {/* Date Selector */}
+      <div className="date-selector">
+        <label htmlFor="report-date" className="date-label">Select Date: </label>
+        <input
+          type="date"
+          id="report-date"
+          value={selectedDate}
+          onChange={handleDateChange}
+          className="date-input"
+        />
+      </div>
+
+      {/* Display the report for the selected date */}
+      {selectedDate ? (
+        <div className="selected-date-report">
+          <h2>Report for {selectedDate}</h2>
+          {/* Pass the selected date to FacultyOccupency to fetch the relevant report */}
+          <FacultyOccupency inputDate={selectedDate} />
+        </div>
+      ) : (
+        <p>Please select a date to view the report.</p>
+      )}
     </div>
   );
 };

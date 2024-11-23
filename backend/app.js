@@ -1,6 +1,7 @@
 const express = require("express");
 const mysql = require("mysql");
 const cors = require("cors");
+const moment = require("moment");
 
 const app = express();
 const port = 3006; // Make sure to use the same port here
@@ -635,7 +636,6 @@ app.get("/api/facultytodaystimetable", (req, res) => {
   });
 });
 
-
 //on selection the lecture for marking attendance
 app.get("/api/facultyondateselectionattendance", (req, res) => {
   const { facultyID, LectureDate } = req.query;
@@ -813,10 +813,9 @@ app.get("/api/subjectandsectionofaculty", (req, res) => {
   );
 });
 
-
 // list of students their section and the attendance of particaular subject
 app.get("/api/listofstudentsandattendanceofsubject", (req, res) => {
-  const { facultyID ,SubjectName,Section} = req.query;
+  const { facultyID, SubjectName, Section } = req.query;
 
   db.query(
     `
@@ -850,7 +849,7 @@ app.get("/api/listofstudentsandattendanceofsubject", (req, res) => {
 
 
     `,
-    [facultyID, SubjectName,Section],
+    [facultyID, SubjectName, Section],
     (err, results) => {
       if (err) throw err;
       res.json(results);
@@ -858,16 +857,15 @@ app.get("/api/listofstudentsandattendanceofsubject", (req, res) => {
   );
 });
 
-
 // get all course and duration
 app.get("/api/courseandduration", (req, res) => {
-  const { facultyID ,SubjectName,Section} = req.query;
+  const { facultyID, SubjectName, Section } = req.query;
 
   db.query(
     `
     select CourseName,Duration from course;
     `,
-    [facultyID, SubjectName,Section],
+    [facultyID, SubjectName, Section],
     (err, results) => {
       if (err) throw err;
       res.json(results);
@@ -877,8 +875,6 @@ app.get("/api/courseandduration", (req, res) => {
 
 // get all course and duration
 app.get("/api/courseandduration", (req, res) => {
-
-
   db.query(
     `
     select CourseName,Duration from course;
@@ -892,7 +888,7 @@ app.get("/api/courseandduration", (req, res) => {
 
 // get all section of year
 app.get("/api/getsectionsofYear", (req, res) => {
-  const { yearofstudy} = req.query;
+  const { yearofstudy } = req.query;
 
   db.query(
     `
@@ -909,7 +905,7 @@ app.get("/api/getsectionsofYear", (req, res) => {
 });
 // get all the attendance and list of students of a section
 app.get("/api/attendanceofallstudentsofsection", (req, res) => {
-  const {CourseName, yearofstudy,section} = req.query;
+  const { CourseName, yearofstudy, section } = req.query;
 
   db.query(
     `
@@ -940,7 +936,7 @@ app.get("/api/attendanceofallstudentsofsection", (req, res) => {
         S.RollNO;
 
     `,
-    [CourseName, yearofstudy , section],
+    [CourseName, yearofstudy, section],
     (err, results) => {
       if (err) throw err;
       res.json(results);
@@ -990,8 +986,6 @@ app.get("/api/searchstudentsbyname", (req, res) => {
   );
 });
 
-
-
 app.get("/api/rooms", (req, res) => {
   const query = "SELECT RoomName FROM room order by RoomDomain"; // Your SQL query to fetch room names
 
@@ -1002,6 +996,238 @@ app.get("/api/rooms", (req, res) => {
     }
     res.json(results);
   });
+});
+
+app.get("/api/facultyList", (req, res) => {
+  const query = "SELECT FacultyID, Faculty_Name FROM Faculty;";
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error faculty list data: ", err);
+      return res
+        .status(500)
+        .json({ error: "Failed to fetch faculty list data" });
+    }
+    res.json(results);
+  });
+});
+
+app.get("/api/perdaytimetable", (req, res) => {
+  const { FacultyID, startDate, endDate } = req.query;
+
+  // Check for missing parameters
+  if (!FacultyID || !startDate || !endDate) {
+    return res.status(400).json({ error: "Missing required parameters" });
+  }
+
+  // Format dates to YYYY-MM-DD
+  const formattedStartDate = moment(startDate, [
+    "YYYY-MM-DD",
+    "DD-MM-YYYY",
+  ]).format("YYYY-MM-DD");
+  const formattedEndDate = moment(endDate, ["YYYY-MM-DD", "DD-MM-YYYY"]).format(
+    "YYYY-MM-DD"
+  );
+
+  // SQL query
+  const query = `
+    SELECT DISTINCT
+  s.SubjectName,
+  c.CourseName,
+  t.Section, 
+  t.YearOfStudy,
+  t.StartTime,
+  t.EndTime,
+  t.LectureNumber,
+  t.DayOfWeek,
+  DATE(t.LectureDate) AS LectureDate, -- Include the date in SELECT
+  f.Faculty_Name, 
+  f.faculty_alias,
+  r.RoomName
+FROM 
+  timetable AS t
+JOIN 
+  subject AS s ON t.SubjectID = s.SubjectID
+JOIN 
+  course AS c ON t.CourseID = c.CourseID
+JOIN 
+  faculty AS f ON t.FacultyID = f.FacultyID
+JOIN 
+  room AS r ON t.RoomID = r.RoomID
+WHERE 
+  t.FacultyID = ?
+  AND DATE(t.LectureDate) BETWEEN ? AND ?
+ORDER BY 
+  LectureDate,  -- Use the alias here
+  t.LectureNumber;
+
+  `;
+
+  // Execute the query
+  db.query(
+    query,
+    [FacultyID, formattedStartDate, formattedEndDate],
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching timetable:", err);
+        return res.status(500).json({ error: "Error fetching timetable" });
+      }
+
+      results = results.map((row) => {
+        row.LectureDate = moment(row.LectureDate).format("YYYY-MM-DD");
+        return row;
+      });
+      res.json(results);
+      
+    }
+  );
+});
+
+app.get("/api/allfacultyperdaytimetable", (req, res) => {
+  const { inputDate } = req.query;
+
+  // Check for missing parameters
+  if (!inputDate) {
+    return res.status(400).json({ error: "Missing required inputDate parameter" });
+  }
+
+  // Format date to YYYY-MM-DD
+  const formattedInputDate = moment(inputDate, ["YYYY-MM-DD", "DD-MM-YYYY"]).format("YYYY-MM-DD");
+
+  // SQL query
+  const query = `
+    SELECT 
+      t.FacultyID,
+      f.Faculty_Name,
+      t.LectureDate,
+      t.StartTime,
+      t.EndTime,
+      s.SubjectName
+    FROM 
+      Timetable t
+    JOIN 
+      Faculty f ON t.FacultyID = f.FacultyID
+    JOIN 
+      Subject s ON t.SubjectID = s.SubjectID
+    WHERE 
+      t.LectureDate = ?
+    ORDER BY 
+      t.FacultyID;
+  `;
+
+  // Execute the query
+  db.query(query, [formattedInputDate], (err, results) => {
+    if (err) {
+      console.error("Error fetching timetable:", err);
+      return res.status(500).json({ error: "Error fetching timetable" });
+    }
+
+    // Map results to format LectureDate
+    const formattedResults = results.map((row) => ({
+      ...row,
+      LectureDate: moment(row.LectureDate).format("YYYY-MM-DD"),
+    }));
+
+    // Send response
+    res.json(formattedResults);
+  });
+});
+
+ app.get('/api/student-one-data', (req, res) => {
+  const { courseName, year, section } = req.query;
+
+  // Check if all required query parameters are provided
+  if (!courseName || !year || !section) {
+    return res.status(400).json({ error: 'Missing required query parameters' });
+  }
+
+  // SQL query to fetch student details
+  const query = `
+    SELECT s.RollNO,s.stud_name
+    FROM student s
+    JOIN enrollment e ON s.RollNO = e.RollNO
+    JOIN course c ON e.CourseID = c.CourseID
+    WHERE c.CourseName = ? 
+    AND s.Stud_YearOfStudy = ? 
+    AND s.section = ?
+    LIMIT 1;
+  `;
+
+  // Execute the query
+  db.query(query, [courseName, year, section], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database query failed', details: err });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'No student found' });
+    }
+
+    // Return the student details
+    return res.status(200).json(results[0]);
+  });
+});
+
+
+app.get("/api/student-interval-timetable", (req, res) => {
+  const { RollNO, course, startDate, endDate, yearOfStudy, section } = req.query;
+
+  // Ensure required fields are provided
+  if (!RollNO || !course || !startDate || !endDate || !yearOfStudy || !section) {
+    return res.status(400).send("All parameters (RollNO, course, startDate, endDate, yearOfStudy, section) are required.");
+  }
+
+  // Format the date string for consistency
+  const formattedStartDate = new Date(startDate).toISOString().split("T")[0];
+  const formattedEndDate = new Date(endDate).toISOString().split("T")[0];
+
+  db.query(
+    `SELECT 
+        t.TimetableID,
+        s.SubjectName, 
+        f.Faculty_Name, 
+        t.StartTime, 
+        t.EndTime,
+        t.LectureNumber,
+        t.LectureDate,
+        t.DayOfWeek,
+        COALESCE(a.AttendanceStatus, 'Not Marked') AS AttendanceStatus  -- If no attendance is marked, show 'Not Marked'
+    FROM 
+        student AS st
+    JOIN 
+        enrollment AS e ON st.RollNO = e.RollNO
+    JOIN 
+        course AS c ON e.CourseID = c.CourseID
+    JOIN 
+        timetable AS t ON t.CourseID = c.CourseID
+            AND t.YearOfStudy = st.Stud_YearOfStudy
+            AND t.Section = st.Section
+            AND t.DepartmentID = c.DepartmentID
+    LEFT JOIN 
+        subject AS s ON t.SubjectID = s.SubjectID
+    LEFT JOIN 
+        faculty AS f ON s.FacultyID = f.FacultyID
+    LEFT JOIN 
+        attendance AS a ON a.RollNo = st.RollNO
+            AND a.LectureNumber = t.LectureNumber
+            AND a.LectureDate = t.LectureDate
+    WHERE 
+        st.RollNO = ? 
+        AND c.CourseName = ?  -- Filter by course name
+        AND t.YearOfStudy = ?  -- Filter by yearOfStudy
+        AND t.Section = ?  -- Filter by section
+        AND t.LectureDate BETWEEN ? AND ?  -- Filter by the date range
+    ORDER BY 
+        t.LectureDate, t.LectureNumber;`,
+    [RollNO, course, yearOfStudy, section, formattedStartDate, formattedEndDate],
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Database query failed");
+        return;
+      }
+      res.json(results);
+    }
+  );
 });
 
 

@@ -6,11 +6,12 @@ import "../stylesheets/facultyalltimetable.css";
 import FilteredTimetable from "./FilteredTimetable";
 import FacultywiseTimetable from "./facultywisett";
 import FacultyTimeTable from "./FacultyTimetable";
+import ClasswiseTimetable from "./classwisetimetable";
 
 // (Rest of the existing code)
 
 const FacultyallTimeTable = ({ facultyID, roles }) => {
-  const navigate = useNavigate();
+  
   const [activeTab, setActiveTab] = useState("Timetable");
   const [timetable, setTimetable] = useState([]);
   // Fetch timetable data
@@ -78,6 +79,12 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
         >
           Facultywise Timetable
         </button>
+        <button
+          className={activeTab === "classwisett" ? "active-tab" : "tab"}
+          onClick={() => setActiveTab("classwisett")}
+        >
+          Classwise Timetable
+        </button>
       </div>
 
       {activeTab === "Classroom" &&  (
@@ -91,7 +98,8 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
 
       {activeTab === "Timetable" && <FacultyTimeTable FacultyID={facultyID}/>}
 
-      {activeTab === "facultywisett" && <FacultywiseTimetable />}
+      {activeTab === "facultywisett" && <FacultywiseTimetable facultyID={facultyID}/>}
+      {activeTab === "classwisett" && <ClasswiseTimetable/>}
     </div>
   );
 };
