@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../stylesheets/AcademicsDashboard.css";
+import "../stylesheets/ShowAttBySub.css";  // Updated import to new CSS file
 import { API_URL } from "../../axios";
 import axios from "axios";
 import * as XLSX from "xlsx";
@@ -22,7 +22,6 @@ const exportToExcel = (students) => {
 
     XLSX.writeFile(workbook, "Students_Attendance.xlsx");
 };
-
 
 const ShowAttBySub = ({ setView, facultyID }) => {
     const [selectedSubjectSection, setSelectedSubjectSection] = useState("");
@@ -134,54 +133,50 @@ const ShowAttBySub = ({ setView, facultyID }) => {
                     </button>
                 </>
             )}
-            {students.length > 0 && (
-                <div className="students-list">
-                    <h3>Students and Attendance</h3>
-                    <div className="sort-container">
-                        <label htmlFor="sort">Sort By:</label>
-                        <select id="sort" value={sortOption} onChange={handleSortChange}>
-                            <option value="">Select Sorting Option</option>
-                            <option value="More than 90">More than 90% Attendance</option>
-                            <option value="Less than 90">Less than 90% Attendance</option>
-                            <option value="Low to High">Attendance (Low to High)</option>
-                            <option value="High to Low">Attendance (High to Low)</option>
-                        </select>
-                    </div>
-                    <button className="btn-export" onClick={() => exportToExcel(students)}>
-                        Export to Excel
-                    </button>
-                    <table className="students-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Roll Number</th>
-                                <th>Subject</th>
-                                <th>Total Present</th>
-                                <th>Total Absent</th>
-                                <th>Attendance %</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {students.map((student) => (
-                                <tr key={student.RollNO}>
-                                    <td>{student.Stud_name}</td>
-                                    <td>{student.RollNO}</td>
-                                    <td>{student.SubjectName}</td>
-                                    <td>{student.TotalPresent}</td>
-                                    <td>{student.TotalAbsent}</td>
-                                    <td>
-                                        {(
-                                            (student.TotalPresent / (student.TotalPresent + student.TotalAbsent)) * 100
-                                        ).toFixed(2)}
-                                        %
-                                    </td>
+            <div className="students-list">
+                {students.length > 0 && (
+                    <>
+                        <div className="sort-container">
+                            <label>Sort By:</label>
+                            <select className="dropdown" value={sortOption} onChange={handleSortChange}>
+                                <option value="">Select</option>
+                                <option value="More than 90">More than 90%</option>
+                                <option value="Less than 90">Less than 90%</option>
+                                <option value="Low to High">Attendance (Low to High)</option>
+                                <option value="High to Low">Attendance (High to Low)</option>
+                            </select>
+                        </div>
+                        <h3>Students List</h3>
+                        <table className="students-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Roll Number</th>
+                                    <th>Subject</th>
+                                    <th>Total Present</th>
+                                    <th>Total Absent</th>
+                                    <th>Attendance %</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
-
+                            </thead>
+                            <tbody>
+                                {students.map((student, index) => (
+                                    <tr key={index}>
+                                        <td>{student.Stud_name}</td>
+                                        <td>{student.RollNO}</td>
+                                        <td>{student.SubjectName}</td>
+                                        <td>{student.TotalPresent}</td>
+                                        <td>{student.TotalAbsent}</td>
+                                        <td>{((student.TotalPresent / (student.TotalPresent + student.TotalAbsent)) * 100).toFixed(2)}%</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <button className="btn-export" onClick={() => exportToExcel(students)}>
+                            Export to Excel
+                        </button>
+                    </>
+                )}
+            </div>
             <button className="btn-back" onClick={() => setView("dashboard")}>
                 Back to Dashboard
             </button>

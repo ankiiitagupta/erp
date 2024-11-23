@@ -3,7 +3,7 @@ import "../stylesheets/AcademicsDashboard.css";
 import markAttendanceIcon from "../../assets/AcademicDashboardsvg/Markatt1.png";
 import showAttendanceBySubjectIcon from "../../assets/AcademicDashboardsvg/Markatt2.png";
 import showAttendanceByClassIcon from "../../assets/AcademicDashboardsvg/Markatt2.png"; // Placeholder icon
-import showAttendanceBySearchIcon from "../../assets/AcademicDashboardsvg/Markatt2.png"; // Placeholder for search icon
+import showAttendanceBySearchIcon from "../../assets/AcademicDashboardsvg/Markatt4.png"; // Placeholder for search icon
 import MarkStudentAttendance from "./MarkStudentAttendance"; // Import the component
 import ShowAttBySub from "./showattbysub"; // Corrected import
 import ShowAttByClass from "./Showattbyclass"; // New component import
