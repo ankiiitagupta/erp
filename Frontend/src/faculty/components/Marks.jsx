@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //import "../stylesheets/Marks.css";
 import "../stylesheets/AcademicsDashboard.css";
 
@@ -11,24 +11,40 @@ const Marks = ({
   toggleEditMode,
   handleSubmit,
 }) => {
-  const courses = ["BTECH-CSE", "BTECH-IT", "BTECH-ECE"];
-  const exams = ["Midterm", "Finals", "Class Test"];
-  const sections = ["A", "B", "C"];
-  const subjects = ["Mathematics", "Physics", "Chemistry"];
-  const years = ["2021", "2022", "2023"];
+  // Mock data for subjects with sections and exams, including subject code
+  const mockSubjectsWithSections = [
+    { subject: "DSA", code: "KCS-101", section: "Sec-A" },
+    { subject: "DSA", code: "KCS-101", section: "Sec-B" },
+    { subject: "Compiler", code: "KOE-201", section: "Sec-A" },
+    { subject: "Compiler", code: "KOE-201", section: "Sec-B" },
+    { subject: "OS", code: "KCS-102", section: "Sec-A" },
+    { subject: "OS", code: "KCS-102", section: "Sec-B" }
+  ];
+  
+  const mockExams = ["Midterm", "Finals", "Class Test"];
 
-  const [selectedCourse, setSelectedCourse] = useState("");
+  const [subjectsWithSections, setSubjectsWithSections] = useState([]);
+  const [exams, setExams] = useState([]);
+
+  const [selectedSubjectWithSection, setSelectedSubjectWithSection] = useState("");
   const [selectedExam, setSelectedExam] = useState("");
-  const [selectedSection, setSelectedSection] = useState("");
-  const [selectedSubject, setSelectedSubject] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
 
-  const allFieldsSelected =
-    selectedCourse &&
-    selectedExam &&
-    selectedSection &&
-    selectedSubject &&
-    selectedYear;
+  const allFieldsSelected = selectedSubjectWithSection && selectedExam;
+
+  // Simulate fetching data by using mock data
+  useEffect(() => {
+    // Simulate API call with mock data
+    const fetchSubjectsWithSections = () => {
+      setSubjectsWithSections(mockSubjectsWithSections);
+    };
+
+    const fetchExams = () => {
+      setExams(mockExams);
+    };
+
+    fetchSubjectsWithSections();
+    fetchExams();
+  }, []);
 
   return (
     <div className="dashboard-container">
@@ -38,21 +54,22 @@ const Marks = ({
           <div className="marks-form">
             <div className="marks-placeholder">
               <div className="form-group">
-                <label>COURSE:</label>
+                <label>SUBJECT & SECTION:</label>
                 <select
-                  value={selectedCourse}
-                  onChange={(e) => setSelectedCourse(e.target.value)}
+                  value={selectedSubjectWithSection}
+                  onChange={(e) => setSelectedSubjectWithSection(e.target.value)}
                 >
                   <option value="">SELECT</option>
-                  {courses.map((course, index) => (
-                    <option key={index} value={course}>
-                      {course}
+                  {subjectsWithSections.map((subject, index) => (
+                    <option key={index} value={`${subject.subject} (${subject.code}) (${subject.section})`}>
+                      {`${subject.subject} (${subject.code}) (${subject.section})`}
                     </option>
                   ))}
                 </select>
               </div>
+
               <div className="form-group">
-                <label>EXAM: </label>
+                <label>EXAM:</label>
                 <select
                   value={selectedExam}
                   onChange={(e) => setSelectedExam(e.target.value)}
@@ -61,48 +78,6 @@ const Marks = ({
                   {exams.map((exam, index) => (
                     <option key={index} value={exam}>
                       {exam}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label>SECTION:</label>
-                <select
-                  value={selectedSection}
-                  onChange={(e) => setSelectedSection(e.target.value)}
-                >
-                  <option value="">SELECT</option>
-                  {sections.map((section, index) => (
-                    <option key={index} value={section}>
-                      {section}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label>SUBJECT:</label>
-                <select
-                  value={selectedSubject}
-                  onChange={(e) => setSelectedSubject(e.target.value)}
-                >
-                  <option value="">SELECT</option>
-                  {subjects.map((subject, index) => (
-                    <option key={index} value={subject}>
-                      {subject}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label>YEAR:</label>
-                <select
-                  value={selectedYear}
-                  onChange={(e) => setSelectedYear(e.target.value)}
-                >
-                  <option value="">SELECT</option>
-                  {years.map((year, index) => (
-                    <option key={index} value={year}>
-                      {year}
                     </option>
                   ))}
                 </select>

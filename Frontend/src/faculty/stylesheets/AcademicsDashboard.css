@@ -131,7 +131,7 @@ img {
 .form-group label {
   font-size: 1rem;
   font-weight: 600;
-  width: 3rem; 
+ 
 }
 
 .form-group select {
@@ -317,6 +317,7 @@ th.out-of-header {
     padding: 0.4rem 0.6rem;
   }
 }
+
 
 
 /* ====================================================Syllabus Component========================================================================= */
