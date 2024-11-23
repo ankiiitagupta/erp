@@ -17,28 +17,70 @@ const AcademicsDashboard = ({ facultyID }) => {
   const [Error, setError] = useState(false);
   const [subjects, setSubjects] = useState([""]);
   const [applyOutOfToAll, setApplyOutOfToAll] = useState(false);
-  const [selectedActiveSubject, setActiveSelectedSubject] = useState(false);
-  const [marksData, setMarksData] = useState([
-    {
-      rollNo: "12345",
-      name: "Student Name",
-      subject: "Subject",
-      marks: "",
-      outOf: "",
-    },
-  ]);
+  const [selectedActiveSubject, setSelectedActiveSubject] = useState(false);
+
+  const [marksData, setMarksData] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingData, setEditingData] = useState([]);
+  useEffect(() => {
+    const mockMarks = [
+      {
+        rollNo: "1001",
+        name: "Alice Johnson",
+        subject: "Mathematics",
+        marks: "85",
+        outOf: "100",
+      },
+      {
+        rollNo: "1002",
+        name: "Bob Smith",
+        subject: "Mathematics",
+        marks: "78",
+        outOf: "100",
+      },
+      {
+        rollNo: "1003",
+        name: "Charlie Davis",
+        subject: "Mathematics",
+        marks: "90",
+        outOf: "100",
+      },
+    ];
+    setMarksData(mockMarks);
+  }, []); // Add [] to prevent re-initialization
 
   const [NotesSelectedSubject, setNotesSelectedSubject] = useState(null);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedExam, setSelectedExam] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
+
+  const handleInputChange = (index, field, value) => {
+    const updatedEditingData = [...editingData];
+    updatedEditingData[index][field] = value;
+    setEditingData(updatedEditingData);
+  };
+
+  const toggleEditMode = () => {
+    setIsEditing(!isEditing);
+
+    if (!isEditing) {
+      // Initialize editing data with the current marks data
+      setEditingData([...marksData]);
+    }
+  };
 
   // Handler to update the "Out of" field
   const handleOutOfChange = (index, value) => {
     const updatedMarksData = [...marksData];
     updatedMarksData[index].outOf = value;
     setMarksData(updatedMarksData);
+  };
+
+  const handleSubmit = () => {
+    setMarksData([...editingData]); // Save the changes
+    setIsEditing(false); // Exit editing mode
   };
 
   // Copy the first "Out of" value to all rows when checkbox is checked
@@ -96,7 +138,13 @@ const AcademicsDashboard = ({ facultyID }) => {
           </div>
           <button className="upload-button">UPLOAD</button>
         </div>
-        <hr style={{ border: "1px solid black", margin: "20px 20px", backgroundColor: "black" }} />
+        <hr
+          style={{
+            border: "1px solid black",
+            margin: "20px 20px",
+            backgroundColor: "black",
+          }}
+        />
 
         {/* <div className="notes-grid">
         {notes.map((note, index) => (
@@ -124,7 +172,7 @@ const AcademicsDashboard = ({ facultyID }) => {
               className="icon-card"
               key={index}
               onClick={() => {
-                setActiveSelectedSubject(true);
+                setSelectedActiveSubject(true);
                 setNotesSelectedSubject(subject);
               }}
             >
@@ -192,8 +240,18 @@ const AcademicsDashboard = ({ facultyID }) => {
   };
 
   const renderMarksStudent = () => {
+    const courses = ["BTECH-CSE", "BTECH-IT", "BTECH-ECE"];
+    const exams = ["Midterm", "Finals", "Class Test"];
+    const sections = ["A", "B", "C"];
+    const subjects = ["Mathematics", "Physics", "Chemistry"];
+    const years = ["2021", "2022", "2023"];
+
     const allFieldsSelected =
-      selectedCourse && selectedExam && selectedSection && selectedSubject;
+      selectedCourse &&
+      selectedExam &&
+      selectedSection &&
+      selectedSubject &&
+      selectedYear;
 
     return (
       <div className="dashboard-container">
@@ -209,6 +267,11 @@ const AcademicsDashboard = ({ facultyID }) => {
                     onChange={(e) => setSelectedCourse(e.target.value)}
                   >
                     <option value="">SELECT</option>
+                    {courses.map((course, index) => (
+                      <option key={index} value={course}>
+                        {course}
+                      </option>
+                    ))}
                     {/* Add course options here */}
                   </select>
                 </div>
@@ -219,6 +282,11 @@ const AcademicsDashboard = ({ facultyID }) => {
                     onChange={(e) => setSelectedExam(e.target.value)}
                   >
                     <option value="">SELECT</option>
+                    {exams.map((exam, index) => (
+                      <option key={index} value={exam}>
+                        {exam}
+                      </option>
+                    ))}
                     {/* Add exam options here */}
                   </select>
                 </div>
@@ -229,6 +297,11 @@ const AcademicsDashboard = ({ facultyID }) => {
                     onChange={(e) => setSelectedSection(e.target.value)}
                   >
                     <option value="">SELECT</option>
+                    {sections.map((section, index) => (
+                      <option key={index} value={section}>
+                        {section}
+                      </option>
+                    ))}
                     {/* Add section options here */}
                   </select>
                 </div>
@@ -239,69 +312,90 @@ const AcademicsDashboard = ({ facultyID }) => {
                     onChange={(e) => setSelectedSubject(e.target.value)}
                   >
                     <option value="">SELECT</option>
+                    {subjects.map((subject, index) => (
+                      <option key={index} value={subject}>
+                        {subject}
+                      </option>
+                    ))}
+                    {/* Add subject options here */}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>YEAR:</label>
+                  <select
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(e.target.value)}
+                  >
+                    <option value="">SELECT</option>
+                    {years.map((year, index) => (
+                      <option key={index} value={year}>
+                        {year}
+                      </option>
+                    ))}
                     {/* Add subject options here */}
                   </select>
                 </div>
               </div>
 
-              {allFieldsSelected && (
-                <table className="marks-table">
-                  <thead>
-                    <tr>
-                      <th>ROLL NO.</th>
-                      <th>STUDENT</th>
-                      <th>SUBJECT</th>
-                      <th>INPUT MARKS</th>
-                      <th>
-                        OUT OF
-                        <input
-                          type="checkbox"
-                          checked={applyOutOfToAll}
-                          onChange={handleCheckboxChange}
-                          className="apply-to-all-checkbox"
-                        />
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {marksData.map((student, index) => (
-                      <tr key={index}>
-                        <td>{student.rollNo}</td>
-                        <td>{student.name}</td>
-                        <td>{student.subject}</td>
-                        <td>
-                          <input
-                            type="text"
-                            placeholder="Marks"
-                            value={student.marks}
-                            onChange={(e) => {
-                              const updatedMarksData = [...marksData];
-                              updatedMarksData[index].marks = e.target.value;
-                              setMarksData(updatedMarksData);
-                            }}
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            placeholder="Out of"
-                            value={student.outOf}
-                            onChange={(e) =>
-                              handleOutOfChange(index, e.target.value)
-                            }
-                            disabled={applyOutOfToAll && index !== 0}
-                          />
-                        </td>
+              {allFieldsSelected && isEditing && (
+                <>
+                  <table className="marks-table">
+                    <thead>
+                      <tr>
+                        <th>ROLL NO.</th>
+                        <th>STUDENT</th>
+                        <th>SUBJECT</th>
+                        <th>MARKS</th>
+                        <th>OUT OF</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {marksData.map((student, index) => (
+                        <tr key={index}>
+                          <td>{student.rollNo}</td>
+                          <td>{student.name}</td>
+                          <td>{student.subject}</td>
+                          <td>
+                            <input
+                              type="number"
+                              value={student.marks}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  index,
+                                  "marks",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              value={student.outOf}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  index,
+                                  "outOf",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="buttons">
+                    <button onClick={handleSubmit}>Submit</button>
+                  </div>
+                </>
               )}
 
-              <div className="buttons">
-                <button>Edit</button>
-                <button>Submit</button>
-              </div>
+              {!isEditing && (
+                <div className="buttons">
+                  <button onClick={toggleEditMode}>Edit</button>
+                </div>
+              )}
             </div>
           </div>
         </div>
