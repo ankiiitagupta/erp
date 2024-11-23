@@ -576,6 +576,7 @@ JOIN
     room AS r ON tt.RoomID = r.RoomID  
 WHERE 
     f.FacultyID = ?
+    AND tt.LectureDate BETWEEN '2024-11-18' AND '2024-11-23'
 ORDER BY 
     tt.LectureDate, tt.LectureNumber;
 
