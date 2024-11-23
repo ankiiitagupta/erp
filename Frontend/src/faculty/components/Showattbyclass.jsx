@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import "../stylesheets/AcademicsDashboard.css"; // Same stylesheet for consistent styling
+import "../stylesheets/ShowAttByClass.css"; // Importing the CSS file
 import { API_URL } from "../../axios";
 
 const exportToExcel = (students) => {
@@ -20,6 +21,7 @@ const exportToExcel = (students) => {
 
   XLSX.writeFile(workbook, "Students_Attendance.xlsx");
 };
+
 
 const ShowAttByClass = ({ setView }) => {
   const [selectedCourse, setSelectedCourse] = useState("");

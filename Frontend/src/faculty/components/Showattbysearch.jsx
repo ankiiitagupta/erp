@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../stylesheets/AcademicsDashboard.css"; // Same stylesheet for consistent styling
 import * as XLSX from "xlsx"; // Import xlsx library for Excel generation
 import { API_URL } from "../../axios";
+import "../stylesheets/ShowAttBySearch.css"; 
 
 const SearchStudents = () => {
   const [searchValue, setSearchValue] = useState("");

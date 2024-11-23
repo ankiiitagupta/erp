@@ -1,0 +1,126 @@
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Container for the page */
+  .search-attendance-page {
+    width: 60%;
+    margin: 40px auto;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  /* Title styling */
+  .content-title {
+    text-align: center;
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Dropdown and Search Options Styling */
+  .search-options,
+  .search-input {
+    margin-bottom: 20px;
+  }
+  
+  .search-options label,
+  .search-input label {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  select,
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  select:focus,
+  input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Button Styling */
+  button {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Search Results Styling */
+  .student-list {
+    margin-top: 20px;
+  }
+  
+  .student-list h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+  }
+  
+  .student-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .student-list li {
+    background-color: #f1f1f1;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .student-list li strong {
+    color: #333;
+  }
+  
+  .student-list li span {
+    color: #555;
+  }
+  
+  /* No results message */
+  p {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+    margin-top: 20px;
+  }
+  
+  /* Back button */
+  button:last-child {
+    display: block;
+    margin: 20px auto 0;
+  }
+  
