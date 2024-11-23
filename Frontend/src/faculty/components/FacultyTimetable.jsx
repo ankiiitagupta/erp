@@ -6,7 +6,7 @@ import "../stylesheets/FacultyTimetable.css";
 
 const FacultyTimeTable = ({ FacultyID }) => {
   const navigate = useNavigate();
-  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday"];
   const [timetable, setTimetable] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);

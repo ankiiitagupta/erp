@@ -46,7 +46,7 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
   }, [facultyID]);
 
 
-  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday"];
   const timeSlots = [
     { start: "09:45:00", end: "10:35:00" },
     { start: "10:35:00", end: "11:25:00" },

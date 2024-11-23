@@ -780,7 +780,7 @@ app.get("/api/subjectoffaculty", (req, res) => {
   );
 });
 
-// Subjects taught by faculty
+// Subjects and in sections taught by faculty
 app.get("/api/subjectandsectionofaculty", (req, res) => {
   const { facultyID } = req.query;
 
@@ -789,20 +789,25 @@ app.get("/api/subjectandsectionofaculty", (req, res) => {
     SELECT 
     s.SubjectName, 
     st.Section
-      FROM 
-          Faculty f 
-      JOIN 
-          Subject s ON f.FacultyID = s.FacultyID 
-      JOIN 
-          Enrollment e ON s.CourseID = e.CourseID 
-      JOIN 
-          Student st ON st.RollNO = e.RollNO 
-      WHERE 
-          f.FacultyID = ? 
-      GROUP BY 
-          f.Faculty_Name, s.SubjectName, st.Section
-      ORDER BY 
-          f.Faculty_Name, s.SubjectName, st.Section;
+FROM 
+    Subject s
+JOIN 
+    Enrollment e ON s.CourseID = e.CourseID
+JOIN 
+    Student st ON e.RollNO = st.RollNO
+WHERE 
+    s.FacultyID = ?  -- Pass FacultyID here
+    AND (
+        (st.Stud_YearOfStudy = 1 AND s.Semester IN (1, 2)) OR
+        (st.Stud_YearOfStudy = 2 AND s.Semester IN (3, 4)) OR
+        (st.Stud_YearOfStudy = 3 AND s.Semester IN (5, 6)) OR
+        (st.Stud_YearOfStudy = 4 AND s.Semester IN (7, 8))
+    )
+GROUP BY 
+    s.SubjectName, st.Section
+ORDER BY 
+    s.SubjectName, st.Section;
+
 
     `,
     [facultyID],
@@ -812,6 +817,9 @@ app.get("/api/subjectandsectionofaculty", (req, res) => {
     }
   );
 });
+
+
+
 
 // list of students their section and the attendance of particaular subject
 app.get("/api/listofstudentsandattendanceofsubject", (req, res) => {

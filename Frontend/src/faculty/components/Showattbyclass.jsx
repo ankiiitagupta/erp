@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-import "../stylesheets/AcademicsDashboard.css"; // Same stylesheet for consistent styling
-import "../stylesheets/ShowAttByClass.css"; // Importing the CSS file
+import "../stylesheets/AcademicsDashboard.css";
+import "../stylesheets/ShowAttByClass.css";
 import { API_URL } from "../../axios";
 
 const exportToExcel = (students) => {
@@ -11,7 +11,7 @@ const exportToExcel = (students) => {
       "Roll Number": student.RollNO,
       "Year of Study": student.Stud_YearOfStudy,
       Section: student.Section,
-      "Attendance %": student.AttendancePercentage, // Use the calculated attendance percentage
+      "Attendance %": student.AttendancePercentage,
     };
   });
 
@@ -24,6 +24,7 @@ const exportToExcel = (students) => {
 
 const ShowAttByClass = ({ setView }) => {
   const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedCourseDuration, setSelectedCourseDuration] = useState(0); // New state for course duration
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [students, setStudents] = useState([]);
@@ -42,9 +43,7 @@ const ShowAttByClass = ({ setView }) => {
   // Fetching sections for selected year
   useEffect(() => {
     if (selectedYear) {
-      fetch(
-        `${API_URL}/api/getsectionsofYear?yearofstudy=${selectedYear}`
-      )
+      fetch(`${API_URL}/api/getsectionsofYear?yearofstudy=${selectedYear}`)
         .then((response) => response.json())
         .then((data) => setSections(data))
         .catch((err) => console.error("Error fetching sections:", err));
@@ -64,9 +63,13 @@ const ShowAttByClass = ({ setView }) => {
   }, [selectedCourse, selectedYear, selectedSection]);
 
   const handleCourseChange = (event) => {
-    setSelectedCourse(event.target.value);
+    const courseName = event.target.value;
+    setSelectedCourse(courseName);
     setSelectedYear("");
     setSelectedSection("");
+
+    const course = courses.find((c) => c.CourseName === courseName);
+    setSelectedCourseDuration(course ? course.Duration : 0); // Update course duration
   };
 
   const handleYearChange = (event) => {
@@ -146,7 +149,7 @@ const ShowAttByClass = ({ setView }) => {
             <option value="" disabled>
               Choose a year
             </option>
-            {["1st Year", "2nd Year", "3rd Year", "4th Year"].map((year) => (
+            {Array.from({ length: selectedCourseDuration }, (_, i) => `${i + 1} Year`).map((year) => (
               <option key={year} value={year}>
                 {year}
               </option>
@@ -182,7 +185,9 @@ const ShowAttByClass = ({ setView }) => {
           <div className="students-list-header">
             <h3>Student List</h3>
             <div className="sort-container">
-              <label htmlFor="sort" className="sr-only">Sort By:</label>
+              <label htmlFor="sort" className="sr-only">
+                Sort By:
+              </label>
               <select
                 id="sort"
                 value={sortOption}
