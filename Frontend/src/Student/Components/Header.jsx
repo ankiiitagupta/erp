@@ -155,29 +155,30 @@ const Header = ({ facultyID }) => {
           </form>
         )}
       </div>
-
       {showroleselector && (
-        <div className="role-selector">
-          <label htmlFor="faculty-roles">
-            <strong>Select Role:</strong>
-          </label>
-          <select
-            id="faculty-roles"
-            className="role-dropdown"
-            value={selectedRole}
-            onChange={handleRoleChange}
-          >
-            {roles.map((role, index) => (
-              <option key={index} value={role.toLowerCase()}>
-                {role} {/* Capitalized role names for display */}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
+  <div className="role-selector">
+    <label htmlFor="faculty-roles">
+      <strong>Select Role: </strong>
+    </label>
+    <select
+      id="faculty-roles"
+      className="role-dropdown"
+      value={selectedRole}
+      onChange={handleRoleChange}
+    >
+      {roles.map((role, index) => (
+        <option key={index} value={role.toLowerCase()}>
+          {role}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
+
+
+      
 
       {/* Right side: Navigation links and Profile Dropdown */}
-
       <div className="navbar-end">
         <a href="/" className="navbar-item">
           Home
@@ -201,9 +202,7 @@ const Header = ({ facultyID }) => {
             <span className="profile-name">
               Profile{" "}
               <i
-                className={`fas fa-chevron-down ${
-                  isDropdownOpen ? "rotate" : ""
-                }`}
+                className={`fas fa-chevron-down ${isDropdownOpen ? "rotate" : ""}`}
               ></i>
             </span>
 
@@ -230,8 +229,6 @@ const Header = ({ facultyID }) => {
                 </a>
               </div>
             )}
-
-            {/* Right side role selector */}
           </div>
         )}
       </div>
@@ -276,7 +273,9 @@ const Header = ({ facultyID }) => {
               >
                 <option value="">Select Category</option>
                 <option value="ACADEMICS">ACADEMICS</option>
-                <option value="ATTENDANCE">ATTENDANCE</option>
+                <option value="HOSTEL">HOSTEL</option>
+                <option value="FACULTY">FACULTY</option>
+                <option value="CAMPUS">CAMPUS</option>
               </select>
             </div>
 
@@ -293,37 +292,28 @@ const Header = ({ facultyID }) => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="document">Attach Document (Image)</label>
-              <input
-                type="file"
-                id="document"
-                name="document"
-                accept="image/*"
-                onChange={handleFileChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="query">Grievance Description</label>
+              <label htmlFor="query">Query</label>
               <textarea
                 id="query"
                 name="query"
                 value={grievanceData.query}
                 onChange={handleInputChange}
                 required
-              />
+              ></textarea>
             </div>
 
-            <button type="submit" className="submit-btn">
-              Submit
-            </button>
-            <button
-              type="button"
-              className="cancel-btn"
-              onClick={toggleGrievanceForm}
-            >
-              Cancel
+            <div className="form-group">
+              <label htmlFor="document">Document Upload</label>
+              <input
+                type="file"
+                id="document"
+                name="document"
+                onChange={handleFileChange}
+              />
+            </div>
+            
+            <button type="submit" className="btn-submit">
+              Submit Grievance
             </button>
           </form>
         </div>

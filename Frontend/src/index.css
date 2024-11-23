@@ -309,24 +309,41 @@ body {
     z-index: 9999;
   }
   .role-selector {
-    margin-left: auto;
-    padding: 0 3rem; /* 15px -> 1.5rem */
+    display: flex;               /* Align items horizontally */
+    align-items: center;         /* Vertically align items */
+    gap: 8px;                    /* Space between text and dropdown */
   }
   
-  .role-selector label{
+  .role-selector label {
+    margin: 0;                   /* Remove any default margin */
+    white-space: nowrap;         /* Prevent wrapping of the label text */
+  }
+  
+  .role-dropdown {
+    padding: 5px 8px;            /* Optional: Padding for better appearance */
+    font-size: 1rem;             /* Match label font size */
+    border: 1px solid #ccc;      /* Styling for the dropdown */
+    border-radius: 4px;          /* Rounded corners */
+  }
+  
+.role-text {
+  margin: 0;                  /* Remove default margin */
+  font-size: 1rem;            /* Optional: Adjust font size */
+}
+
+  .role-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the gap between the label and dropdown */
+  }
+  
+  .role-selector label {
     font-size: 1rem;
     font-weight: 500;
-    
     text-transform: capitalize;
-   
-  }
-  .role-dropdown {
-    padding: 0.5rem; /* 5px -> 0.5rem */
-    font-size: 1rem; /* 14px -> 1.4rem */
-    border: 0.1rem solid #030303; /* 1px -> 0.1rem */
-    border-radius: 0.4rem; /* 4px -> 0.4rem */
   }
   
+ 
   .form-overlay {
     position: absolute;
     top: 0;
@@ -335,6 +352,7 @@ body {
     height: 100%;
     background: rgba(0, 0, 0, 0.3); /* Slightly transparent background */
   }
+  
   
   /* Grievance Form Styling */
   .grievance-form {
