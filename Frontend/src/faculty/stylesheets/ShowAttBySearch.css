@@ -123,4 +123,27 @@ body {
     display: block;
     margin: 20px auto 0;
   }
+  .search-bar-container label {
+    font-weight: bold; /* Make text bold */
+    color: black;      /* Set color to black */
+    margin-left: -10px; /* Slightly reduce left margin */
+  }
+  
+  .back-to-dashboard-container {
+    margin-top: 20px; /* Add spacing above the button */
+    text-align: center; /* Center-align the button */
+  }
+  
+  .btn-back {
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Text color */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Button padding */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 5px; /* Rounded corners */
+  }
+  
+  .btn-back:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
   

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../stylesheets/ShowAttBySub.css";  // Updated import to new CSS file
+import "../stylesheets/ShowAttBySub.css"; // Updated import to new CSS file
 import { API_URL } from "../../axios";
 import axios from "axios";
 import * as XLSX from "xlsx";
@@ -33,7 +33,9 @@ const ShowAttBySub = ({ setView, facultyID }) => {
     useEffect(() => {
         const fetchSubjectSections = async () => {
             try {
-                const response = await fetch(`${API_URL}/api/subjectandsectionofaculty?facultyID=${facultyID}`);
+                const response = await fetch(
+                    `${API_URL}/api/subjectandsectionofaculty?facultyID=${facultyID}`
+                );
                 const data = await response.json();
                 setSubjectSections(data);
             } catch (error) {
@@ -55,13 +57,16 @@ const ShowAttBySub = ({ setView, facultyID }) => {
             const cleanSection = Section.replace(")", ""); // Remove trailing parenthesis
 
             try {
-                const response = await axios.get(`${API_URL}/api/listofstudentsandattendanceofsubject`, {
-                    params: {
-                        facultyID,
-                        SubjectName,
-                        Section: cleanSection,
-                    },
-                });
+                const response = await axios.get(
+                    `${API_URL}/api/listofstudentsandattendanceofsubject`,
+                    {
+                        params: {
+                            facultyID,
+                            SubjectName,
+                            Section: cleanSection,
+                        },
+                    }
+                );
                 setStudents(response.data); // Set students data from API
             } catch (error) {
                 console.error("Error fetching students and attendance:", error);
@@ -79,22 +84,36 @@ const ShowAttBySub = ({ setView, facultyID }) => {
         switch (option) {
             case "More than 90":
                 sortedStudents = students.filter(
-                    (student) => student.TotalPresent / (student.TotalPresent + student.TotalAbsent) * 100 > 90
+                    (student) =>
+                        (student.TotalPresent /
+                            (student.TotalPresent + student.TotalAbsent)) *
+                            100 >
+                        90
                 );
                 break;
             case "Less than 90":
                 sortedStudents = students.filter(
-                    (student) => student.TotalPresent / (student.TotalPresent + student.TotalAbsent) * 100 < 90
+                    (student) =>
+                        (student.TotalPresent /
+                            (student.TotalPresent + student.TotalAbsent)) *
+                            100 <
+                        90
                 );
                 break;
             case "Low to High":
                 sortedStudents = sortedStudents.sort(
-                    (a, b) => (a.TotalPresent / (a.TotalPresent + a.TotalAbsent)) - (b.TotalPresent / (b.TotalPresent + b.TotalAbsent))
+                    (a, b) =>
+                        a.TotalPresent /
+                            (a.TotalPresent + a.TotalAbsent) -
+                        b.TotalPresent / (b.TotalPresent + b.TotalAbsent)
                 );
                 break;
             case "High to Low":
                 sortedStudents = sortedStudents.sort(
-                    (a, b) => (b.TotalPresent / (b.TotalPresent + b.TotalAbsent)) - (a.TotalPresent / (a.TotalPresent + a.TotalAbsent))
+                    (a, b) =>
+                        b.TotalPresent /
+                            (b.TotalPresent + b.TotalAbsent) -
+                        a.TotalPresent / (a.TotalPresent + a.TotalAbsent)
                 );
                 break;
             default:
@@ -117,7 +136,10 @@ const ShowAttBySub = ({ setView, facultyID }) => {
                 >
                     <option value="">Select Subject & Section</option>
                     {subjectSections.map((item) => (
-                        <option key={`${item.SubjectName}-${item.Section}`} value={`${item.SubjectName} (SEC-${item.Section})`}>
+                        <option
+                            key={`${item.SubjectName}-${item.Section}`}
+                            value={`${item.SubjectName} (SEC-${item.Section})`}
+                        >
                             {item.SubjectName} (SEC-{item.Section})
                         </option>
                     ))}
@@ -136,17 +158,28 @@ const ShowAttBySub = ({ setView, facultyID }) => {
             <div className="students-list">
                 {students.length > 0 && (
                     <>
-                        <div className="sort-container">
-                            <label>Sort By:</label>
-                            <select className="dropdown" value={sortOption} onChange={handleSortChange}>
-                                <option value="">Select</option>
-                                <option value="More than 90">More than 90%</option>
-                                <option value="Less than 90">Less than 90%</option>
-                                <option value="Low to High">Attendance (Low to High)</option>
-                                <option value="High to Low">Attendance (High to Low)</option>
-                            </select>
+                        <div className="students-header">
+                            <h3>Students List</h3>
+                            <div className="sort-container">
+                                <label htmlFor="sortDropdown">Sort By:</label>
+                                <select
+                                    id="sortDropdown"
+                                    className="sort-dropdown"
+                                    value={sortOption}
+                                    onChange={handleSortChange}
+                                >
+                                    <option value="">Select</option>
+                                    <option value="More than 90">More than 90%</option>
+                                    <option value="Less than 90">Less than 90%</option>
+                                    <option value="Low to High">
+                                        Attendance (Low to High)
+                                    </option>
+                                    <option value="High to Low">
+                                        Attendance (High to Low)
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-                        <h3>Students List</h3>
                         <table className="students-table">
                             <thead>
                                 <tr>
@@ -166,20 +199,36 @@ const ShowAttBySub = ({ setView, facultyID }) => {
                                         <td>{student.SubjectName}</td>
                                         <td>{student.TotalPresent}</td>
                                         <td>{student.TotalAbsent}</td>
-                                        <td>{((student.TotalPresent / (student.TotalPresent + student.TotalAbsent)) * 100).toFixed(2)}%</td>
+                                        <td>
+                                            {(
+                                                (student.TotalPresent /
+                                                    (student.TotalPresent +
+                                                        student.TotalAbsent)) *
+                                                100
+                                            ).toFixed(2)}
+                                            %
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-                        <button className="btn-export" onClick={() => exportToExcel(students)}>
-                            Export to Excel
-                        </button>
+                        <div className="button-container">
+                            <button
+                                className="btn-export"
+                                onClick={() => exportToExcel(students)}
+                            >
+                                Export to Excel
+                            </button>
+                            <button
+                                className="btn-back"
+                                onClick={() => setView("dashboard")}
+                            >
+                                Back to Dashboard
+                            </button>
+                        </div>
                     </>
                 )}
             </div>
-            <button className="btn-back" onClick={() => setView("dashboard")}>
-                Back to Dashboard
-            </button>
         </div>
     );
 };

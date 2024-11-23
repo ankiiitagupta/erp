@@ -22,7 +22,6 @@ const exportToExcel = (students) => {
   XLSX.writeFile(workbook, "Students_Attendance.xlsx");
 };
 
-
 const ShowAttByClass = ({ setView }) => {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
@@ -177,31 +176,27 @@ const ShowAttByClass = ({ setView }) => {
         </div>
       )}
 
-      {/* Sorting */}
-      {students.length > 0 && (
-        <div className="sort-container">
-          <label htmlFor="sort">Sort By:</label>
-          <select
-            id="sort"
-            value={sortOption}
-            onChange={handleSortChange}
-          >
-            <option value="">Select Sorting Option</option>
-            <option value="More than 90">More than 90% Attendance</option>
-            <option value="Less than 90">Less than 90% Attendance</option>
-            <option value="Low to High">Attendance (Low to High)</option>
-            <option value="High to Low">Attendance (High to Low)</option>
-          </select>
-        </div>
-      )}
-
       {/* Display Student List */}
       {students.length > 0 ? (
         <div className="students-list">
-          <h3>Student List</h3>
-          <button onClick={() => exportToExcel(students)} className="export-btn">
-            Export to Excel
-          </button>
+          <div className="students-list-header">
+            <h3>Student List</h3>
+            <div className="sort-container">
+              <label htmlFor="sort" className="sr-only">Sort By:</label>
+              <select
+                id="sort"
+                value={sortOption}
+                onChange={handleSortChange}
+                className="sort-dropdown"
+              >
+                <option value="">sort by</option>
+                <option value="More than 90">More than 90% Attendance</option>
+                <option value="Less than 90">Less than 90% Attendance</option>
+                <option value="Low to High">Attendance (Low to High)</option>
+                <option value="High to Low">Attendance (High to Low)</option>
+              </select>
+            </div>
+          </div>
           <table className="students-table">
             <thead>
               <tr>
@@ -224,15 +219,21 @@ const ShowAttByClass = ({ setView }) => {
               ))}
             </tbody>
           </table>
+          <button onClick={() => exportToExcel(students)} className="export-btn">
+            Export to Excel
+          </button>
         </div>
       ) : (
         selectedSection &&
         students.length === 0 && <p>No students found for this selection.</p>
       )}
 
-      <button onClick={() => setView("dashboard")} className="back-button">
-        Back to Dashboard
-      </button>
+      {/* Button Container */}
+      <div className="button-container">
+        <button onClick={() => setView("dashboard")} className="back-button">
+          Back to Dashboard
+        </button>
+      </div>
     </div>
   );
 };

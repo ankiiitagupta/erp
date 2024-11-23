@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import "../stylesheets/AcademicsDashboard.css"; // Same stylesheet for consistent styling
 import * as XLSX from "xlsx"; // Import xlsx library for Excel generation
 import { API_URL } from "../../axios";
-import "../stylesheets/ShowAttBySearch.css"; 
+import "../stylesheets/ShowAttBySearch.css";
 
-const SearchStudents = () => {
+const SearchStudents = ({ setView }) => {
   const [searchValue, setSearchValue] = useState("");
   const [students, setStudents] = useState([]);
 
@@ -43,7 +43,9 @@ const SearchStudents = () => {
     <div className="show-attendance-page">
       <h2 className="content-title">Search Students</h2>
       <div className="search-bar-container">
-        <label htmlFor="searchInput">Student Name:</label>
+        <label htmlFor="searchInput" className="search-label">
+          Student Name:
+        </label>
         <input
           id="searchInput"
           className="dropdown"
@@ -94,6 +96,13 @@ const SearchStudents = () => {
         </div>
       )}
       {!students.length && searchValue && <p className="no-results">No students found.</p>}
+
+      {/* Back to Dashboard button */}
+      <div className="back-to-dashboard-container">
+        <button className="btn-back" onClick={() => setView("dashboard")}>
+          Back to Dashboard
+        </button>
+      </div>
     </div>
   );
 };
