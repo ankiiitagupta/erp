@@ -739,15 +739,15 @@ app.post("/api/markattendance", (req, res) => {
     INSERT INTO attendance (RollNO, LectureDate, LectureNumber, AttendanceStatus, SubjectID, FacultyID)
     VALUES
       ${attendanceData
-        .map(
-          (item) =>
-            `(${db.escape(item.studentID)}, ${db.escape(
-              item.lectureDate
-            )}, ${db.escape(item.lectureNumber)}, ${db.escape(
-              item.status
-            )}, ${db.escape(item.subjectID)}, ${db.escape(item.facultyID)})`
-        )
-        .join(", ")}
+      .map(
+        (item) =>
+          `(${db.escape(item.studentID)}, ${db.escape(
+            item.lectureDate
+          )}, ${db.escape(item.lectureNumber)}, ${db.escape(
+            item.status
+          )}, ${db.escape(item.subjectID)}, ${db.escape(item.facultyID)})`
+      )
+      .join(", ")}
     AS attendance_data
     ON DUPLICATE KEY UPDATE 
       AttendanceStatus = attendance_data.AttendanceStatus
@@ -994,6 +994,7 @@ app.get("/api/searchstudentsbyname", (req, res) => {
   );
 });
 
+//get rooms
 app.get("/api/rooms", (req, res) => {
   const query = "SELECT RoomName FROM room order by RoomDomain"; // Your SQL query to fetch room names
 
@@ -1086,7 +1087,7 @@ ORDER BY
         return row;
       });
       res.json(results);
-      
+
     }
   );
 });
@@ -1141,7 +1142,7 @@ app.get("/api/allfacultyperdaytimetable", (req, res) => {
   });
 });
 
- app.get('/api/student-one-data', (req, res) => {
+app.get('/api/student-one-data', (req, res) => {
   const { courseName, year, section } = req.query;
 
   // Check if all required query parameters are provided
@@ -1237,6 +1238,160 @@ app.get("/api/student-interval-timetable", (req, res) => {
     }
   );
 });
+
+//get exams
+app.get("/api/getexams", (req, res) => {
+  const query = `
+    SELECT DISTINCT 
+    ExamType,
+    TotalMarks
+FROM
+    exam
+WHERE 
+    ExamType NOT LIKE 'A%';`
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching exam data: ", err);
+      return res.status(500).json({ error: "Failed to fetch exam data" });
+    }
+    res.json(results);
+  });
+});
+
+
+
+// get the list of student's exam result to upload using section and subject
+app.get("/api/listofstudentwithresultformarksupload", (req, res) => {
+  const { facultyID, SubjectName, examType, section } = req.query;
+
+  db.query(
+    `
+    SELECT 
+    st.RollNO,
+    st.Stud_name,
+    st.Section,
+    s.SubjectName,
+    ex.ExamType,
+    IFNULL(r.MarksObtained, 'N/A') AS MarksObtained,
+    ex.TotalMarks
+FROM 
+    Faculty f
+JOIN 
+    Subject s ON f.FacultyID = s.FacultyID
+JOIN 
+    Enrollment e ON s.CourseID = e.CourseID
+JOIN 
+    Student st ON st.RollNO = e.RollNO
+JOIN 
+    Exam ex ON ex.SubjectID = s.SubjectID  -- Removed ex.FacultyID
+LEFT JOIN 
+    Result r ON r.StudentID = st.RollNO AND r.SubjectID = s.SubjectID AND r.ExamID = ex.ExamID
+WHERE 
+    f.FacultyID = ?  -- Replace with the target FacultyID
+    AND s.SubjectName = ?  -- Replace with the target SubjectName
+    AND ex.ExamType = ?  -- Replace with the target ExamType
+    AND st.Section = ?  -- Replace with the target Section
+    AND CEIL(s.Semester / 2) = st.Stud_YearOfStudy
+ORDER BY 
+    st.Stud_name;
+
+
+    `,
+    [facultyID, SubjectName, examType, section],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+
+app.post("/api/uploadmarks", (req, res) => {
+  const marksData = req.body; // Array of marks data from frontend
+
+  let processedCount = 0; // Counter to track processed entries
+  let isError = false;
+
+  marksData.forEach((student) => {
+    const { RollNO, SubjectName, ExamType, MarksObtained, ResultStatus } = student;
+
+    let validMarks = null;
+    if (MarksObtained !== 'N/A' && !isNaN(MarksObtained)) {
+      validMarks = parseFloat(MarksObtained); // Convert to number
+    }
+
+    // Step 1: Find SubjectID
+    const getSubjectQuery = `SELECT SubjectID FROM subject WHERE SubjectName = ?`;
+    db.query(getSubjectQuery, [SubjectName], (err, subjectResult) => {
+      if (err || subjectResult.length === 0) {
+        console.error("Error fetching subject:", err || `Subject ${SubjectName} not found.`);
+        isError = true;
+        checkCompletion();
+        return;
+      }
+
+      const SubjectID = subjectResult[0].SubjectID;
+
+      // Step 2: Find ExamID
+      const getExamQuery = `SELECT ExamID FROM exam WHERE ExamType = ? AND SubjectID = ?`;
+      db.query(getExamQuery, [ExamType, SubjectID], (err, examResult) => {
+        if (err || examResult.length === 0) {
+          console.error("Error fetching exam:", err || `Exam type ${ExamType} not found.`);
+          isError = true;
+          checkCompletion();
+          return;
+        }
+
+        const ExamID = examResult[0].ExamID;
+
+        // Step 3: Check if result exists
+        const checkResultQuery = `SELECT ResultID FROM result WHERE StudentID = ? AND SubjectID = ? AND ExamID = ?`;
+        db.query(checkResultQuery, [RollNO, SubjectID, ExamID], (err, result) => {
+          if (err) {
+            console.error("Error checking result:", err);
+            isError = true;
+            checkCompletion();
+            return;
+          }
+
+          if (result.length > 0) {
+            // Step 4: Update existing result
+            const updateResultQuery = `UPDATE result SET MarksObtained = ?, ResultStatus = ? WHERE ResultID = ?`;
+            db.query(updateResultQuery, [validMarks, ResultStatus, result[0].ResultID], (err) => {
+              if (err) {
+                console.error("Error updating result:", err);
+                isError = true;
+              }
+              checkCompletion();
+            });
+          } else {
+            // Step 5: Insert new result
+            const insertResultQuery = `INSERT INTO result (StudentID, SubjectID, ExamID, MarksObtained, ResultStatus) VALUES (?, ?, ?, ?, ?)`;
+            db.query(insertResultQuery, [RollNO, SubjectID, ExamID, validMarks, ResultStatus], (err) => {
+              if (err) {
+                console.error("Error inserting result:", err);
+                isError = true;
+              }
+              checkCompletion();
+            });
+          }
+        });
+      });
+    });
+  });
+
+  function checkCompletion() {
+    processedCount++;
+    if (processedCount === marksData.length) {
+      if (isError) {
+        return res.status(500).json({ message: "Some errors occurred while processing marks." });
+      }
+      res.status(200).json({ message: "Marks processed successfully!" });
+    }
+  }
+});
+
 
 
 // Start the server on the specified port

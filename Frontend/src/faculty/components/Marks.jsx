@@ -1,50 +1,135 @@
 import React, { useState, useEffect } from "react";
-//import "../stylesheets/Marks.css";
 import "../stylesheets/AcademicsDashboard.css";
+import { API_URL } from "../../axios";
 
-const Marks = ({
-  marksData,
-  setMarksData,
-  isEditing,
-  setIsEditing,
-  handleInputChange,
-  toggleEditMode,
-  handleSubmit,
-}) => {
-  // Mock data for subjects with sections and exams, including subject code
-  const mockSubjectsWithSections = [
-    { subject: "DSA", code: "KCS-101", section: "Sec-A" },
-    { subject: "DSA", code: "KCS-101", section: "Sec-B" },
-    { subject: "Compiler", code: "KOE-201", section: "Sec-A" },
-    { subject: "Compiler", code: "KOE-201", section: "Sec-B" },
-    { subject: "OS", code: "KCS-102", section: "Sec-A" },
-    { subject: "OS", code: "KCS-102", section: "Sec-B" }
-  ];
-  
-  const mockExams = ["Midterm", "Finals", "Class Test"];
-
+const Marks = ({ facultyID }) => {
+  const [marksData, setMarksData] = useState([]);
   const [subjectsWithSections, setSubjectsWithSections] = useState([]);
   const [exams, setExams] = useState([]);
-
   const [selectedSubjectWithSection, setSelectedSubjectWithSection] = useState("");
   const [selectedExam, setSelectedExam] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [allFieldsSelected, setAllFieldsSelected] = useState(false);
 
-  const allFieldsSelected = selectedSubjectWithSection && selectedExam;
-
-  // Simulate fetching data by using mock data
+  // Fetch subjects and sections based on facultyID
   useEffect(() => {
-    // Simulate API call with mock data
-    const fetchSubjectsWithSections = () => {
-      setSubjectsWithSections(mockSubjectsWithSections);
+    const fetchSubjectSections = async () => {
+      try {
+        const response = await fetch(
+          `${API_URL}/api/subjectandsectionofaculty?facultyID=${facultyID}`
+        );
+        const data = await response.json();
+        setSubjectsWithSections(data);
+      } catch (error) {
+        console.error("Error fetching subject sections:", error);
+      }
     };
 
-    const fetchExams = () => {
-      setExams(mockExams);
-    };
+    fetchSubjectSections();
+  }, [facultyID]);
 
-    fetchSubjectsWithSections();
-    fetchExams();
+  // Fetching exams for the faculty
+  useEffect(() => {
+    fetch(`${API_URL}/api/getexams`)
+      .then((response) => response.json())
+      .then((data) => {
+        setExams(data);
+      })
+      .catch((err) => console.error("Error fetching exams:", err));
   }, []);
+ 
+
+  useEffect(() => {
+    if (selectedSubjectWithSection && selectedExam) {
+      const fetchMarksData = async () => {
+        try {
+          // Log the selectedSubjectWithSection to inspect its format
+          console.log("selectedSubjectWithSection:", selectedSubjectWithSection);
+  
+          // Correctly split based on the first occurrence of " ("
+          const parts = selectedSubjectWithSection.split(" (");
+          if (parts.length === 2) {
+            const subjectName = parts[0].trim();
+            const section = parts[1].replace(")", "").trim();  // Remove closing parenthesis
+  
+            // Log to check the values
+            console.log("Subject Name:", subjectName);
+            console.log("Section:", section);
+  
+            // Fetch data based on the extracted subject and section
+            const response = await fetch(
+              `${API_URL}/api/listofstudentwithresultformarksupload?facultyID=${facultyID}&SubjectName=${subjectName}&examType=${selectedExam}&section=${section}`
+            );
+            const data = await response.json();
+            setMarksData(data);
+          } else {
+            console.error("Invalid format for selectedSubjectWithSection:", selectedSubjectWithSection);
+          }
+        } catch (err) {
+          console.error("Error fetching marks data:", err);
+        }
+      };
+  
+      fetchMarksData();
+    }
+  }, [selectedSubjectWithSection, selectedExam, facultyID]);
+  
+
+  // Handle subject & section change
+  const handleSubjectWithSectionChange = (e) => {
+    setSelectedSubjectWithSection(e.target.value);
+    setAllFieldsSelected(e.target.value && selectedExam);
+  };
+
+  // Handle exam change
+  const handleExamChange = (e) => {
+    setSelectedExam(e.target.value);
+    setAllFieldsSelected(selectedSubjectWithSection && e.target.value);
+  };
+
+  // Toggle editing mode
+  const toggleEditMode = () => {
+    setIsEditing((prev) => !prev);
+  };
+
+  // Handle input changes for marks and other fields
+  const handleInputChange = (index, field, value) => {
+    const updatedMarksData = [...marksData];
+    const student = updatedMarksData[index];
+    
+    // Ensure the marks cannot exceed the total marks
+    if (field === "MarksObtained" && Number(value) > Number(student.TotalMarks)) {
+      alert("Marks obtained cannot exceed the total marks.");
+      return; // Do not update if the validation fails
+    }
+    
+    student[field] = value;
+    setMarksData(updatedMarksData);
+  };
+  
+
+  // Handle form submission
+const handleSubmit = async () => {
+  console.log(marksData);
+  try {
+    const response = await fetch(`${API_URL}/api/uploadmarks`, {
+      method: "POST",  // Or "PUT" depending on your API
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(marksData),  // Send the updated marks data
+    });
+    
+    if (response.ok) {
+      alert("Marks uploaded successfully!");
+    } else {
+      alert("Failed to upload marks. Please try again.");
+    }
+  } catch (error) {
+    alert("Error submitting marks: " + error.message);
+  }
+};
+
 
   return (
     <div className="dashboard-container">
@@ -57,12 +142,12 @@ const Marks = ({
                 <label>SUBJECT & SECTION:</label>
                 <select
                   value={selectedSubjectWithSection}
-                  onChange={(e) => setSelectedSubjectWithSection(e.target.value)}
+                  onChange={handleSubjectWithSectionChange}
                 >
                   <option value="">SELECT</option>
                   {subjectsWithSections.map((subject, index) => (
-                    <option key={index} value={`${subject.subject} (${subject.code}) (${subject.section})`}>
-                      {`${subject.subject} (${subject.code}) (${subject.section})`}
+                    <option key={index} value={`${subject.SubjectName} (${subject.Section})`}>
+                      {`${subject.SubjectName} (${subject.Section})`}
                     </option>
                   ))}
                 </select>
@@ -70,14 +155,11 @@ const Marks = ({
 
               <div className="form-group">
                 <label>EXAM:</label>
-                <select
-                  value={selectedExam}
-                  onChange={(e) => setSelectedExam(e.target.value)}
-                >
+                <select value={selectedExam} onChange={handleExamChange}>
                   <option value="">SELECT</option>
                   {exams.map((exam, index) => (
-                    <option key={index} value={exam}>
-                      {exam}
+                    <option key={index} value={exam.ExamType}>
+                      {exam.ExamType}
                     </option>
                   ))}
                 </select>
@@ -92,6 +174,7 @@ const Marks = ({
                       <th>ROLL NO.</th>
                       <th>STUDENT</th>
                       <th>SUBJECT</th>
+                      <th>SECTION</th>
                       <th>MARKS</th>
                       <th>OUT OF</th>
                     </tr>
@@ -99,27 +182,20 @@ const Marks = ({
                   <tbody>
                     {marksData.map((student, index) => (
                       <tr key={index}>
-                        <td>{student.rollNo}</td>
-                        <td>{student.name}</td>
-                        <td>{student.subject}</td>
+                        <td>{student.RollNO}</td>
+                        <td>{student.Stud_name}</td>
+                        <td>{student.SubjectName}</td>
+                        <td>{student.Section}</td>
                         <td>
                           <input
                             type="number"
-                            value={student.marks}
+                            value={student.MarksObtained === "N/A" ? "" : student.MarksObtained}
                             onChange={(e) =>
-                              handleInputChange(index, "marks", e.target.value)
+                              handleInputChange(index, "MarksObtained", e.target.value)
                             }
                           />
                         </td>
-                        <td>
-                          <input
-                            type="number"
-                            value={student.outOf}
-                            onChange={(e) =>
-                              handleInputChange(index, "outOf", e.target.value)
-                            }
-                          />
-                        </td>
+                        <td>{student.TotalMarks}</td>
                       </tr>
                     ))}
                   </tbody>

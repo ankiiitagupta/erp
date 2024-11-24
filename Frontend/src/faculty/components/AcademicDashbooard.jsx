@@ -13,7 +13,7 @@ import Assignment from "../../assets/AcademicDashboardsvg/Assignment.png";
 import ProjectsIcon from "../../assets/AcademicDashboardsvg/Projects.png"; // Project Icon
 import meeting from "../../assets/AcademicDashboardsvg/meeting.png";
 
-const AcademicsDashboard = () => {
+const AcademicsDashboard = ({facultyID}) => {
   const [showMarks, setShowMarks] = useState(false);
   const [showSyllabus, setShowSyllabus] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
@@ -24,7 +24,7 @@ const AcademicsDashboard = () => {
   return (
     <div className="academics-dashboard">
       {showMarks ? (
-        <Marks />
+        <Marks facultyID={facultyID}/>
       ) : showSyllabus ? (
         <Syllabus />
       ) : showNotes ? (
