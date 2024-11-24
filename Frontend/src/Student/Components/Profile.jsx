@@ -117,7 +117,7 @@ const Profile = () => {
 
   return (
     <div className="form-container">
-      <h1 className="form-heading">College Registration Form</h1>
+      <h1 className="form-heading">My Profile</h1>
       <form className="registration-form" onSubmit={handleSubmit}>
 
         {/* Personal Information Section */}

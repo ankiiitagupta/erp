@@ -7,7 +7,11 @@ const app = express();
 const port = 3006; // Make sure to use the same port here
 
 app.use(cors());
-app.use(express.json());
+// Increase the body size limit to 50MB (you can adjust as needed)
+app.use(express.json({ limit: '50mb' }));  // For JSON data (Base64 string)
+app.use(express.urlencoded({ limit: '50mb', extended: true })); // For URL-encoded data (if necessary)
+
+
 
 const db = mysql.createConnection({
   host: "localhost",
@@ -475,6 +479,34 @@ app.get("/api/batchmateofstud", (req, res) => {
     }
   );
 });
+
+app.post("/api/uploadStudentPhoto", (req, res) => {
+  const { StudentID, photoData } = req.body; // 'photoData' is the Base64 image string
+  const buffer = Buffer.from(photoData, 'base64'); // Convert Base64 to binary
+
+  const query = `UPDATE student SET Photo = ? WHERE RollNO = ?`;
+  db.query(query, [buffer, StudentID], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Error uploading photo" });
+    }
+    res.status(200).json({ message: "Photo uploaded successfully!" });
+  });
+});
+
+app.get("/api/getStudentPhoto/:id", (req, res) => {
+  const { id } = req.params;
+  const query = `SELECT Photo FROM student WHERE RollNO = ?`;
+  db.query(query, [id], (err, result) => {
+    if (err || result.length === 0) {
+      return res.status(404).json({ message: "Photo not found" });
+    }
+    res.contentType("image/jpeg"); // or "image/png"
+    res.send(result[0].Photo);
+  });
+});
+
+
 
 /*
  * ********************************************************************

@@ -793,11 +793,15 @@ body {
 }
 
 .profile-pic {
-    border-radius: 60%;
-    /* Circular profile picture */
-    margin: 0 4rem;
-    /* Space between image and text */
+  width: 200px;  /* Fixed width */
+  height: 200px; /* Fixed height */
+  object-fit: cover; /* Ensures image covers the container without distorting */
+  border-radius: 50%; /* Optional: to make the image circular */
+  border: 3px solid #000; /* Border with 3px thickness and black color */
+  margin: 0 4rem;
 }
+
+
 
 .name-box {
     display: flex;

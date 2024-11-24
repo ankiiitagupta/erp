@@ -100,14 +100,54 @@ const StudentDashboard = () => {
 
 
   const renderStudentDetails = () => {
+    const handleImageUpload = (e, RollNO) => {
+      const file = e.target.files[0];
+      if (!file) return;
+  
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Image = reader.result.split(",")[1];
+        axios
+          .post(`${API_URL}/api/uploadStudentPhoto`, {
+            StudentID: RollNO,
+            photoData: base64Image,
+          })
+          .then((res) => {
+            if (res.data.message === "Photo uploaded successfully!") {
+              // Reload the student's image
+              const updatedStudents = students.map((student) =>
+                student.RollNO === RollNO
+                  ? { ...student, photoUrl: `${API_URL}/api/getStudentPhoto/${RollNO}` }
+                  : student
+              );
+              setStudents(updatedStudents);
+            }
+          })
+          .catch((err) => console.error("Error uploading photo:", err));
+      };
+      reader.readAsDataURL(file);
+    };
+  
     return students.map((student) => (
       <div key={student.RollNO} className="student-detail">
         <div className="profile-section">
           <img
-            src="https://via.placeholder.com/150"
+            src={`${API_URL}/api/getStudentPhoto/${student.RollNO}` || "https://via.placeholder.com/150"}
             alt={`${student.Stud_name} profile`}
             className="profile-pic"
           />
+          <div className="image-upload">
+            <label htmlFor={`image-upload-${student.RollNO}`} className="upload-label">
+              Upload Image
+            </label>
+            <input
+              type="file"
+              id={`image-upload-${student.RollNO}`}
+              accept=".jpg,.jpeg,.png"
+              style={{ display: "none" }}
+              onChange={(e) => handleImageUpload(e, student.RollNO)}
+            />
+          </div>
           <div className="name-box">
             <p className="left-section">
               <h3>{student.Stud_name}</h3>
@@ -132,6 +172,7 @@ const StudentDashboard = () => {
       </div>
     ));
   };
+  
 
   const renderPieChart = () => {
     return attendance.map((attend) => (
