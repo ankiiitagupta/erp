@@ -1426,6 +1426,51 @@ app.post("/api/uploadmarks", (req, res) => {
 
 
 
+// get the list of student's exam result using course
+app.get("/api/listofstudentwithresultusingcourse", (req, res) => {
+  const { course, yearOfStudy, section, ExamType } = req.query;
+
+  db.query(
+    `
+    SELECT 
+    S.RollNO,
+    S.Stud_name,
+    S.Stud_YearOfStudy,
+    S.Section,
+    CO.CourseName,
+    Ex.ExamType,
+    R.MarksObtained,
+    Ex.TotalMarks
+FROM 
+    Student S
+JOIN 
+    Enrollment E ON S.RollNO = E.RollNO
+JOIN 
+    Course CO ON E.CourseID = CO.CourseID
+JOIN 
+    Exam Ex ON CO.CourseID = Ex.SubjectID -- Assuming Exam.SubjectID relates to Course.CourseID
+JOIN 
+    Result R ON S.RollNO = R.StudentID AND Ex.ExamID = R.ExamID
+WHERE 
+    CO.CourseName = ? -- Specify the course name
+    AND S.Stud_YearOfStudy = ?
+    AND S.Section = ?
+    AND Ex.ExamType = ?;
+
+
+
+    `,
+    [course, yearOfStudy, section, ExamType],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+
+
+
 // Start the server on the specified port
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
