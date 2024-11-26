@@ -147,7 +147,7 @@ const FacultyDashboard = ({ roles = "faculty" }) => {
           <AcademicsDashboard facultyID={FacultyID} />
         ) : StudAttendanceFlag ? (
           <div className="MarkAttendance-Detail">
-            <StudentAttendance facultyID={FacultyID} />
+            <StudentAttendance facultyID={FacultyID} resetFlags={resetFlags}/>
           </div>
         ) : EmpdetailFlag ? (
           <div className="Employee-Detail">

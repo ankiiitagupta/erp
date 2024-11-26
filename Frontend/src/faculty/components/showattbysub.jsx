@@ -29,6 +29,7 @@ const ShowAttBySub = ({ setView, facultyID }) => {
     const [students, setStudents] = useState([]);
     const [sortOption, setSortOption] = useState("");
 
+
     // Fetch subject and section data
     useEffect(() => {
         const fetchSubjectSections = async () => {
@@ -219,12 +220,7 @@ const ShowAttBySub = ({ setView, facultyID }) => {
                             >
                                 Export to Excel
                             </button>
-                            <button
-                                className="btn-back"
-                                onClick={() => setView("dashboard")}
-                            >
-                                Back to Dashboard
-                            </button>
+                            
                         </div>
                     </>
                 )}

@@ -37,7 +37,7 @@ const FacultyTimeTable = ({ FacultyID }) => {
   
       try {
         const apiUrl = `${API_URL}/api/facultytimetable?facultyID=${FacultyID}`;
-        console.log("Fetching timetable from:", apiUrl);
+       
         const response = await axios.get(apiUrl);
   
         if (!Array.isArray(response.data)) {
@@ -59,9 +59,7 @@ const FacultyTimeTable = ({ FacultyID }) => {
 
 
   const isCurrentTimeInSlot = (startTime, endTime) => {
-    const now = new Date();
-    console.log("Current Time:", now);
-  
+    const now = new Date();  
     const [startHours, startMinutes, startSeconds] = startTime
       .split(":")
       .map(Number);
@@ -73,9 +71,9 @@ const FacultyTimeTable = ({ FacultyID }) => {
     const endDateTime = new Date();
     endDateTime.setHours(endHours, endMinutes, endSeconds);
   
-    console.log("Slot Start:", startDateTime, "Slot End:", endDateTime);
+    
     const result = now >= startDateTime && now <= endDateTime;
-    console.log("Is Current Slot:", result);
+    
     return result;
   };
   

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
+import { useRole } from "../../RoleContext.jsx";
 import axios from "axios";
 import { API_URL } from "../../axios.js";
 
@@ -22,7 +22,8 @@ const Header = ({ facultyID }) => {
     query: "",
   });
   const [roles, setRoles] = useState([]);
-  const [selectedRole, setSelectedRole] = useState("faculty");
+  const [selectedRole, setSelectedRole] = useRole();
+  
 
   useEffect(() => {
     axios
@@ -70,18 +71,10 @@ const Header = ({ facultyID }) => {
 
   const handleRoleChange = (event) => {
     const role = event.target.value;
-
-    const userConfirmed = confirm(
-      `Are you sure you want to change your role to ${role}?`
-    );
-
-    if (userConfirmed) {
-      console.log(`Role is selected to ${role}`);
-      setSelectedRole(role); // Update the selected role state
+    if (confirm(`Are you sure you want to change your role to ${role}?`)) {
+      setSelectedRole(role.toLowerCase()); // Update global state
     } else {
-      console.log("Role not changed.");
-      // Optionally reset the dropdown to the previous value
-      event.target.value = selectedRole; // Ensure dropdown reflects current role
+      event.target.value = selectedRole; // Reset dropdown to current role
     }
   };
 

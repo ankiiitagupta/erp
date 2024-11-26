@@ -1,1 +1,1 @@
-ExamType
+yearOfStudy
