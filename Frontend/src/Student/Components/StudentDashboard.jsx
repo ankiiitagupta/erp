@@ -96,9 +96,6 @@ const StudentDashboard = () => {
         console.error("Error fetching Faculties:", error);
       });
   }, [RollNO]);
-
-
-
   const renderStudentDetails = () => {
     const handleImageUpload = (e, RollNO) => {
       const file = e.target.files[0];
@@ -131,12 +128,13 @@ const StudentDashboard = () => {
     return students.map((student) => (
       <div key={student.RollNO} className="student-detail">
         <div className="profile-section">
-          <img
-            src={`${API_URL}/api/getStudentPhoto/${student.RollNO}` || "https://via.placeholder.com/150"}
-            alt={`${student.Stud_name} profile`}
-            className="profile-pic"
-          />
-          <div className="image-upload">
+          {/* Profile Image */}
+          <div className="profile-container">
+            <img
+              src={`${API_URL}/api/getStudentPhoto/${student.RollNO}` || "https://via.placeholder.com/150"}
+              alt={`${student.Stud_name} profile`}
+              className="profile-pic"
+            />
             <label htmlFor={`image-upload-${student.RollNO}`} className="upload-label">
               Upload Image
             </label>
@@ -148,32 +146,33 @@ const StudentDashboard = () => {
               onChange={(e) => handleImageUpload(e, student.RollNO)}
             />
           </div>
-          <div className="name-box">
-            <p className="left-section">
+  
+          {/* Student Details */}
+          <div className="details-container">
+            <div className="left-section">
               <h3>{student.Stud_name}</h3>
               Roll No: {student.RollNO}
               <br />
               Section: {student.Section}
               <br />
-              Enrollment ID: {student.DepartmentName}
+              Enrollment ID: {student.EnrollmentID}
               <br />
               Gender: {student.Stud_Gender}
-            </p>
-            <p className="right-section">
+            </div>
+            <div className="right-section">
               DOB: {student.Stud_DOB}
               <br />
               Course: {student.CourseName}
               <br />
               Department: {student.DepartmentName}
-            </p>
+            </div>
           </div>
-          {error && <p>{error}</p>}
         </div>
+        {error && <p>{error}</p>}
       </div>
     ));
   };
   
-
   const renderPieChart = () => {
     return attendance.map((attend) => (
       <div className="piechart" key={attend.RollNO}>

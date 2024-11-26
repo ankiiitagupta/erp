@@ -772,45 +772,97 @@ body {
 }
 
 .student-detail {
-    display: flex;
-    /* Flexbox for profile section */
-    align-items: center;
-    /* Center items vertically */
-    background-color: white;
-    /* White background for details */
-    border-radius: 8px;
-    /* Rounded corners */
-    box-shadow: 0 2px 4px rgba(22, 15, 73, 0.1);
-    /* Subtle shadow */
+  display: flex;
+  /* Flexbox for profile section */
+  align-items: center;
+  /* Center items vertically */
+  background-color: white;
+  /* White background for details */
+  border-radius: 8px;
+  /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(22, 15, 73, 0.1);
+  /* Subtle shadow */
 }
 
 .profile-section {
-    display: flex;
-    /* Flexbox for profile image and details */
-    align-items: center;
-    /* Center items vertically */
-    margin: 1rem 0;
+  display: flex;
+  /* Flexbox for profile image and details */
+  align-items: center;
+  /* Center items vertically */
+  margin: 2rem;
+}
+.profile-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .profile-pic {
-  width: 200px;  /* Fixed width */
-  height: 200px; /* Fixed height */
-  object-fit: cover; /* Ensures image covers the container without distorting */
-  border-radius: 50%; /* Optional: to make the image circular */
-  border: 3px solid #000; /* Border with 3px thickness and black color */
-  margin: 0 4rem;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%; /* Ensures the image remains a perfect circle */
+  border: 2px solid #ccc;
+  object-fit: cover;
+}
+.image-upload {
+  position: absolute; /* Position relative to the profile-pic */
+  bottom: -20px; /* Push it slightly below the circle */
+  left: 50%; /* Center it horizontally */
+  transform: translateX(-50%); /* Adjust for centering */
+  text-align: center; /* Align text inside */
+  font-size: 0.9rem; /* Optional: Adjust font size */
+  background-color: white; /* Optional: Background color for contrast */
+  padding: 5px 10px; /* Optional: Padding for upload label */
+  border: 1px solid #ccc; /* Optional: Border around upload label */
+  border-radius: 5px; /* Optional: Rounded corners for upload label */
+  cursor: pointer; /* Change cursor to pointer on hover */
 }
 
+.upload-label {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+
+.image-upload input {
+  display: none; /* Hide the actual file input */
+}
+.upload-label {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.details-container {
+  display: flex;
+  justify-content: space-between;
+  /* Ensure symmetry between left and right sections */
+  gap: 2rem;
+  /* Space between left and right sections */
+  flex-grow: 1;
+  margin-left:5rem;
+}
 
 
 .name-box {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 2;
-    flex-grow: 1;
-    /* Allow name box to grow */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 2;
+  flex-grow: 1;
+  /* Allow name box to grow */
 }
+
 
 .right-section {
     margin-left: 8rem;

@@ -6,14 +6,15 @@ import "../stylesheets/FacultyTimetable.css";
 
 const FacultyTimeTable = ({ FacultyID }) => {
   const navigate = useNavigate();
-  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday","Saturday"];
+  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const [timetable, setTimetable] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const handleClick = (action) => {
-    
     if (action) action();
   };
+
   const timeSlots = [
     { start: "09:45:00", end: "10:35:00" },
     { start: "10:35:00", end: "11:25:00" },
@@ -34,16 +35,16 @@ const FacultyTimeTable = ({ FacultyID }) => {
         setLoading(false);
         return;
       }
-  
+
       try {
         const apiUrl = `${API_URL}/api/facultytimetable?facultyID=${FacultyID}`;
        
         const response = await axios.get(apiUrl);
-  
+
         if (!Array.isArray(response.data)) {
           throw new Error("API returned invalid format");
         }
-  
+
         setTimetable(response.data);
         setLoading(false);
       } catch (err) {
@@ -52,11 +53,9 @@ const FacultyTimeTable = ({ FacultyID }) => {
         setLoading(false);
       }
     };
-  
+
     fetchTimetable();
   }, [FacultyID]);
-  
-
 
   const isCurrentTimeInSlot = (startTime, endTime) => {
     const now = new Date();  
@@ -64,10 +63,10 @@ const FacultyTimeTable = ({ FacultyID }) => {
       .split(":")
       .map(Number);
     const [endHours, endMinutes, endSeconds] = endTime.split(":").map(Number);
-  
+
     const startDateTime = new Date();
     startDateTime.setHours(startHours, startMinutes, startSeconds);
-  
+
     const endDateTime = new Date();
     endDateTime.setHours(endHours, endMinutes, endSeconds);
   
@@ -76,8 +75,6 @@ const FacultyTimeTable = ({ FacultyID }) => {
     
     return result;
   };
-  
-
 
   // Handle attendance button click
   const handleAttendance = (lecture) => {
@@ -85,7 +82,6 @@ const FacultyTimeTable = ({ FacultyID }) => {
   };
 
   const today = new Date().toLocaleString("en-us", { weekday: "long" }).toLowerCase();
-
 
   if (loading) return <div className="loading-message">Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
@@ -105,10 +101,9 @@ const FacultyTimeTable = ({ FacultyID }) => {
         </thead>
         <tbody>
           {daysOfWeek.map((day) => {
-           const lecturesForDay = timetable.filter(
-            (lecture) => lecture.DayOfWeek.toLowerCase() === day.toLowerCase()
-          );
-          
+            const lecturesForDay = timetable.filter(
+              (lecture) => lecture.DayOfWeek.toLowerCase() === day.toLowerCase()
+            );
 
             const lectureSlots = new Array(timeSlots.length).fill(null);
 
@@ -127,10 +122,10 @@ const FacultyTimeTable = ({ FacultyID }) => {
                 <td>{day}</td>
                 {lectureSlots.map((lecture, index) => {
                   const isCurrentSlot =
-                  day.toLowerCase() === today &&
-                  lecture &&
-                  isCurrentTimeInSlot(lecture.StartTime, lecture.EndTime);
-                
+                    day.toLowerCase() === today &&
+                    lecture &&
+                    isCurrentTimeInSlot(lecture.StartTime, lecture.EndTime);
+
                   return (
                     <td
                       key={index}
@@ -138,14 +133,11 @@ const FacultyTimeTable = ({ FacultyID }) => {
                     >
                       {lecture ? (
                         <>
-                          <div>{lecture.SubjectName}</div>
-                          <div style={{ fontSize: '1rem' }}>Room: {lecture.RoomName}</div>
-                          
-                          <div>Section: {lecture.CourseName}/{lecture.YearOfStudy}year/{lecture.Section}</div>
-                          <div>Faculty: {lecture.faculty_alias}</div>
+                          <div>{`${lecture.SubjectName} (${lecture.RoomName})`}</div>
+                          <div>{`${lecture.CourseName} / ${lecture.YearOfStudy} Year / ${lecture.Section}`}</div>
                           {isCurrentSlot && (
                             <button
-                              onClick={ ()=>handleClick(()=>handleAttendance(lecture)) }
+                              onClick={() => handleClick(() => handleAttendance(lecture))}
                               className="attendance-button"
                             >
                               Mark Attendance
@@ -168,4 +160,3 @@ const FacultyTimeTable = ({ FacultyID }) => {
 };
 
 export default FacultyTimeTable;
-
