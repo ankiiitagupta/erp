@@ -22,36 +22,42 @@ function Login() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-  
+
     if (!username || !password) {
       setError('Please enter both username and password.');
       return;
     }
-  
+
     try {
-      const response = await fetch(`${API_URL}/api/login?LoginID=${username}&PasswordHash=${password}`);
+      const response = await fetch(
+        `${API_URL}/api/login?LoginID=${username}&PasswordHash=${password}`
+      );
       const result = await response.json();
+
       if (result.success) {
-        if (result.userType === "student") {
+        if (result.userType === 'student') {
           const RollNO = result.student.RollNO;
           navigate(`/studentdashboard/${RollNO}`);
-        } else if (result.userType === "faculty") {
+        } else if (result.userType === 'faculty') {
           const FacultyID = result.faculty.FacultyID;
           navigate(`/facultydashboard/${FacultyID}`);
+        } else if (result.userType === 'admin') {
+          const admin_id = result.admin.admin_id; // Fixed `admin_id` assignment
+          navigate(`/AdminDashboard/${admin_id}`);
         }
       } else {
-        setError('Invalid username or password');
+        setError('Invalid username or password.');
       }
     } catch (error) {
       console.error('Login error:', error);
-      setError('An error occurred. Please try again.');
+      setError('An error occurred while connecting to the server.');
     }
   };
 
   return (
     <MDBContainer className="main">
       <MDBRow className="login-container">
-        <MDBCol col='12'>
+        <MDBCol col="12">
           <div className="d-flex flex-column m-5">
             <div className="text-center">
               <h4 className="mt-1 mb-5 pb-2">Welcome to MPGI</h4>
@@ -59,33 +65,35 @@ function Login() {
 
             <p>Please login to your account</p>
 
-            <MDBInput 
-              wrapperClass='mb-4' 
-              label='Username' 
-              id='form1' 
-              type='text' 
-              value={username} 
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Username"
+              id="form1"
+              type="text"
+              value={username}
               onChange={handleUsernameChange}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleLogin(e);
               }}
             />
-            <MDBInput 
-              wrapperClass='mb-4' 
-              label='Password' 
-              id='form2' 
-              type='password' 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
+            <MDBInput
+              wrapperClass="mb-4"
+              label="Password"
+              id="form2"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleLogin(e);
               }}
             />
 
-            {error && <p style={{color: 'red'}}>{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
 
             <div className="text-center pt-1 mb-5 pb-1">
-              <MDBBtn className="mb-4 w-100 gradient-custom-2" onClick={handleLogin}>Login</MDBBtn>
+              <MDBBtn className="mb-4 w-100 gradient-custom-2" onClick={handleLogin}>
+                Login
+              </MDBBtn>
             </div>
           </div>
         </MDBCol>

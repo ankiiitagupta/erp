@@ -1,0 +1,38 @@
+/* Sidebar specific styles */
+.activeClicked {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .sidebar-content {
+    padding-top: 30px;
+  }
+  
+  .cdb-sidebar {
+    font-family: Arial, sans-serif;
+  }
+  
+  .CDBSidebarMenuItem {
+    font-size: 1.1rem;
+  }
+  
+  .CDBSidebarHeader {
+    padding: 15px;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  
+  .CDBSidebarFooter {
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 768px) {
+    .CDBSidebarMenuItem {
+      font-size: 0.9rem;
+    }
+  
+    .CDBSidebarHeader {
+      font-size: 1.2rem;
+    }
+  }
+  
