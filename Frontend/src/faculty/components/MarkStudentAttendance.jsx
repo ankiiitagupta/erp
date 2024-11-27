@@ -52,6 +52,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
 
       if (Array.isArray(response.data)) {
         setStudents(response.data);
+        console.log(response.data);
         setTotalStudents(response.data.length); // Set total students dynamically
 
         // Calculate present and absent students countS
@@ -62,8 +63,9 @@ const MarkStudentAttendance = ({ facultyID }) => {
         setAbsentStudents(absentCount); // Set absent students dynamically
 
         const initialAttendance = response.data.map((student) => ({
-          status: student.AttendanceStatus,
+          status: student.AttendanceStatus === "not marked" ? null : Number(student.AttendanceStatus),
         }));
+        
         setAttendance(initialAttendance);
       } else {
         console.error("Invalid student data format");
