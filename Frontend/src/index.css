@@ -876,7 +876,10 @@ body {
     margin: 0px 0.5rem;
 }
 
-.btnshowmore {
+.ttbtn .btnshowmore {
+  display:flex;
+  align-items: end;
+  justify-content: center;
     border: none;
     background-color: white; /* Default background color */
     color: #003366; /* Default text color (blue) */
@@ -888,6 +891,8 @@ body {
     height: 50px;
     transition: background-color 0.3s ease, color 0.3s ease;
     margin-left:67rem;
+    margin-right: 0;
+    margin-bottom: 1rem;
 }
 
 /* Hover effect */
@@ -897,10 +902,7 @@ body {
 }
 
 
-.btnshowmore:hover {
-    color: rgb(98, 98, 224);
-    text-decoration: underline;
-}
+
 
 .pie-chart-section {
     margin: 20px 0;
