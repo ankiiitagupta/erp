@@ -5,12 +5,13 @@ import { API_URL } from "../../axios";
 import Header from "./Header.jsx";
 import PieChart from "./PieChart.jsx";
 import Sidebar from "./Sidebar.jsx";
-import WeeksTimeTable from "./WeeksTimeTable.jsx";
+import WeeksTimeTable from "./WeeksTimetable.jsx";
 import TodaysTimeTable from "./TodaysTimeTable.jsx";
 import AttendanceDetails from "./AttendanceDetails.jsx"; // Ensure to import your AttendanceDetails component
 import MarkingTimeTable from "./markingTimetable.jsx";
 import Notices from "./Notices.jsx";
 import Profile from "./Profile.jsx";
+
 
 const StudentDashboard = () => {
   const { RollNO } = useParams(); // Get Roll number from URL

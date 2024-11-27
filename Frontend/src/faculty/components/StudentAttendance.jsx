@@ -5,17 +5,17 @@ import showAttendanceBySubjectIcon from "../../assets/AcademicDashboardsvg/Marka
 import showAttendanceByClassIcon from "../../assets/AcademicDashboardsvg/markatt6.png";
 import showAttendanceBySearchIcon from "../../assets/AcademicDashboardsvg/Markatt4.png";
 import MarkStudentAttendance from "./MarkStudentAttendance";
-import ShowAttBySub from "./Showattbysub";
+import ShowAttBySub from "./showattbysub";
 import ShowAttByClass from "./Showattbyclass";
 import ShowAttBySearch from "./Showattbysearch";
 import { useNavigate } from "react-router-dom";
 import { useRole } from "../../RoleContext.jsx";
 
-const StudentAttendance = ({ facultyID ,resetFlags}) => {
+const StudentAttendance = ({ facultyID, resetFlags }) => {
   const [view, setView] = useState("Attendance");
   const navigate = useNavigate();
   const [selectedRole, setSelectedRole] = useRole();
-  
+
   useEffect(() => {
     const handlePopState = (event) => {
       const viewFromHistory = event.state?.view || "Attendance";
@@ -31,14 +31,14 @@ const StudentAttendance = ({ facultyID ,resetFlags}) => {
         });
       }
     };
-  
+
     window.addEventListener("popstate", handlePopState);
-  
+
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
   }, [view, facultyID]);
-  
+
   const updateView = (newView) => {
     setView(newView);
     window.history.pushState({ view: newView }, "", newView.toLowerCase());
@@ -58,14 +58,19 @@ const StudentAttendance = ({ facultyID ,resetFlags}) => {
               <img src={showAttendanceBySubjectIcon} alt="Show Attendance by Subject" className="icon" />
               <p>Show Attendance by Subject</p>
             </div>
-            <div className="icon-card" onClick={() => updateView("showAttendanceByClass")}>
-              <img src={showAttendanceByClassIcon} alt="Show Attendance by Class" className="icon" />
-              <p>Show Attendance by Class</p>
-            </div>
-            <div className="icon-card" onClick={() => updateView("showAttendanceBySearch")}>
-              <img src={showAttendanceBySearchIcon} alt="Show Attendance by Search" className="icon" />
-              <p>Show Attendance by Search</p>
-            </div>
+            {selectedRole === "hod" && (
+              <>
+                <div className="icon-card" onClick={() => updateView("showAttendanceByClass")}>
+                  <img src={showAttendanceByClassIcon} alt="Show Attendance by Class" className="icon" />
+                  <p>Show Attendance by Class</p>
+                </div>
+                <div className="icon-card" onClick={() => updateView("showAttendanceBySearch")}>
+                  <img src={showAttendanceBySearchIcon} alt="Show Attendance by Search" className="icon" />
+                  <p>Show Attendance by Search</p>
+                </div>
+              </>
+            )}
+
           </div>
         </>
       )}

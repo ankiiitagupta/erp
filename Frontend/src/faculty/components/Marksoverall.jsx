@@ -4,10 +4,12 @@ import syllabus from "../../assets/AcademicDashboardsvg/syllabus.png";
 import Marksclip from "../../assets/AcademicDashboardsvg/Markclip.png";
 import Marks from "./Marks";
 import ShowMarksByClass from "./showmarksbyclass";
+import { useRole } from "../../RoleContext";
 
 const MarksOverALL = ({facultyID}) => {
     const [editMarks, setEditMarks] = useState(false);
     const [showMarks, setShowMarks] = useState(false);
+    const [selectedRole, setSelectedRole] = useRole();
     
   
     return (
@@ -28,13 +30,13 @@ const MarksOverALL = ({facultyID}) => {
                 </span>
               </div>
   
-              <div className="icon-card" onClick={() => setShowMarks(true)}>
+              {selectedRole=="hod" && (<div className="icon-card" onClick={() => setShowMarks(true)}>
                 <img src={syllabus} alt="Syllabus" className="icon" />
                 <p>Show Marks</p>
                 <span className="tooltip">
                   Access syllabus and update completed Syllabus
                 </span>
-              </div>
+              </div>)}
   
               
             </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-
+import { useRole } from "../../RoleContext.jsx";
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -23,12 +23,13 @@ const FacultySidebar = ({
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState('Dashboard');
   const navigate = useNavigate(); // For navigation
+  const [selectedRole, setSelectedRole] = useRole();
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
-  const handleMenuClick = (menuItem,action) => {
+  const handleMenuClick = (menuItem, action) => {
     setSelectedMenuItem(menuItem);
     resetFlags();
     if (action) action();
@@ -51,7 +52,7 @@ const FacultySidebar = ({
           <CDBSidebarMenu>
             <NavLink
               className={selectedMenuItem === 'Dashboard' ? 'activeClicked' : ''}
-              onClick={() => handleMenuClick('Dashboard',() => navigate(`/facultydashboard/${FacultyID}`))}
+              onClick={() => handleMenuClick('Dashboard', () => navigate(`/facultydashboard/${FacultyID}`))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
@@ -59,7 +60,7 @@ const FacultySidebar = ({
 
             <NavLink
               className={selectedMenuItem === 'EmpDetail' ? 'activeClicked' : ''}
-              onClick={() => handleMenuClick('EmpDetail',() => setEmpdetailFlag(true))}
+              onClick={() => handleMenuClick('EmpDetail', () => setEmpdetailFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="user">Employee Detail</CDBSidebarMenuItem>
@@ -67,7 +68,7 @@ const FacultySidebar = ({
 
             <NavLink
               className={selectedMenuItem === 'StudAttendance' ? 'activeClicked' : ''}
-              onClick={() => handleMenuClick('StudAttendance',() => setStudAttendanceFlag(true))}
+              onClick={() => handleMenuClick('StudAttendance', () => setStudAttendanceFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="book">Student Attendance</CDBSidebarMenuItem>
@@ -75,7 +76,7 @@ const FacultySidebar = ({
 
             <NavLink
               className={selectedMenuItem === 'Academic' ? 'activeClicked' : ''}
-              onClick={() => handleMenuClick('Academic',() => setAcademicFlag(true))}
+              onClick={() => handleMenuClick('Academic', () => setAcademicFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="chart-line">Academic</CDBSidebarMenuItem>
@@ -83,7 +84,7 @@ const FacultySidebar = ({
 
             <NavLink
               className={selectedMenuItem === 'AllTimetable' ? 'activeClicked' : ''}
-              onClick={() => handleMenuClick('AllTimetable',() => setAllTimetableFlag(true))}
+              onClick={() => handleMenuClick('AllTimetable', () => setAllTimetableFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="calendar">Timetable</CDBSidebarMenuItem>
@@ -91,19 +92,24 @@ const FacultySidebar = ({
 
             <NavLink
               className={selectedMenuItem === 'Notice' ? 'activeClicked' : ''}
-              onClick={() => handleMenuClick('Notice',() => setNoticeFlag(true))}
+              onClick={() => handleMenuClick('Notice', () => setNoticeFlag(true))}
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="bell">Notices</CDBSidebarMenuItem>
             </NavLink>
 
-            <NavLink
-              className={selectedMenuItem === 'Reports' ? 'activeClicked' : ''}
-              onClick={() => handleMenuClick('Reports',() => setReportsFlag(true))}
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="file-alt">Reports</CDBSidebarMenuItem>
-            </NavLink>
+            {selectedRole === "hod" ? (
+              <NavLink
+                className={selectedMenuItem === "Reports" ? "activeClicked" : ""}
+                onClick={() => handleMenuClick("Reports", () => setReportsFlag(true))}
+                activeClassName="activeClicked"
+              >
+                <CDBSidebarMenuItem icon="file-alt">Reports</CDBSidebarMenuItem>
+              </NavLink>
+            ) : (
+              <></> // or some other valid JSX element
+            )}
+
           </CDBSidebarMenu>
         </CDBSidebarContent>
 

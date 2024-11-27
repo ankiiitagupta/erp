@@ -7,6 +7,7 @@ import FilteredTimetable from "./FilteredTimetable";
 import FacultywiseTimetable from "./facultywisett";
 import FacultyTimeTable from "./FacultyTimetable";
 import ClasswiseTimetable from "./classwisetimetable";
+import { useRole } from "../../RoleContext";
 
 // (Rest of the existing code)
 
@@ -14,6 +15,8 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
   
   const [activeTab, setActiveTab] = useState("Timetable");
   const [timetable, setTimetable] = useState([]);
+  
+  const [selectedRole, setSelectedRole] = useRole();
   // Fetch timetable data
   useEffect(() => {
     const fetchTimetable = async () => {
@@ -73,18 +76,18 @@ const FacultyallTimeTable = ({ facultyID, roles }) => {
         >
           Filter Timetable
         </button>
-        <button
+        {selectedRole == "hod" && (<button
           className={activeTab === "facultywisett" ? "active-tab" : "tab"}
           onClick={() => setActiveTab("facultywisett")}
         >
           Facultywise Timetable
-        </button>
-        <button
+        </button>)}
+        {selectedRole == "hod" &&(<button
           className={activeTab === "classwisett" ? "active-tab" : "tab"}
           onClick={() => setActiveTab("classwisett")}
         >
           Classwise Timetable
-        </button>
+        </button>)}
       </div>
 
       {activeTab === "Classroom" &&  (
