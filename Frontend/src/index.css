@@ -1121,7 +1121,7 @@ th {
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
-    gap: 6;
+    /* gap: 4; */
     /* Evenly distribute name and details */
 }
 
@@ -1133,6 +1133,7 @@ th {
 }
 
 .left-section-myatt {
+
     font-size: large;
     font-weight: 500;
     margin-left: 3rem;

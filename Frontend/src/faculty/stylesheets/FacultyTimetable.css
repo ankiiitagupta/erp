@@ -1,8 +1,8 @@
 .faculty-timetable {
-  margin: 20px 10px; /* Small margin on the left and right */
+  margin: 20px 2rem; /* Small margin on the left and right */
   font-family: Arial, sans-serif;
   border-collapse: collapse;
-  width: 75%; /* Further reduced width to make the table shorter */
+  width: 95%; /* Further reduced width to make the table shorter */
 }
 
 h4 {
