@@ -1,111 +1,135 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate,useLocation } from "react-router-dom";
+import axios from "axios";
 import FacultySidebar from "./FacultySidebar.jsx";
 import Header from "../../Student/Components/Header.jsx";
 import "../stylesheets/TodaysAttendance.css";
+import { API_URL } from "../../axios"; // Add your API URL config
 
-const TodaysAttendance = () => {
-  const { lectureId } = useParams();  // Get the lecture ID from the URL
+const TodaysAttendance = ({}) => {
+
   const navigate = useNavigate();
-  const location = useLocation();
-  const [lecture, setLecture] = useState(location.state?.lecture || null);
+  const [lecture, setLecture] = useState(null);
   const [students, setStudents] = useState([]);
-  const [attendance, setAttendance] = useState({});
-  const setEmpdetailFlag = location.state?.setEmpdetailFlag;
-  const setMarkAttendanceFlag = location.state?.setMarkAttendanceFlag;
-  const setAcademicFlag = location.state?.setAcademicFlag;
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [attendance, setAttendance] = useState([]);
+  const [totalStudents, setTotalStudents] = useState(0);
+  const [presentStudents, setPresentStudents] = useState(0);
+  const [absentStudents, setAbsentStudents] = useState(0);
+  const today = new Date().toISOString().split('T')[0];
+  const location = useLocation();
 
+  const { facultyID, lectureID } = location.state || {};
+ 
+  
+    
   useEffect(() => {
-    // Simulate fetching lecture details if not provided in state
-    if (!lecture) {
-      const dummyLecture = {
-        SubjectName: "Mathematics 101",
-        ClassName: "Math-A",
-        RoomNumber: "Room 202",
-        Lecture:"1",
-      };
-      setLecture(dummyLecture);
-    }
 
-    // Dummy student data
-    const dummyStudents = [
-      { id: 1, name: "John Doe" },
-      { id: 2, name: "Jane Smith" },
-      { id: 3, name: "Alice Brown" },
-      { id: 4, name: "Bob Johnson" },
-    ];
-    setStudents(dummyStudents);
+    axios
+      .get(`${API_URL}/api/facultyondateselectionattendance?facultyID=${facultyID}&LectureDate=${today}`)
+      .then((response) => {
+        setLecture(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching lecture data", error);
+      });
 
-    // Initialize attendance status for each student
-    const initialAttendance = dummyStudents.reduce((acc, student) => {
-      acc[student.id] = "Absent";
-      return acc;
-    }, {});
-    setAttendance(initialAttendance);
-  }, [lecture]);
+
+    // Fetch students of today's lecture
+    axios
+      .get(`${API_URL}/api/getstudentsoflectureondate?facultyID=${facultyID}&LectureDate=${today}&LectureNumber=${lectureID}`)
+      .then((response) => {
+        if (Array.isArray(response.data)) {
+          setStudents(response.data);
+          setTotalStudents(response.data.length);
+          // Initialize attendance state
+          const initialAttendance = response.data.map((student) => ({
+            studentId: student.RollNO,
+            status: null, // Default attendance status
+          }));
+          setAttendance(initialAttendance);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching student data", error);
+      });
+  }, [lectureID, facultyID]);
 
   const handleAttendanceChange = (studentId, status) => {
-    setAttendance((prev) => ({
-      ...prev,
-      [studentId]: status,
-    }));
+    const updatedAttendance = attendance.map((att) =>
+      att.studentId === studentId ? { ...att, status } : att
+    );
+    setAttendance(updatedAttendance);
+
+    // Update present and absent counts
+    const updatedPresentCount = updatedAttendance.filter((att) => att.status === "Present").length;
+    const updatedAbsentCount = updatedAttendance.filter((att) => att.status === "Absent").length;
+    setPresentStudents(updatedPresentCount);
+    setAbsentStudents(updatedAbsentCount);
   };
 
+  
+
   const handleSubmit = () => {
-    // Prepare data to display or send
-    const attendanceData = {
-      lectureId,
-      attendance: students.map((student) => ({
-        studentId: student.id,
-        status: attendance[student.id],
-      })),
-    };
+    const attendanceData = students.map((student, index) => ({
+      studentID: student.RollNO,
+      lectureDate: today,
+      lectureNumber: lectureID,
+      status: attendance[index]?.status ?? null,
+      facultyID: Number(facultyID),
+      subjectID: lecture.find((lec) => lec.LectureNumber == lectureID)?.SubjectID,
+    }));
+    console.log(attendanceData)
 
-    console.log("Attendance Data:", attendanceData);
-    alert("Attendance marked successfully!");
-
-    // Example of how to use the flags after marking attendance
-    if (setEmpdetailFlag) setEmpdetailFlag(true);
-    if (setMarkAttendanceFlag) setMarkAttendanceFlag(false);
-    if (setAcademicFlag) setAcademicFlag(true);
-
-    navigate("/facultydashboard/1");  // Navigate back to the timetable
+    axios
+      .post(`${API_URL}/api/markattendance`, { attendanceData })
+      .then(() => {
+        setShowSuccessPopup(true);
+        setStudents([]);
+        setAttendance([]);
+        setTotalStudents(0); // Reset total students after submission
+        setPresentStudents(0); // Reset present students after submission
+        setAbsentStudents(0); // Reset absent students after submission
+      })
+      .catch((error) => {
+        console.error("Failed to mark attendance", error);
+      });
   };
 
   if (!lecture) return <div>Loading lecture data...</div>;
 
   return (
     <div className="todays-attendance-page">
-      <FacultySidebar setEmpdetailFlag={setEmpdetailFlag}
-        setMarkAttendanceFlag={setMarkAttendanceFlag}
-        setAcademicFlag={setAcademicFlag} />
+      <FacultySidebar />
       <div className="main-content">
         <Header />
         <div className="mark-attendance">
           <h2>Mark Attendance for {lecture.SubjectName}</h2>
           <p>Course: {lecture.ClassName}</p>
           <p>Room: {lecture.RoomNumber}</p>
-          <p>Lecture: {lecture.Lecture}</p>
+          <p>Lecture: {lecture.LectureNumber}</p>
           <div className="attendance-list">
             {students.map((student) => (
-              <div key={student.id} className="student-attendance">
-                <p>{student.name}</p>
+              <div key={student.RollNO} className="student-attendance">
+                <p>{student.Stud_name}</p>
                 <div className="attendance-options">
                   <label>
                     <input
                       type="radio"
-                      name={`attendance-${student.id}`}
-                      checked={attendance[student.id] === "Present"}
-                      onChange={() => handleAttendanceChange(student.id, "Present")}
+                      name={`attendance-${student.RollNO}`}
+                      value="Present"
+                      onChange={() => handleAttendanceChange(student.RollNO, 1)}
+                      checked={attendance.find((att) => att.studentId === student.RollNO)?.status === 1}
                     />
                     Present
                   </label>
                   <label>
                     <input
                       type="radio"
-                      name={`attendance-${student.id}`}
-                      checked={attendance[student.id] === "Absent"}
-                      onChange={() => handleAttendanceChange(student.id, "Absent")}
+                      name={`attendance-${student.RollNO}`}
+                      value="Absent"
+                      onChange={() => handleAttendanceChange(student.RollNO, 0)}
+                      checked={attendance.find((att) => att.studentId === student.RollNO)?.status === 0}
                     />
                     Absent
                   </label>
@@ -113,7 +137,14 @@ const TodaysAttendance = () => {
               </div>
             ))}
           </div>
-          <button onClick={handleSubmit}>Submit</button>
+          <div className="summary">
+            <p>Total Students: {totalStudents}</p>
+            <p>Present: {presentStudents}</p>
+            <p>Absent: {absentStudents}</p>
+          </div>
+          <button className="submit" onClick={handleSubmit}>
+            Submit
+          </button>
         </div>
       </div>
     </div>

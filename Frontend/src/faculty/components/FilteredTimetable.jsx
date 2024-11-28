@@ -255,7 +255,7 @@ const FilteredTimetable = ({
 
             return (
               <tr key={day}>
-                <td>{day}</td>
+                <td className="lecture-block">{day}</td>
                 {lectureSlots.map((lecture, index) => (
                   <td
                     key={index}

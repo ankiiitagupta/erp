@@ -78,8 +78,16 @@ const FacultyTimeTable = ({ FacultyID }) => {
 
   // Handle attendance button click
   const handleAttendance = (lecture) => {
-    navigate("/todaysattendance", { state: { lecture } });
+    console.log(lecture.LectureNumber); // Log to verify it's valid
+    navigate("/todaysattendance", {
+      state: {
+        facultyID: FacultyID,
+        lectureID: lecture.LectureNumber,
+        lectureDetails: lecture,
+      },
+    });
   };
+  
 
   const today = new Date().toLocaleString("en-us", { weekday: "long" }).toLowerCase();
 

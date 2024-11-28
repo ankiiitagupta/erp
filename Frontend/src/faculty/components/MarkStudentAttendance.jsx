@@ -97,6 +97,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
       facultyID: facultyID,
       subjectID: lectures.find((lec) => lec.LectureNumber == selectedLecture)?.SubjectID,
     }));
+    console.log(attendanceData)
 
     axios
       .post(`${API_URL}/api/markattendance`, { attendanceData })
