@@ -265,16 +265,13 @@ const FilteredTimetable = ({
                       <>
                         <div>{lecture.SubjectName}</div>
                         <div style={{ fontSize: "1rem" }}>
-                          Room: {lecture.RoomName}
+                           {lecture.RoomName}
                         </div>
                         <div>
-                          Section: {lecture.CourseName}/{lecture.YearOfStudy} year/
+                         {lecture.CourseName}/{lecture.YearOfStudy} year/
                           {lecture.Section}
                         </div>
-                        <div>Faculty: {lecture.faculty_alias}</div>
-                        {lecture.Substitute && (
-                          <div className="substitute-tag">Substitute</div>
-                        )}
+                        
                       </>
                     ) : (
                       <div className="no-lecture-cell">No Lecture</div>

@@ -6,7 +6,14 @@ import "../stylesheets/FacultyTimetable.css";
 
 const FacultyTimeTable = ({ FacultyID }) => {
   const navigate = useNavigate();
-  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const daysOfWeek = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
   const [timetable, setTimetable] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -38,7 +45,7 @@ const FacultyTimeTable = ({ FacultyID }) => {
 
       try {
         const apiUrl = `${API_URL}/api/facultytimetable?facultyID=${FacultyID}`;
-       
+
         const response = await axios.get(apiUrl);
 
         if (!Array.isArray(response.data)) {
@@ -47,6 +54,7 @@ const FacultyTimeTable = ({ FacultyID }) => {
 
         setTimetable(response.data);
         setLoading(false);
+        console.log(response.data);
       } catch (err) {
         console.error("Error fetching timetable:", err.message);
         setError("Failed to fetch timetable data.");
@@ -83,6 +91,7 @@ const FacultyTimeTable = ({ FacultyID }) => {
 };
 
 
+
   // Handle attendance button click
   const handleAttendance = (lecture) => {
     console.log(lecture.LectureNumber); // Log to verify it's valid
@@ -94,9 +103,10 @@ const FacultyTimeTable = ({ FacultyID }) => {
       },
     });
   };
-  
 
-  const today = new Date().toLocaleString("en-us", { weekday: "long" }).toLowerCase();
+  const today = new Date()
+    .toLocaleString("en-us", { weekday: "long" })
+    .toLowerCase();
 
   if (loading) return <div className="loading-message">Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
@@ -133,7 +143,10 @@ const FacultyTimeTable = ({ FacultyID }) => {
             });
 
             return (
-              <tr key={day} className={day.toLowerCase() === today ? "today-highlight" : ""}>
+              <tr
+                key={day}
+                className={day.toLowerCase() === today ? "today-highlight" : ""}
+              >
                 <td>{day}</td>
                 {lectureSlots.map((lecture, index) => {
                   const isCurrentSlot =
@@ -152,7 +165,9 @@ const FacultyTimeTable = ({ FacultyID }) => {
                           <div>{`${lecture.CourseName} / ${lecture.YearOfStudy} Year / ${lecture.Section}`}</div>
                           {isCurrentSlot && (
                             <button
-                              onClick={() => handleClick(() => handleAttendance(lecture))}
+                              onClick={() =>
+                                handleClick(() => handleAttendance(lecture))
+                              }
                               className="attendance-button"
                             >
                               Mark Attendance
