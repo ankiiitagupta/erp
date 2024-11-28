@@ -58,23 +58,30 @@ const FacultyTimeTable = ({ FacultyID }) => {
   }, [FacultyID]);
 
   const isCurrentTimeInSlot = (startTime, endTime) => {
-    const now = new Date();  
-    const [startHours, startMinutes, startSeconds] = startTime
-      .split(":")
-      .map(Number);
-    const [endHours, endMinutes, endSeconds] = endTime.split(":").map(Number);
+    const now = new Date();
+
+    const [startHours12, startMinutes] = startTime.split(":").map(Number);
+    const [endHours12, endMinutes] = endTime.split(":").map(Number);
+
+    // Infer AM/PM and convert to 24-hour format
+    const startHours = startHours12 < 12 && now.getHours() >= 12 ? startHours12 + 12 : startHours12;
+    const endHours = endHours12 < 12 && now.getHours() >= 12 ? endHours12 + 12 : endHours12;
 
     const startDateTime = new Date();
-    startDateTime.setHours(startHours, startMinutes, startSeconds);
+    startDateTime.setHours(startHours, startMinutes, "00");
 
     const endDateTime = new Date();
-    endDateTime.setHours(endHours, endMinutes, endSeconds);
-  
-    
+    endDateTime.setHours(endHours, endMinutes, "00");
+
+    console.log("now: " + now);
+    console.log("StartDateTime: " + startDateTime);
+    console.log("EndDateTime: " + endDateTime);
+
     const result = now >= startDateTime && now <= endDateTime;
-    
+
     return result;
-  };
+};
+
 
   // Handle attendance button click
   const handleAttendance = (lecture) => {
