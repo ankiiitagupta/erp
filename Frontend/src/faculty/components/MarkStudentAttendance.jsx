@@ -52,7 +52,6 @@ const MarkStudentAttendance = ({ facultyID }) => {
 
       if (Array.isArray(response.data)) {
         setStudents(response.data);
-        console.log(response.data);
         setTotalStudents(response.data.length); // Set total students dynamically
 
         // Calculate present and absent students countS
@@ -152,7 +151,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
                 <option value="">SELECT</option>
                 {lectures.map((lec) => (
                   <option key={lec.LectureNumber} value={lec.LectureNumber}>
-                    {lec.SubjectName} - {lec.CourseName} ({lec.LectureNumber})
+                    {lec.SubjectName} - {lec.CourseName} Lec-No:{lec.LectureNumber} Sec:{lec.Section}
                   </option>
                 ))}
               </select>

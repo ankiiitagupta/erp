@@ -685,7 +685,7 @@ app.get("/api/facultyondateselectionattendance", (req, res) => {
     SELECT DISTINCT
       s.SubjectName,
       c.CourseName,
-     
+      t.Section,
       s.SubjectID,
       t.StartTime,
       t.EndTime,
@@ -723,26 +723,33 @@ app.get("/api/getstudentsoflectureondate", (req, res) => {
 
   db.query(
     `
-      SELECT 
-        st.RollNO, 
-        st.Stud_name, 
-        COALESCE(a.AttendanceStatus, 'not marked') AS AttendanceStatus
-      FROM 
-        student AS st
-      JOIN 
-        timetable AS t 
-        ON st.Section = t.Section
-      LEFT JOIN 
-        attendance AS a 
-        ON st.RollNO = a.RollNO 
-        AND t.LectureDate = a.LectureDate 
-        AND t.LectureNumber = a.LectureNumber
-      WHERE 
-        t.FacultyID = ?
-        AND t.LectureDate = ?
-        AND t.LectureNumber = ?
-      ORDER BY 
-        st.RollNO;
+     SELECT 
+    st.RollNO, 
+    st.Stud_name, 
+    COALESCE(a.AttendanceStatus, 'not marked') AS AttendanceStatus
+FROM 
+    student AS st
+JOIN 
+    timetable AS t 
+    ON st.Section = t.Section
+    AND st.Stud_YearOfStudy = t.YearOfStudy
+LEFT JOIN 
+    attendance AS a 
+    ON st.RollNO = a.RollNO 
+    AND t.LectureDate = a.LectureDate 
+    AND t.LectureNumber = a.LectureNumber
+    AND t.Section = st.Section
+    
+WHERE 
+    t.FacultyID = ?
+    AND t.LectureDate = ?
+    AND t.LectureNumber = ?
+    AND st.Section = t.Section  -- Ensures only students from the same section
+    
+ORDER BY 
+    st.RollNO;
+    
+
     `,
     [facultyID, LectureDate, LectureNumber],
     (err, results) => {
