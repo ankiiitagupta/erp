@@ -116,7 +116,7 @@ const ShowAttByClass = ({ setView }) => {
 
   return (
     <div className="show-attendance-by-class">
-      <h2>Show Attendance by Class</h2>
+      <h2 class="txt-showatt">Show Attendance by Class</h2>
 
       {/* Course Dropdown */}
       <div className="dropdown-container">
@@ -224,9 +224,6 @@ const ShowAttByClass = ({ setView }) => {
               ))}
             </tbody>
           </table>
-          <button onClick={() => exportToExcel(students)} className="export-btn">
-            Export to Excel
-          </button>
         </div>
       ) : (
         selectedSection &&
@@ -235,6 +232,9 @@ const ShowAttByClass = ({ setView }) => {
 
       {/* Button Container */}
       <div className="button-container">
+      <button onClick={() => exportToExcel(students)} className="export-btn">
+            Export to Excel
+          </button>
         <button onClick={() => setView("dashboard")} className="back-button">
           Back to Dashboard
         </button>
