@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,110 +7,158 @@ import {
   faPlus,
   faTrash,
   faUsers,
+  faChevronDown,
+  faBars, // Hamburger menu icon for toggle
 } from "@fortawesome/free-solid-svg-icons";
+import "../stylesheets/AdminSidebar.css";
 
 const AdminSidebar = () => {
+  // State to track which dropdown is open
+  const [openDropdown, setOpenDropdown] = useState(null);
+  // State to track if the sidebar is collapsed
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const handleDropdownToggle = (menuName) => {
+    setOpenDropdown(openDropdown === menuName ? null : menuName);
+  };
+
+  const handleSidebarToggle = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
+
   return (
-    <div style={{ width: "250px", backgroundColor: "#f8f9fa", height: "100vh", padding: "15px" }}>
-      <nav className="sidebar">
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {/* Dashboard */}
-          <li style={{ marginBottom: "15px" }}>
-            <NavLink
-              to="/dashboard"
-              style={{ textDecoration: "none", color: "#000", display: "flex", alignItems: "center" }}
-              activeClassName="active"
-            >
-              <FontAwesomeIcon icon={faHome} style={{ marginRight: "10px" }} />
-              Dashboard
-            </NavLink>
-          </li>
+    <div className={`adside-sidebar ${isSidebarCollapsed ? "collapsed" : ""}`}>
+      <div className="adside-sidebar-header-container">
+        <button className="adsidebar-toggle-btn" onClick={handleSidebarToggle}>
+          <FontAwesomeIcon icon={faBars} className="adsidebar-toggle-icon" />
+        </button>
+        {!isSidebarCollapsed && <h2 className="adside-sidebar-header">MPGI</h2>}
+      </div>
+      <ul className="adside-sidebar-list">
+        {/* Dashboard */}
+        <li className="adside-sidebar-item">
+          <NavLink to="/dashboard" className="adside-sidebar-link">
+            <FontAwesomeIcon icon={faHome} className="adside-sidebar-icon" />
+            {!isSidebarCollapsed && "Dashboard"}
+          </NavLink>
+        </li>
 
-          {/* Profile */}
-          <li style={{ marginBottom: "15px" }}>
-            <NavLink
-              to="/profile"
-              style={{ textDecoration: "none", color: "#000", display: "flex", alignItems: "center" }}
-              activeClassName="active"
-            >
-              <FontAwesomeIcon icon={faUser} style={{ marginRight: "10px" }} />
-              Profile
-            </NavLink>
-          </li>
+        {/* Profile */}
+        <li className="adside-sidebar-item">
+          <NavLink to="/profile" className="adside-sidebar-link">
+            <FontAwesomeIcon icon={faUser} className="adside-sidebar-icon" />
+            {!isSidebarCollapsed && "Profile"}
+          </NavLink>
+        </li>
 
-          {/* Create Notice */}
-          <li style={{ marginBottom: "15px" }}>
-            <NavLink
-              to="/create-notice"
-              style={{ textDecoration: "none", color: "#000", display: "flex", alignItems: "center" }}
-              activeClassName="active"
-            >
-              <FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px", color: "blue" }} />
-              Create Notice
-            </NavLink>
-          </li>
+        {/* Admin Dropdown */}
+        <li
+          className={`adside-sidebar-item ${openDropdown === "admin" ? "active" : ""}`}
+        >
+          <button
+            className="adside-sidebar-link"
+            onClick={() => handleDropdownToggle("admin")}
+          >
+            <FontAwesomeIcon icon={faUser} className="adside-sidebar-icon" />
+            {!isSidebarCollapsed && "Admin"}
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className="adside-dropdown-chevron"
+              style={{
+                transform: openDropdown === "admin" ? "rotate(180deg)" : "rotate(0)",
+              }}
+            />
+          </button>
+          {openDropdown === "admin" && (
+            <ul className="adside-dropdown">
+              <li>
+                <NavLink to="/add-admin" className="adside-dropdown-link">
+                  <FontAwesomeIcon icon={faPlus} className="adside-dropdown-icon" />
+                  {!isSidebarCollapsed && "Add Admin"}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/delete-admin" className="adside-dropdown-link">
+                  <FontAwesomeIcon icon={faTrash} className="adside-dropdown-icon" />
+                  {!isSidebarCollapsed && "Delete Admin"}
+                </NavLink>
+              </li>
+            </ul>
+          )}
+        </li>
 
-          {/* Add Admin */}
-          <li style={{ marginBottom: "15px" }}>
-            <NavLink
-              to="/add-admin"
-              style={{ textDecoration: "none", color: "#000", display: "flex", alignItems: "center" }}
-              activeClassName="active"
-            >
-              <FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} />
-              Add Admin
-            </NavLink>
-          </li>
+        {/* Department Dropdown */}
+        <li
+          className={`adside-sidebar-item ${openDropdown === "department" ? "active" : ""}`}
+        >
+          <button
+            className="adside-sidebar-link"
+            onClick={() => handleDropdownToggle("department")}
+          >
+            <FontAwesomeIcon icon={faUsers} className="adside-sidebar-icon" />
+            {!isSidebarCollapsed && "Department"}
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className="adside-dropdown-chevron"
+              style={{
+                transform: openDropdown === "department" ? "rotate(180deg)" : "rotate(0)",
+              }}
+            />
+          </button>
+          {openDropdown === "department" && (
+            <ul className="adside-dropdown">
+              <li>
+                <NavLink to="/add-department" className="adside-dropdown-link">
+                  <FontAwesomeIcon icon={faPlus} className="adside-dropdown-icon" />
+                  {!isSidebarCollapsed && "Add Department"}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/delete-department" className="adside-dropdown-link">
+                  <FontAwesomeIcon icon={faTrash} className="adside-dropdown-icon" />
+                  {!isSidebarCollapsed && "Delete Department"}
+                </NavLink>
+              </li>
+            </ul>
+          )}
+        </li>
 
-          {/* Delete Admin */}
-          <li style={{ marginBottom: "15px" }}>
-            <NavLink
-              to="/delete-admin"
-              style={{ textDecoration: "none", color: "#000", display: "flex", alignItems: "center" }}
-              activeClassName="active"
-            >
-              <FontAwesomeIcon icon={faTrash} style={{ marginRight: "10px", color: "red" }} />
-              Delete Admin
-            </NavLink>
-          </li>
-
-          {/* Add Department */}
-          <li style={{ marginBottom: "15px" }}>
-            <NavLink
-              to="/add-department"
-              style={{ textDecoration: "none", color: "#000", display: "flex", alignItems: "center" }}
-              activeClassName="active"
-            >
-              <FontAwesomeIcon icon={faPlus} style={{ marginRight: "10px" }} />
-              Add Department
-            </NavLink>
-          </li>
-
-          {/* Delete Department */}
-          <li style={{ marginBottom: "15px" }}>
-            <NavLink
-              to="/delete-department"
-              style={{ textDecoration: "none", color: "#000", display: "flex", alignItems: "center" }}
-              activeClassName="active"
-            >
-              <FontAwesomeIcon icon={faTrash} style={{ marginRight: "10px", color: "red" }} />
-              Delete Department
-            </NavLink>
-          </li>
-
-          {/* Our Faculty */}
-          <li style={{ marginBottom: "15px" }}>
-            <NavLink
-              to="/our-faculty"
-              style={{ textDecoration: "none", color: "#000", display: "flex", alignItems: "center" }}
-              activeClassName="active"
-            >
-              <FontAwesomeIcon icon={faUsers} style={{ marginRight: "10px" }} />
-              Our Faculty
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
+        {/* Faculty Dropdown */}
+        <li
+          className={`adside-sidebar-item ${openDropdown === "faculty" ? "active" : ""}`}
+        >
+          <button
+            className="adside-sidebar-link"
+            onClick={() => handleDropdownToggle("faculty")}
+          >
+            <FontAwesomeIcon icon={faUsers} className="adside-sidebar-icon" />
+            {!isSidebarCollapsed && "Faculty"}
+            <FontAwesomeIcon
+              icon={faChevronDown}
+              className="adside-dropdown-chevron"
+              style={{
+                transform: openDropdown === "faculty" ? "rotate(180deg)" : "rotate(0)",
+              }}
+            />
+          </button>
+          {openDropdown === "faculty" && (
+            <ul className="adside-dropdown">
+              <li>
+                <NavLink to="/add-faculty" className="adside-dropdown-link">
+                  <FontAwesomeIcon icon={faPlus} className="adside-dropdown-icon" />
+                  {!isSidebarCollapsed && "Add Faculty"}
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/delete-faculty" className="adside-dropdown-link">
+                  <FontAwesomeIcon icon={faTrash} className="adside-dropdown-icon" />
+                  {!isSidebarCollapsed && "Delete Faculty"}
+                </NavLink>
+              </li>
+            </ul>
+          )}
+        </li>
+      </ul>
     </div>
   );
 };

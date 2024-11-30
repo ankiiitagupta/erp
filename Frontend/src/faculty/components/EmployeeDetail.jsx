@@ -4,7 +4,7 @@ import "../stylesheets/EmployeeDetail.css";
 import { API_URL } from "../../axios.js"; // Ensure this path is correct
 
 import PieChart from "../../Student/Components/PieChart.jsx";
-import Payroll from "./Payroll.jsx"
+import Payroll from "./Payroll.jsx";
 
 const EmployeeDetail = ({ FacultyID }) => {
   const [employee, setEmployee] = useState(null);  

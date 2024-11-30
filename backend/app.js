@@ -5,6 +5,7 @@ const moment = require("moment");
 
 const app = express();
 const port = 3006; // Make sure to use the same port here
+const crypto= require("crypto");
 
 app.use(cors());
 // Increase the body size limit to 50MB (you can adjust as needed)
@@ -30,42 +31,64 @@ db.connect((err) => {
 //Login
 app.get("/api/login", (req, res) => {
   const { LoginID, PasswordHash } = req.query;
+
   const isFaculty = LoginID.startsWith("f");
   const isStudent = LoginID.startsWith("al");
+  const isAdmin = LoginID.startsWith("ad");
 
   if (isFaculty) {
+    // Do not hash for faculty
     db.query(
       "SELECT * FROM faculty WHERE LoginID = ? AND PasswordHash = ?",
-      [LoginID, PasswordHash],
+      [LoginID, PasswordHash], // Use plain text for comparison
       (err, results) => {
         if (err) {
           console.error(err);
-          return res
-            .status(500)
-            .json({ success: false, error: "Server error" });
+          return res.status(500).json({ success: false, error: "Server error" });
         }
         if (results.length > 0) {
           res.json({ success: true, userType: "faculty", faculty: results[0] });
         } else {
-          res.json({ success: false });
+          res.json({ success: false, error: "Invalid credentials" });
         }
       }
     );
   } else if (isStudent) {
+    // Do not hash for students
     db.query(
       "SELECT * FROM student WHERE LoginID = ? AND PasswordHash = ?",
-      [LoginID, PasswordHash],
+      [LoginID, PasswordHash], // Use plain text for comparison
       (err, results) => {
         if (err) {
           console.error(err);
-          return res
-            .status(500)
-            .json({ success: false, error: "Server error" });
+          return res.status(500).json({ success: false, error: "Server error" });
         }
         if (results.length > 0) {
           res.json({ success: true, userType: "student", student: results[0] });
         } else {
-          res.json({ success: false });
+          res.json({ success: false, error: "Invalid credentials" });
+        }
+      }
+    );
+  } else if (isAdmin) {
+    // Hash password for admins
+    const hashedPassword = crypto.createHash('sha256').update(PasswordHash).digest('hex');
+    db.query(
+      "SELECT * FROM administration WHERE LoginID = ?",
+      [LoginID],
+      (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ success: false, error: "Server error" });
+        }
+        if (results.length > 0) {
+          if (results[0].password_hash === hashedPassword) {
+            res.json({ success: true, userType: "admin", admin: results[0] });
+          } else {
+            res.json({ success: false, error: "Invalid credentials" });
+          }
+        } else {
+          res.json({ success: false, error: "Invalid credentials" });
         }
       }
     );
@@ -73,7 +96,6 @@ app.get("/api/login", (req, res) => {
     res.json({ success: false, error: "Invalid LoginID prefix" });
   }
 });
-
 //Student data
 app.get("/api/data", (req, res) => {
   const { RollNO } = req.query;
