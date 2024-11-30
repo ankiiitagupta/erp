@@ -1,0 +1,26 @@
+
+.pie-chart-section {
+    margin: 20px 0;
+    /* Margin for pie chart */
+}
+
+.pgraphcircle {
+    height: 100%;
+    width: 100%;
+}
+
+.piechart {
+    background-color: white;
+    /* White background for pie chart */
+    border-radius: 8px;
+    /* Rounded corners */
+    padding: 20px;
+    /* Padding for pie chart */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+}
+
+.piechartrow {
+    height: 17rem;
+    width: 40%;
+}

@@ -8,6 +8,7 @@ import {
   CDBSidebarMenu,
   CDBSidebarMenuItem,
 } from 'cdbreact';
+// import '../stylesheets/Sidebar.css';
 
 const Sidebar = ({ setAttFlag,setProfileFlag, setNoticeFlag, resetFlags, RollNO }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -33,11 +34,11 @@ const Sidebar = ({ setAttFlag,setProfileFlag, setNoticeFlag, resetFlags, RollNO 
         collapse={isCollapsed}
       >
         {/* Sidebar Header */}
-        <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large" onClick={toggleSidebar}></i>}>
+        <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large burger-icon" onClick={toggleSidebar}></i>}>
           <a
             href="/"
-            className="text-decoration-none"
-            style={{ color: 'inherit' }}
+            className="text-decoration-none burger-icon"
+            style={{ color: 'white' }}
             onClick={() => handleMenuClick('Dashboard', () => navigate(`/studentdashboard/${RollNO}`))}
           >
             MPGI

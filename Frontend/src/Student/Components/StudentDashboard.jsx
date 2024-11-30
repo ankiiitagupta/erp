@@ -11,6 +11,7 @@ import AttendanceDetails from "./AttendanceDetails.jsx"; // Ensure to import you
 import MarkingTimeTable from "./markingTimetable.jsx";
 import Notices from "./Notices.jsx";
 import Profile from "./Profile.jsx";
+import '../stylesheets/StudentDashboard.css';
 
 
 const StudentDashboard = () => {

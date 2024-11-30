@@ -1,0 +1,364 @@
+.attddetex {
+  height: 100vh;
+  overflow-y: auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+label {
+  margin: 0rem;
+}
+
+.top-section {
+  margin-bottom: 20px;
+  width: 100%;
+  margin-top: 1rem;
+  /* Margin below the student details */
+}
+
+h4 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.student-detail-dailyatt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.dailyatt-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.daily-att-submit,
+.daily-att-reset,
+.myatt-button {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.4rem;
+  width: 7rem;
+  background-color: rgba(0, 31, 84, 255);
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 1.3rem;
+  height: 2.5rem;
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
+}
+
+.daily-att-submit:hover,
+.daily-att-reset:hover,
+.myatt-button:hover {
+  background-color: white;
+  color: rgba(0, 31, 84, 255);
+  border: 1px solid rgba(0, 31, 84, 255);
+}
+
+.dailyattpiechartconatiner,
+.attpiechart {
+  position: relative;
+  box-shadow: 2px 4px 6px gray;
+  display: flex;
+}
+
+.dailyattpiechart {
+  margin-top: 4rem;
+}
+
+.dailyattcontainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.daily-topsection {
+  position: relative;
+  margin-top: 15rem;
+  margin-right: 35rem;
+  text-align: left;
+}
+
+.dailyattpiechartcontainer {
+  display: flex;
+}
+
+.mydailyattchart {
+  display: flex;
+  flex-direction: row;
+  width: 70vw;
+  justify-content: space-evenly;
+  margin: 2rem;
+  margin-top: 0;
+}
+
+.dailyattdetail {
+  margin-top: 8rem;
+}
+
+.daily-att-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.myatt-button {
+  margin: 1rem;
+  padding: 0.2rem;
+  border-radius: 0.4rem;
+  width: 5rem;
+  background-color: rgba(0, 31, 84, 255);
+  color: white;
+}
+
+.formsub {
+  display: flex;
+  flex-direction: row;
+}
+
+.myatt-button:hover {
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
+  animation: infinite;
+  border-color: rgba(0, 31, 84, 255);
+}
+
+.attpiechart {
+  position: fixed;
+  border: 2px solid rgb(10, 9, 9);
+  box-shadow: 2px 4px 6px gray;
+  display: flex;
+  margin: 8rem;
+  margin-top: 15rem;
+}
+
+.my-att-piechart {
+  margin-left: 3rem;
+  margin-top: 1.6rem;
+  width: 40%;
+}
+
+.my-att-details {
+  margin-left: 3rem;
+  margin-top: 1.6rem;
+}
+
+.name-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 2;
+  flex-grow: 1;
+}
+
+.attdetail {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.attendance-data {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
+  justify-content: space-between;
+  margin-left: 6rem;
+  margin-right: 12rem;
+}
+.main-content {
+  flex-grow: 1;
+  background-color: #eef1ff;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease;
+}
+
+.dailyattdate {
+  display: flex;
+  flex-direction: row;
+}
+
+.attbox-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 14rem;
+  align-items: stretch;
+  border: 2px solid 2px;
+}
+
+.attbox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 2rem;
+  align-items: stretch;
+}
+
+.attbox .box {
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 300px;
+  padding: 2rem;
+  border: 2px solid black;
+  border-radius: 00%;
+  display: flex;
+  margin-top: 14rem;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: content-box;
+}
+
+.attbox .box:hover {
+  border-color: rgb(98, 98, 224);
+  border-style: calc(2px + 1%);
+  box-shadow: #761e1e;
+  background-color: rgba(0, 31, 84, 255);
+  color: #ffffff;
+  transition: 0.5ms;
+}
+
+.attboxdata {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  margin-top: 0;
+}
+
+.attboxdata .active {
+  margin-left: 10rem;
+}
+
+.attbox .box .attboxdata h4 {
+  margin-top: 0.7rem;
+  text-decoration: none;
+}
+
+.attbox .box .attboxdata img {
+  height: 3rem;
+  width: 3rem;
+}
+
+.attbox .box p {
+  margin-top: auto;
+  padding-left: 2rem;
+}
+
+.top-left {
+  margin-left: 5rem;
+  margin-top: 4rem;
+  top: 2em;
+  left: 20px;
+  z-index: 1000;
+  background-color: none;
+}
+
+.box-active {
+  background-color: none;
+  color: black;
+  border-color: rgb(98, 98, 224);
+  transition: background-color 0.5s, border-color 0.5s, color 0.5s;
+  width: 100%;
+  margin-right: 10rem;
+}
+
+.top-left .attpie {
+  height: 8rem;
+  width: 8rem;
+}
+
+.top-left .attboxdata {
+  display: flex;
+  flex-direction: row;
+}
+
+.top-left .attboxdata h6 {
+  margin-top: 3rem;
+  font-size: 2rem;
+  font-weight: 700;
+  text-decoration: underline;
+  color: #090909;
+}
+
+.student-detail-myatt {
+  margin-top: 1rem;
+  margin: 0 12rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.name-box-myatt {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.right-section-myatt {
+  font-size: large;
+  font-weight: 500;
+  margin-left: 3rem;
+  margin-top: 1.6rem;
+  text-align: left;
+}
+
+.left-section-myatt {
+  font-size: large;
+  font-weight: 500;
+  margin-left: 3rem;
+  margin-top: 1.6rem;
+  text-align: left;
+}
+
+.label {
+  margin-right: 1rem;
+  font-weight: bold;
+}
+
+.value {
+  font-weight: 400;
+  padding: 2rem;
+}
+
+.subform {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.form-label {
+  font-weight: bold;
+
+  color: #090909;
+}
+
+label {
+  margin: 0;
+}
+.form-value {
+  flex-grow: 1;
+  min-width: 200px;
+  margin-left: 3rem;
+}
+
+.form-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 4;
+  margin-left: 25rem;
+}
+
+.monthcontainer {
+  display: flex;
+  flex-direction: row;
+}
