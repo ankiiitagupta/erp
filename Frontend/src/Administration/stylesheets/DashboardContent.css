@@ -1,0 +1,124 @@
+/* Wrapper */
+.dashboard-wrapper {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  /* Header */
+  .dashboard-header h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Data Cards */
+  .data-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .data-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s, background-color 0.2s;
+  }
+  
+  .data-card:hover {
+    transform: translateY(-5px);
+    background-color: #f9f9f9;
+  }
+  
+  .data-icon {
+    background: #ffa726;
+    color: white;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  
+  .data-info h2 {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  .data-info p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  /* Main Content */
+  .main-content {
+    display: flex;
+    gap: 20px;
+  }
+  
+  /* Calendar */
+  .calendar-container {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Notices */
+  .notices-container {
+    flex: 2;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notices-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .back-button {
+    cursor: pointer;
+    color: #007bff;
+  }
+  
+  .notices-content {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .notice-item {
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .notice-item:hover {
+    background: #f1f1f1;
+  }
+  
+  .notice-details h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .notice-details p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  

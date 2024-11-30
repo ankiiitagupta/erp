@@ -1,0 +1,27 @@
+.admin-dashboard {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  display: fixed;
+  transition: width 0.3s ease;
+  height: 100vh;
+
+}
+
+
+
+.dashboard-section {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f4f4f4;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-section.shifted {
+  margin-left: 80px;
+}
+

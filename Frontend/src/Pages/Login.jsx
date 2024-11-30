@@ -39,7 +39,12 @@ function Login() {
           const FacultyID = result.faculty.FacultyID;
           navigate(`/facultydashboard/${FacultyID}`);
         }
-      } else {
+        else if (result.userType === "admin") {
+          const admin_id = result.admin.admin_id;
+          navigate(`/adminDashboard/${admin_id}`);
+        } 
+      } 
+      else {
         setError('Invalid username or password');
       }
     } catch (error) {
