@@ -6,7 +6,7 @@
     border-radius: 1.2rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     margin: 2rem auto;
-    max-width: 80rem;
+    max-width: 90%;
     width: 95%;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -114,11 +114,16 @@
     font-size: 0.95rem;
 }
 
+.lecture-block{
+    overflow: auto;
+}
+
 .lecture-cell {
     background-color: #e3f7ff;
     font-weight: 500;
     color: #001f54;
     transition: all 0.3s ease;
+    overflow: auto;
 }
 
 .lecture-cell:hover {
@@ -129,6 +134,7 @@
 .empty-cell {
     background-color: #f9f9f9;
     color: #252424;
+    overflow: auto;
 }
 
 .no-lecture-cell {

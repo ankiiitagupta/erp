@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useRole } from "../../RoleContext.jsx";
 import axios from "axios";
 import { API_URL } from "../../axios.js";
+import '../stylesheets/Header.css';
 
 const Header = ({ facultyID }) => {
   const [searchTerm, setSearchTerm] = useState("");

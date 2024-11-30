@@ -4,6 +4,7 @@ import pieClip from "../../assets/pieclip.png";
 import PieChart from "./PieChart.jsx";
 import TodaysTimeTable from "./TodaysTimeTable";
 import { API_URL } from "../../axios.js";
+import '../stylesheets/AttendanceDetails.css';
 
 const AttendanceDetails = ({ RollNO, students = [], error }) => {
   const [activeBox, setActiveBox] = useState(null);
@@ -181,7 +182,7 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
             <br />
             <span className="label">Section:</span>
             <span className="value">{student.Section}</span>
-            <form>
+            <form className="monthcontainer">
               <label htmlFor="month" className="form-label">
                 Month:
               </label>
@@ -208,7 +209,7 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
           <span className="label">Roll No:</span>{" "}
           <span className="value">{student.RollNO}</span>
           <br />
-          <form>
+          <form className="dailyattdate">
             <label htmlFor="Subject" className="form-label">
               Date:
             </label>

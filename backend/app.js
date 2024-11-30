@@ -1478,6 +1478,84 @@ WHERE
 
 
 
+// get the year and section of coordinators
+app.get("/api/yearandsectionofcoordinator", (req, res) => {
+  const { facultyID } = req.query;
+
+  db.query(
+    `
+    select AssignedYear,AssignedSection from role_assignments where facultyID=? and role_id=2;
+
+    `,
+    [facultyID],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+
+
+// POST Event of coordinator to  create a new event
+app.post("/api/postevents", (req, res) => {
+  const {
+    EventName,
+    EventDescription,
+    EventDate,
+    StartTime,
+    EndTime,
+    OrganizedBy,
+    Section,
+    YearOfStudy,
+  } = req.body;
+
+  // Validate required fields
+  if (!EventName || !EventDate || !StartTime || !EndTime || !Section || !YearOfStudy) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const CreatedAt = moment().format("YYYY-MM-DD HH:mm:ss");
+
+  const query = `
+    INSERT INTO Events 
+    (EventName, EventDescription, EventDate, StartTime, EndTime, OrganizedBy, Section, YearOfStudy, CreatedAt)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(
+    query,
+    [EventName, EventDescription, EventDate, StartTime, EndTime, OrganizedBy, Section, YearOfStudy, CreatedAt],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting event:", err);
+        return res.status(500).json({ error: "Failed to create event" });
+      }
+      res.status(201).json({ message: "Event created successfully", eventId: result.insertId });
+    }
+  );
+});
+
+// get the events created by the particular coordinator
+app.get("/api/showeventsofcoordinator", (req, res) => {
+  const { facultyID } = req.query;
+
+  db.query(
+    `
+    select EventID,EventName , EventDate,OrganizedBy,Section,YearOfStudy from events where OrganizedBy=?;
+
+    `,
+    [facultyID],
+    (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    }
+  );
+});
+
+
+
+
 // Start the server on the specified port
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

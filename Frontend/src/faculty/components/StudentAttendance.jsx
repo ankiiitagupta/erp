@@ -11,6 +11,8 @@ import ShowAttBySearch from "./Showattbysearch";
 import { useNavigate } from "react-router-dom";
 import { useRole } from "../../RoleContext.jsx";
 
+import EventList from "./eventattendance/eventlist.jsx";
+
 const StudentAttendance = ({ facultyID, resetFlags }) => {
   const [view, setView] = useState("Attendance");
   const navigate = useNavigate();
@@ -70,6 +72,11 @@ const StudentAttendance = ({ facultyID, resetFlags }) => {
                 </div>
               </>
             )}
+            <div className="icon-card" onClick={() => updateView("eventAttendance")}>
+              <img src={showAttendanceByClassIcon} alt="Event Attendance" className="icon" />
+              <p>Event Attendance</p>
+            </div>
+
 
           </div>
         </>
@@ -80,6 +87,8 @@ const StudentAttendance = ({ facultyID, resetFlags }) => {
       )}
       {view === "showAttendanceByClass" && <ShowAttByClass setView={setView} />}
       {view === "showAttendanceBySearch" && <ShowAttBySearch setView={setView} />}
+      {view === "eventAttendance" && <EventList facultyID={facultyID} />}
+
     </div>
   );
 };

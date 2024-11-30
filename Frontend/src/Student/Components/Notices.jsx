@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../stylesheets/Notices.css';
 
 
 const notices = [

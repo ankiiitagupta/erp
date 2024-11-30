@@ -1,0 +1,281 @@
+.dashboard {
+    display: flex;
+    /* Use flexbox to create a sidebar and main content layout */
+    height: 100vh;
+    /* Full height of the viewport */
+}
+
+
+.top-section {
+    margin-bottom: 20px;
+    width: 100%;
+    margin-top:1rem;
+    /* Margin below the student details */
+}
+
+.student-detail {
+  display: flex;
+  /* Flexbox for profile section */
+  align-items: center;
+  /* Center items vertically */
+  background-color: white;
+  /* White background for details */
+  border-radius: 8px;
+  /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(22, 15, 73, 0.1);
+  /* Subtle shadow */
+}
+
+.profile-section {
+  display: flex;
+  /* Flexbox for profile image and details */
+  align-items: center;
+  /* Center items vertically */
+  margin: 2rem;
+}
+.profile-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%; /* Ensures the image remains a perfect circle */
+  border: 2px solid #ccc;
+  object-fit: cover;
+}
+.image-upload {
+  position: absolute; /* Position relative to the profile-pic */
+  bottom: -20px; /* Push it slightly below the circle */
+  left: 50%; /* Center it horizontally */
+  transform: translateX(-50%); /* Adjust for centering */
+  text-align: center; /* Align text inside */
+  font-size: 0.9rem; /* Optional: Adjust font size */
+  background-color: white; /* Optional: Background color for contrast */
+  padding: 5px 10px; /* Optional: Padding for upload label */
+  border: 1px solid #ccc; /* Optional: Border around upload label */
+  border-radius: 5px; /* Optional: Rounded corners for upload label */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.upload-label {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+
+.image-upload input {
+  display: none; /* Hide the actual file input */
+}
+.upload-label {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.details-container {
+  display: flex;
+  justify-content: space-between;
+  /* Ensure symmetry between left and right sections */
+  gap: 2rem;
+  /* Space between left and right sections */
+  flex-grow: 1;
+  margin-left:5rem;
+}
+
+.right-section {
+    margin-left: 8rem;
+    margin-top: 2.6rem;
+}
+.info-container {
+    flex: 1;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #001f54;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 1rem;
+    color: white;
+
+    height: 300px; /* Set your desired height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+
+.additional-info {
+    display: flex;
+    gap: 3rem;
+    margin-top: 1.5rem;
+    border: 1rem solid white;
+    background-color: white;
+}
+
+
+.classmates-container #matecontainer{
+    border:2px solid #001f54;
+    background-color: white;
+    color:#001f54;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    padding:1rem;
+    margin-right:1.5rem;
+}
+
+.faculty-container #faccontainer{
+    border:2px solid #001f54;
+    background-color: white;
+    color:#001f54;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    padding:1rem;
+    margin-right:1.5rem;
+}
+
+.subjects-container #subcontainer{
+    border:2px solid #001f54;
+    background-color: white;
+    color:#001f54;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    padding:1rem;
+    margin-right:1.5rem;
+}
+
+/* todays timetable */
+
+.timetable {
+  margin-top: 20px;
+  /* Margin above timetable */
+  background-color: white;
+  /* White background for timetable */
+  border-radius: 8px;
+  /* Rounded corners */
+  padding: 15px;
+  /* Padding for timetable */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow */
+}
+
+table {
+  width: 100%;
+  /* Full width for table */
+  border-collapse: collapse;
+  /* Remove space between borders */
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  /* Border for table cells */
+  padding: 8px;
+  /* Padding for cells */
+  text-align: left;
+  /* Align text to the left */
+}
+
+th {
+  background-color: #001f54;
+  /* Dark background for table headers */
+  color: white;
+  /* White text for headers */
+}
+
+
+.ttbtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0px 0.5rem;
+}
+
+.ttbtn .btnshowmore {
+display:flex;
+align-items: end;
+justify-content: center;
+  border: none;
+  background-color: white; /* Default background color */
+  color: #003366; /* Default text color (blue) */
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 150px;
+  height: 50px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-left:67rem;
+  margin-right: 0;
+  margin-bottom: 1rem;
+}
+
+
+
+/* Hover effect */
+.btnshowmore:hover {
+  background-color: #003366; /* Dark blue background on hover */
+  color: white; /* White text on hover */
+}
+
+
+.performance-container {
+  margin: 1rem 0;
+  font-family: Arial, sans-serif;
+}
+
+
+
+.performance-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.performance-table th,
+.performance-table td {
+  border: 1px solid #000;
+  padding: 8px 12px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.performance-table th {
+  background-color: rgba(0, 31, 84, 1);
+  color: #fff;
+}
+
+.fixed-width {
+  width: 10%;
+}
+
+.dynamic-width {
+  width: auto;
+  word-wrap: break-word; /* Break words if they overflow */
+  white-space: normal; /* Allow wrapping */
+  min-width: 70px; /* Set a minimum width */
+ 
+}
+
+.cell-content {
+  padding: 6px;
+  word-wrap: break-word; /* Wrap text if too long */
+  white-space: normal; /* Allow text to wrap */
+  
+}
+
+.performance-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}

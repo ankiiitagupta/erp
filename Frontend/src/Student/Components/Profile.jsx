@@ -117,7 +117,7 @@ const Profile = () => {
 
   return (
     <div className="form-container">
-      <h1 className="form-heading">My Profile</h1>
+      <h1 id="form-heading">My Profile</h1>
       <form className="registration-form" onSubmit={handleSubmit}>
 
         {/* Personal Information Section */}
@@ -125,7 +125,7 @@ const Profile = () => {
           <legend>Personal Information</legend>
           <table className="form-table">
             <tbody>
-              <tr>
+              <tr> 
                 <td><label>Roll No</label></td>
                 <td><input type="text" name="rollNo" value={formData.rollNo} onChange={handleChange} required /></td>
                 <td><label>Course</label></td>
