@@ -5,16 +5,12 @@ import AdminSidebar from "./AdminSidebar.jsx";
 import DashboardContent from "./DashboardContent"; // Import the new component
 import CreateNotice from "./CreateNotice.jsx";
 import AddTimetable from "./CreateTimeTable.jsx";
-import AddStudent from "./AddStudent.jsx";
-import  AddFaculty  from "./AddFaculty.jsx";
 
 const AdminDashboard = () => {
   const { admin_id } = useParams();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [CreateNoticeFlag, setcreateNoticeFlag] = useState(false);
   const [AddTimetableFlag, setAddTimetableFlag] = useState(false);
-  const [AddFacultyFlag, setAddFacultyFlag] = useState(false);
-  const [AddStudentFlag, setAddStudentFlag] = useState(false);
 
   // Toggle sidebar collapse/expand state
   const toggleSidebar = () => {
@@ -23,9 +19,6 @@ const AdminDashboard = () => {
 
   const resetFlags = () => {
     setcreateNoticeFlag(false);
-    setAddFacultyFlag(false);
-    setAddTimetableFlag(false);
-    setAddStudentFlag(false);
   };
 
   return (
@@ -39,17 +32,12 @@ const AdminDashboard = () => {
         <AdminSidebar
           setcreateNoticeFlag={setcreateNoticeFlag}
           setAddTimetableFlag={setAddTimetableFlag}
-          setAddFacultyFlag={setAddFacultyFlag}
-          setAddStudentFlag={setAddStudentFlag}
           admin_id={admin_id}
           resetFlags={resetFlags}
         />
       </div>
-      {AddStudentFlag ? (
-        <AddStudent />
-      ) : AddFacultyFlag ? (
-        <AddFaculty />
-      ) : AddTimetableFlag ? (
+
+      {AddTimetableFlag ? (
         <AddTimetable />
       ) : CreateNoticeFlag ? (
         <CreateNotice />

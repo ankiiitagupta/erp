@@ -9,14 +9,7 @@ import {
   CDBSidebarMenuItem,
 } from "cdbreact";
 
-const AdminSidebar = ({
-  admin_id,
-  setcreateNoticeFlag,
-  setAddTimetableFlag,
-  setAddFacultyFlag,
-  setAddStudentFlag,
-  resetFlags,
-}) => {
+const AdminSidebar = ({ admin_id, setcreateNoticeFlag,setAddTimetableFlag, resetFlags }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("Dashboard");
   const [showAcademicSubMenu, setShowAcademicSubMenu] = useState(false);
@@ -33,7 +26,6 @@ const AdminSidebar = ({
   const handleMenuClick = (menuItem, navigatePath) => {
     setSelectedMenuItem(menuItem);
     resetFlags();
-    
     if (action) action();
   };
 
@@ -106,6 +98,7 @@ const AdminSidebar = ({
                 Notice
               </CDBSidebarMenuItem>
             </NavLink>
+            
 
             {/* Timetable Section without Sub-Menu */}
             <NavLink
@@ -141,28 +134,13 @@ const AdminSidebar = ({
                     className={
                       selectedMenuItem === "AddFaculty" ? "activeClicked" : ""
                     }
-                    onClick={() => {
-                      setAddFacultyFlag(true);
-                      setSelectedMenuItem("AddFaculty");
-                    }}
+                    onClick={() =>
+                      handleMenuClick("AddFaculty", "/faculty/add")
+                    }
                     activeClassName="activeClicked"
                   >
                     <CDBSidebarMenuItem icon="fas fa-user-plus">
                       Add Faculty
-                    </CDBSidebarMenuItem>
-                  </NavLink>
-
-                  <NavLink
-                    className={
-                      selectedMenuItem === "EditFaculty" ? "activeClicked" : ""
-                    }
-                    onClick={() =>
-                      handleMenuClick("EditFaculty", "/faculty/edit")
-                    }
-                    activeClassName="activeClicked"
-                  >
-                    <CDBSidebarMenuItem icon="fas fa-user-edit">
-                      Edit Faculty
                     </CDBSidebarMenuItem>
                   </NavLink>
                   <NavLink
@@ -203,27 +181,13 @@ const AdminSidebar = ({
                     className={
                       selectedMenuItem === "AddStudent" ? "activeClicked" : ""
                     }
-                    onClick={() => {
-                      setAddStudentFlag(true);
-                      setSelectedMenuItem("AddStudent");
-                    }}
-                    activeClassName="activeClicked"
-                  >
-                    <CDBSidebarMenuItem icon="fas fa-plus">
-                      Add Student
-                    </CDBSidebarMenuItem>
-                  </NavLink>
-                  <NavLink
-                    className={
-                      selectedMenuItem === "EditStudent" ? "activeClicked" : ""
-                    }
                     onClick={() =>
-                      handleMenuClick("EditStudent", "/student/edit")
+                      handleMenuClick("AddStudent", "/student/add")
                     }
                     activeClassName="activeClicked"
                   >
-                    <CDBSidebarMenuItem icon="fas fa-pencil">
-                      Edit Student
+                    <CDBSidebarMenuItem icon="fas fa-user-plus">
+                      Add Student
                     </CDBSidebarMenuItem>
                   </NavLink>
                   <NavLink
