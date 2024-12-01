@@ -95,10 +95,10 @@ const CreateNotice = () => {
           />
         </div>
         <div className="form-buttons">
-          <button type="submit" className="submit-btn">
+          <button type="submit" className="admin-submit-btn">
             Submit
           </button>
-          <button type="button" className="clear-btn" onClick={handleClear}>
+          <button type="button" className="admin-clear-btn" onClick={handleClear}>
             Clear
           </button>
         </div>
