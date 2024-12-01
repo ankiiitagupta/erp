@@ -1,164 +1,231 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
-  faHome,
-  faUser,
-  faPlus,
-  faTrash,
-  faUsers,
-  faChevronDown,
-  faBars, // Hamburger menu icon for toggle
-} from "@fortawesome/free-solid-svg-icons";
-import "../stylesheets/AdminSidebar.css";
+  CDBSidebar,
+  CDBSidebarContent,
+  CDBSidebarFooter,
+  CDBSidebarHeader,
+  CDBSidebarMenu,
+  CDBSidebarMenuItem,
+} from "cdbreact";
 
-const AdminSidebar = () => {
-  // State to track which dropdown is open
-  const [openDropdown, setOpenDropdown] = useState(null);
-  // State to track if the sidebar is collapsed
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+const AdminSidebar = ({ FacultyID }) => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [selectedMenuItem, setSelectedMenuItem] = useState("Dashboard");
+  const [showAcademicSubMenu, setShowAcademicSubMenu] = useState(false);
+  const [showStudentSubMenu, setShowStudentSubMenu] = useState(false);
+  const [showDepartmentSubMenu, setShowDepartmentSubMenu] = useState(false);  // Added state for Department SubMenu
+  const [showSubjectSubMenu, setShowSubjectSubMenu] = useState(false);        // Added state for Subject SubMenu
+  const navigate = useNavigate();
 
-  const handleDropdownToggle = (menuName) => {
-    setOpenDropdown(openDropdown === menuName ? null : menuName);
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
   };
 
-  const handleSidebarToggle = () => {
-    setIsSidebarCollapsed(!isSidebarCollapsed);
+  const handleMenuClick = (menuItem, navigatePath) => {
+    setSelectedMenuItem(menuItem);
+    if (navigatePath) navigate(navigatePath);
   };
 
   return (
-    <div className={`adside-sidebar ${isSidebarCollapsed ? "collapsed" : ""}`}>
-      <div className="adside-sidebar-header-container">
-        <button className="adsidebar-toggle-btn" onClick={handleSidebarToggle}>
-          <FontAwesomeIcon icon={faBars} className="adsidebar-toggle-icon" />
-        </button>
-        {!isSidebarCollapsed && <h2 className="adside-sidebar-header">MPGI</h2>}
-      </div>
-      <ul className="adside-sidebar-list">
-        {/* Dashboard */}
-        <li className="adside-sidebar-item">
-          <NavLink to="/dashboard" className="adside-sidebar-link">
-            <FontAwesomeIcon icon={faHome} className="adside-sidebar-icon" />
-            {!isSidebarCollapsed && "Dashboard"}
-          </NavLink>
-        </li>
-
-        {/* Profile */}
-        <li className="adside-sidebar-item">
-          <NavLink to="/profile" className="adside-sidebar-link">
-            <FontAwesomeIcon icon={faUser} className="adside-sidebar-icon" />
-            {!isSidebarCollapsed && "Profile"}
-          </NavLink>
-        </li>
-
-        {/* Admin Dropdown */}
-        <li
-          className={`adside-sidebar-item ${openDropdown === "admin" ? "active" : ""}`}
+    <div style={{ display: "flex", height: "100vh", overflow: "scroll initial" }}>
+      <CDBSidebar
+        textColor="#fff"
+        backgroundColor="#001F54"
+        toggled={!isCollapsed}
+        collapse={isCollapsed}
+      >
+        {/* Sidebar Header */}
+        <CDBSidebarHeader
+          prefix={
+            <i
+              className={`fa ${isCollapsed ? "fa-times" : "fa-bars"} fa-lg`}
+              onClick={toggleSidebar}
+            ></i>
+          }
         >
-          <button
-            className="adside-sidebar-link"
-            onClick={() => handleDropdownToggle("admin")}
-          >
-            <FontAwesomeIcon icon={faUser} className="adside-sidebar-icon" />
-            {!isSidebarCollapsed && "Admin"}
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              className="adside-dropdown-chevron"
-              style={{
-                transform: openDropdown === "admin" ? "rotate(180deg)" : "rotate(0)",
-              }}
-            />
-          </button>
-          {openDropdown === "admin" && (
-            <ul className="adside-dropdown">
-              <li>
-                <NavLink to="/add-admin" className="adside-dropdown-link">
-                  <FontAwesomeIcon icon={faPlus} className="adside-dropdown-icon" />
-                  {!isSidebarCollapsed && "Add Admin"}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/delete-admin" className="adside-dropdown-link">
-                  <FontAwesomeIcon icon={faTrash} className="adside-dropdown-icon" />
-                  {!isSidebarCollapsed && "Delete Admin"}
-                </NavLink>
-              </li>
-            </ul>
-          )}
-        </li>
+          <a href="/" className="text-decoration-none" style={{ color: "inherit" }}>
+            MPGI
+          </a>
+        </CDBSidebarHeader>
 
-        {/* Department Dropdown */}
-        <li
-          className={`adside-sidebar-item ${openDropdown === "department" ? "active" : ""}`}
-        >
-          <button
-            className="adside-sidebar-link"
-            onClick={() => handleDropdownToggle("department")}
-          >
-            <FontAwesomeIcon icon={faUsers} className="adside-sidebar-icon" />
-            {!isSidebarCollapsed && "Department"}
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              className="adside-dropdown-chevron"
-              style={{
-                transform: openDropdown === "department" ? "rotate(180deg)" : "rotate(0)",
-              }}
-            />
-          </button>
-          {openDropdown === "department" && (
-            <ul className="adside-dropdown">
-              <li>
-                <NavLink to="/add-department" className="adside-dropdown-link">
-                  <FontAwesomeIcon icon={faPlus} className="adside-dropdown-icon" />
-                  {!isSidebarCollapsed && "Add Department"}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/delete-department" className="adside-dropdown-link">
-                  <FontAwesomeIcon icon={faTrash} className="adside-dropdown-icon" />
-                  {!isSidebarCollapsed && "Delete Department"}
-                </NavLink>
-              </li>
-            </ul>
-          )}
-        </li>
+        {/* Sidebar Content */}
+        <CDBSidebarContent className="sidebar-content">
+          <CDBSidebarMenu>
+            {/* Dashboard */}
+            <NavLink
+              className={selectedMenuItem === "Dashboard" ? "activeClicked" : ""}
+              onClick={() => handleMenuClick("Dashboard", `/facultydashboard/${FacultyID}`)}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
+            </NavLink>
 
-        {/* Faculty Dropdown */}
-        <li
-          className={`adside-sidebar-item ${openDropdown === "faculty" ? "active" : ""}`}
-        >
-          <button
-            className="adside-sidebar-link"
-            onClick={() => handleDropdownToggle("faculty")}
-          >
-            <FontAwesomeIcon icon={faUsers} className="adside-sidebar-icon" />
-            {!isSidebarCollapsed && "Faculty"}
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              className="adside-dropdown-chevron"
-              style={{
-                transform: openDropdown === "faculty" ? "rotate(180deg)" : "rotate(0)",
-              }}
-            />
-          </button>
-          {openDropdown === "faculty" && (
-            <ul className="adside-dropdown">
-              <li>
-                <NavLink to="/add-faculty" className="adside-dropdown-link">
-                  <FontAwesomeIcon icon={faPlus} className="adside-dropdown-icon" />
-                  {!isSidebarCollapsed && "Add Faculty"}
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/delete-faculty" className="adside-dropdown-link">
-                  <FontAwesomeIcon icon={faTrash} className="adside-dropdown-icon" />
-                  {!isSidebarCollapsed && "Delete Faculty"}
-                </NavLink>
-              </li>
-            </ul>
-          )}
-        </li>
-      </ul>
+            {/* Employee Detail */}
+            <NavLink
+              className={selectedMenuItem === "EmpDetail" ? "activeClicked" : ""}
+              onClick={() => handleMenuClick("EmpDetail", "/empdetail")}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="user">Profile</CDBSidebarMenuItem>
+            </NavLink>
+
+            {/* Student Attendance */}
+            <NavLink
+              className={selectedMenuItem === "StudAttendance" ? "activeClicked" : ""}
+              onClick={() => handleMenuClick("StudAttendance", "/studattendance")}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="fas fa-sticky-note">Notice</CDBSidebarMenuItem>
+            </NavLink>
+
+            {/* Timetable Section without Sub-Menu */}
+            <NavLink
+              className={selectedMenuItem === "Timetable" ? "activeClicked" : ""}
+              onClick={() => handleMenuClick("Timetable", "/timetable")}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="fas fa-calendar-plus">Timetable</CDBSidebarMenuItem>
+            </NavLink>
+
+            {/* Academic Section with Sub-Menu */}
+            <div>
+              <div
+                className={`academic-menu ${selectedMenuItem === "Academic" ? "activeClicked" : ""}`}
+                onClick={() => setShowAcademicSubMenu(!showAcademicSubMenu)}
+                style={{ cursor: "pointer" }}
+              >
+                <CDBSidebarMenuItem icon="chalkboard-teacher">Faculty</CDBSidebarMenuItem>
+              </div>
+              {showAcademicSubMenu && (
+                <div style={{ paddingLeft: "20px" }}>
+                  <NavLink
+                    className={selectedMenuItem === "AddFaculty" ? "activeClicked" : ""}
+                    onClick={() => handleMenuClick("AddFaculty", "/faculty/add")}
+                    activeClassName="activeClicked"
+                  >
+                    <CDBSidebarMenuItem icon="fas fa-user-plus">
+                      Add Faculty
+                    </CDBSidebarMenuItem>
+                  </NavLink>
+                  <NavLink
+                    className={selectedMenuItem === "DeleteFaculty" ? "activeClicked" : ""}
+                    onClick={() => handleMenuClick("DeleteFaculty", "/faculty/delete")}
+                    activeClassName="activeClicked"
+                  >
+                    <CDBSidebarMenuItem icon="fas fa-user-minus">
+                      Delete Faculty
+                    </CDBSidebarMenuItem>
+                  </NavLink>
+                </div>
+              )}
+            </div>
+
+            {/* Student Section with Sub-Menu */}
+            <div>
+              <div
+                className={`student-menu ${selectedMenuItem === "Student" ? "activeClicked" : ""}`}
+                onClick={() => setShowStudentSubMenu(!showStudentSubMenu)}
+                style={{ cursor: "pointer" }}
+              >
+                <CDBSidebarMenuItem icon="fas fa-user-graduate">Student</CDBSidebarMenuItem>
+              </div>
+              {showStudentSubMenu && (
+                <div style={{ paddingLeft: "20px" }}>
+                  <NavLink
+                    className={selectedMenuItem === "AddStudent" ? "activeClicked" : ""}
+                    onClick={() => handleMenuClick("AddStudent", "/student/add")}
+                    activeClassName="activeClicked"
+                  >
+                    <CDBSidebarMenuItem icon="fas fa-plus">
+                      Add Student
+                    </CDBSidebarMenuItem>
+                  </NavLink>
+                  <NavLink
+                    className={selectedMenuItem === "RemoveStudent" ? "activeClicked" : ""}
+                    onClick={() => handleMenuClick("RemoveStudent", "/student/remove")}
+                    activeClassName="activeClicked"
+                  >
+                    <CDBSidebarMenuItem icon="fas fa-minus">
+                      Remove Student
+                    </CDBSidebarMenuItem>
+                  </NavLink>
+                </div>
+              )}
+            </div>
+
+            {/* Department Section with Sub-Menu */}
+            <div>
+              <div
+                className={`department-menu ${selectedMenuItem === "Department" ? "activeClicked" : ""}`}
+                onClick={() => setShowDepartmentSubMenu(!showDepartmentSubMenu)}
+                style={{ cursor: "pointer" }}
+              >
+                <CDBSidebarMenuItem icon="fas fa-building">Department</CDBSidebarMenuItem>
+              </div>
+              {showDepartmentSubMenu && (
+                <div style={{ paddingLeft: "20px" }}>
+                  <NavLink
+                    className={selectedMenuItem === "AddDepartment" ? "activeClicked" : ""}
+                    onClick={() => handleMenuClick("AddDepartment", "/department/add")}
+                    activeClassName="activeClicked"
+                  >
+                    <CDBSidebarMenuItem icon="fas fa-plus">
+                      Add Department
+                    </CDBSidebarMenuItem>
+                  </NavLink>
+                  <NavLink
+                    className={selectedMenuItem === "RemoveDepartment" ? "activeClicked" : ""}
+                    onClick={() => handleMenuClick("RemoveDepartment", "/department/remove")}
+                    activeClassName="activeClicked"
+                  >
+                    <CDBSidebarMenuItem icon="fas fa-minus">
+                      Remove Department
+                    </CDBSidebarMenuItem>
+                  </NavLink>
+                </div>
+              )}
+            </div>
+
+            {/* Subjects Section with Sub-Menu */}
+            <div>
+              <div
+                className={`subject-menu ${selectedMenuItem === "Subject" ? "activeClicked" : ""}`}
+                onClick={() => setShowSubjectSubMenu(!showSubjectSubMenu)}
+                style={{ cursor: "pointer" }}
+              >
+                <CDBSidebarMenuItem icon="fas fa-book">Subjects</CDBSidebarMenuItem>
+              </div>
+              {showSubjectSubMenu && (
+                <div style={{ paddingLeft: "20px" }}>
+                  <NavLink
+                    className={selectedMenuItem === "AddSubject" ? "activeClicked" : ""}
+                    onClick={() => handleMenuClick("AddSubject", "/subject/add")}
+                    activeClassName="activeClicked"
+                  >
+                    <CDBSidebarMenuItem icon="fas fa-plus">
+                      Add Subject
+                    </CDBSidebarMenuItem>
+                  </NavLink>
+                  <NavLink
+                    className={selectedMenuItem === "RemoveSubject" ? "activeClicked" : ""}
+                    onClick={() => handleMenuClick("RemoveSubject", "/subject/remove")}
+                    activeClassName="activeClicked"
+                  >
+                    <CDBSidebarMenuItem icon="fas fa-minus">
+                      Remove Subject
+                    </CDBSidebarMenuItem>
+                  </NavLink>
+                </div>
+              )}
+            </div>
+
+          </CDBSidebarMenu>
+        </CDBSidebarContent>
+
+        {/* Sidebar Footer */}
+        <CDBSidebarFooter style={{ textAlign: "center" }} />
+      </CDBSidebar>
     </div>
   );
 };

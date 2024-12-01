@@ -192,6 +192,21 @@ body {
     padding-left: 10px;
 }
 
+.activeClicked {
+    color: #3498db;
+    font-weight: bold;
+  }
+  
+  .academic-menu:hover {
+    background-color: #023e8a;
+  }
+  
+  div > .cdb-sidebar-menu-item {
+    margin-left: 20px;
+    font-size: 14px;
+  }
+  
+
 /* Hamburger icon transform */
 @media (max-width: 768px) {
     .fa-bars {
