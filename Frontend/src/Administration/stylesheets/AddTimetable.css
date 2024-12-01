@@ -1,52 +1,129 @@
-.add-timetable-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* AddTimetable.css */
+
+.timetable-container {
+  width: 100%; /* Adjusted to take up the full container width */
+  margin-top: 2rem;
+  background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px;
+  margin-left:8rem; /* Decreased left margin slightly to make it wider */
+  margin-right: 20rem; /* Decreased right margin slightly to make it wider */
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.form-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center; /* Center the form inputs */
+}
+
+.form-group {
+  flex: 1 1 calc(50% - 15px); /* Reduced width for smaller inputs */
+  max-width: 300px; /* Prevent inputs from becoming too wide */
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+input,
+select,
+button {
+  padding: 8px; /* Reduced padding for compact inputs */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.timetable-display {
+  margin-top: 30px;
+  margin-right:5px;
+}
+
+.timetable-display h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.timetable-grid {
+  /* display: grid;
+  grid-template-columns: 150px repeat(5, 1fr);  */
+  gap: 10px;
+  text-align: center;
+  width: 100%; /* Ensure it takes the full width */
+}
+
+.header-row {
+  display: flex;
+}
+
+.header-cell {
+  font-weight: bold;
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: #f0f8ff;
+}
+
+.day-row {
+  display: flex;
+}
+
+.day-cell,
+.slot-cell {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.day-cell {
+  font-weight: bold;
+  background-color: #f0f8ff;
+}
+
+.slot-cell {
+  background-color: #f9f9f9;
+  min-height: 50px;
+}
+
+@media (max-width: 1024px) {
+  .timetable-grid {
+    grid-template-columns: 120px repeat(5, 1fr); /* Adjust the size of the first column on smaller screens */
   }
-  
-  h2 {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
+}
+
+@media (max-width: 768px) {
   .form-group {
-    margin-bottom: 20px;
+    flex: 1 1 100%;
   }
-  
-  .form-group label {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 8px;
-    display: block;
+
+  .timetable-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
   }
-  
-  .form-group input,
-  .form-group select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+  .timetable-grid {
+    grid-template-columns: 1fr; /* Single column on small screens */
   }
-  
-  button.submit-btn {
-    background-color: #1e88e5;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  button.submit-btn:hover {
-    background-color: #1565c0;
-  }
-  
+}
