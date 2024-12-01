@@ -68,8 +68,8 @@ button:hover {
 }
 
 .timetable-grid {
-  /* display: grid;
-  grid-template-columns: 150px repeat(5, 1fr);  */
+  display: grid;
+  /* grid-template-columns: 150px repeat(5, 1fr);  */
   gap: 10px;
   text-align: center;
   width: 100%; /* Ensure it takes the full width */
