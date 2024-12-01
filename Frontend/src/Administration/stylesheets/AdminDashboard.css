@@ -6,17 +6,19 @@
 }
 
 .sidebar-section {
-  display: fixed;
+  position: fixed;
   transition: width 0.3s ease;
-  height: 100vh;
-
+  height: 100%;
 }
+
+
 
 
 
 .dashboard-section {
   flex-grow: 1;
   padding: 20px;
+  margin-left: 5rem;
   background-color: #f4f4f4;
   transition: margin-left 0.3s ease;
 }

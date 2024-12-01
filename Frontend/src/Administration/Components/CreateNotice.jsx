@@ -35,8 +35,9 @@ const CreateNotice = () => {
 
   return (
     <div className="create-notice-container">
-      <h1 className="header">Create Notice</h1>
+      
       <form className="form-container" onSubmit={handleSubmit}>
+      <h1 className="header">Create Notice</h1>
         <div className="form-group">
           <label htmlFor="date">Date:</label>
           <input

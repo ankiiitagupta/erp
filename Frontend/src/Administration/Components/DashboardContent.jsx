@@ -20,10 +20,40 @@ const DashboardContent = () => {
     { title: "Holiday Announcement", details: "Details about holidays." },
   ];
 
+  const faculty = [
+    { name: "John Doe", department: "BTech", subject:"DSA" },
+    { name: "Jane Smith", department: "BTech" , subject:"DSA" },
+    { name: "Michael Brown", department: "BTech" , subject:"DSA" },
+    { name: "Sara White", department: "BTech", subject:"DSA"  },
+  ];
+
+  const students = [
+    { name: "Alice Green", course: "Btech", Phone: "1223456" },
+    { name: "Bob Blue", course: "Btech", Phone: "1223456" },
+    { name: "Charlie Red", course: "BBA", Phone: "1223456" },
+    { name: "David Yellow", course: "MBA", Phone: "1223456" },
+    { name: "Eva Black", course: "BCA", Phone: "1223456" },
+    { name: "Frank White", course: "BBA", Phone: "1223456" },
+  ];
+
   const handleLogout = () => {
     // Add your logout logic here
     alert("Logged out!");
   };
+
+  // Group students by course
+  const groupStudentsByCourse = () => {
+    return students.reduce((groups, student) => {
+      const { course } = student;
+      if (!groups[course]) {
+        groups[course] = [];
+      }
+      groups[course].push(student);
+      return groups;
+    }, {});
+  };
+
+  const groupedStudents = groupStudentsByCourse();
 
   return (
     <div className="dashboard-wrapper">
@@ -33,7 +63,6 @@ const DashboardContent = () => {
         {/* Logout Icon */}
         <div className="logout-container" onClick={handleLogout}>
           <i className="fas fa-sign-out-alt logout-icon"></i>
-          
         </div>
       </div>
 
@@ -53,9 +82,7 @@ const DashboardContent = () => {
       {/* Main Content */}
       <div className="main-content">
         {/* Calendar */}
-        <div className="calendar-container">
-          <Calendar onChange={onChange} value={value} />
-        </div>
+        
 
         {/* Notices */}
         <div className="notices-container">
@@ -88,6 +115,46 @@ const DashboardContent = () => {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Faculty and Students Sections */}
+        <div className="faculty-students-wrapper">
+          {/* Faculty Section */}
+          <div className="faculty-section">
+            <h2>Faculty</h2>
+            <ul className="faculty-list">
+              {faculty.map((member, idx) => (
+                <li key={idx} className="faculty-item">
+                  <p>{member.name} </p>
+                  <p> {member.department}</p>
+                 
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Students Section */}
+          <div className="students-section">
+            <h2>Students</h2>
+            {Object.keys(groupedStudents).map((course, idx) => (
+              <div key={idx} className="course-section">
+                <h3>{course}</h3>
+                <ul className="students-list">
+                  {groupedStudents[course].map((student, idx) => (
+                    <li key={idx} className="student-item">
+                      <p>{student.name}</p>
+                      <p>{student.course}</p>
+                      <p>{student.Phone}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="calendar-container">
+          <h1>Academic Calendar</h1>
+          <Calendar onChange={onChange} value={value} />
         </div>
       </div>
     </div>

@@ -1,205 +1,153 @@
 .create-notice-container {
-    width: 65%;
-    max-width: 1300px; /* Added max-width for better readability on larger screens */
-    margin: 3rem auto;
-    height: 100vh;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e0e0e0;
-  }
-  
-  .header {
-    text-align: center;
-    font-size: 2rem;
-    color: #333;
-    margin-top:1.5rem;
-    margin-bottom: 30px;
-    font-weight: 600;
-    margin-left: 1rem;
-  }
-  
-  .form-container {
-    display: flex;
-    flex-direction: column;
-    /* gap: 20px; */
-    margin-top:4rem;
-  }
-  
-  
-  
-  .form-group.large {
-    width: 100%;
-  }
-  
-  .form-group label {
-    font-weight: 600;
-    color: #000000;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-size: 1.1rem;
-    
-  }
-  
-  
-  select,
-  textarea {
-    padding: 12px 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    width: 100%;
-    background-color: #f9f9f9;
-    transition: all 0.3s ease;
-  }
+  width: 50%;
+  max-width: 80vw;
+  margin: 3rem auto;
+  height: 85vh;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 1rem;
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-top: 5rem;
+  margin-bottom: 30px;
+  font-weight: 600;
+  margin-left: 25rem;
+}
 
-  input{
-    /* padding:1rem; */
-    max-width:90%;
-  }
-  
-  input:focus,
-  select:focus,
-  textarea:focus {
-    border-color: #0077b6;
-    outline: none;
-    background-color: #f0f0f0;
-  }
+.header {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-top: 5rem;
+  margin-bottom: 30px;
+  font-weight: 600;
+  margin-left: 1rem;
+}
 
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 4rem;
+  border:2px solid #fff;
+  
+}
+
+.form-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  margin: 0 3rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #000000;
+  padding: 0 15px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  width: 20%; /* Ensure all labels have the same width */
+  text-align: left;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  max-width:50%;
+  flex: 1; /* Ensures input and select have consistent width */
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+textarea {
+  height: 150px;
+  resize: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #0077b6;
+  outline: none;
+  background-color: #f0f0f0;
+}
+
+textarea {
+  resize: none;
+  height: 150px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4rem;
+  margin: 0.5rem;
+}
+
+.submit-btn,
+.clear-btn {
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn {
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+}
+
+.clear-btn {
+  background-color: #0077b6;
+  color: #fff;
+  border: none;
+}
+
+.submit-btn:hover {
+  color: #d32f2f;
+  background-color: #fff;
+  border: 2px solid #d32f2f;
+}
+
+.clear-btn:hover {
+  color: #005f83;
+  border: 2px solid #005f83;
+}
+
+.submit-btn:active,
+.clear-btn:active {
+  transform: translateY(2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .form-group {
-    display: flex;
-    flex-direction: row;
-    align-items: center; /* Ensures vertical alignment */
-    gap: 1rem;
-    width: 100%;
-    margin:0 3rem;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns label and input vertically */
   }
-  
+
   .form-group label {
-    font-weight: 600;
-    color: #000000;
-    padding: 0 15px; /* Removed excessive padding for better alignment */
-    border-radius: 6px;
-    font-size: 1.1rem;
-    width: 20%; /* Set a fixed or percentage width for symmetry */
-    text-align: left; /* Align text to the right */
+    width: 100%; /* Full width for labels */
+    text-align: left;
   }
-  
+
   .form-group input,
   .form-group select,
   .form-group textarea {
-    padding: 12px 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-    width: 50%; /* Matches the label width */
-    background-color: #f9f9f9;
-    transition: all 0.3s ease;
+    width: 100%; /* Full width for inputs */
   }
-
-  .form-group select #to{
-    width:100%;
-  }
-  
-  
-  textarea {
-    height: 150px;
-    resize: none;
-  }
-  
-  /* Focus styles */
-  input:focus,
-  select:focus,
-  textarea:focus {
-    border-color: #0077b6;
-    outline: none;
-    background-color: #f0f0f0;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .form-group {
-      flex-direction: column;
-      align-items: flex-start; /* Aligns label and input vertically on small screens */
-    }
-  
-    .form-group label {
-      width: 100%; /* Full width for labels */
-      text-align: left; /* Aligns text to the left */
-    }
-  
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%; /* Full width for inputs */
-    }
-  }
-  
-  
-  textarea {
-    resize: none;
-    height: 150px;
-  }
-  
-  .form-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 4rem;
-    margin: 1rem;
-  }
-  
-  .submit-btn,
-  .clear-btn {
-    padding: 12px 20px;
-    font-size: 1.1rem;
-    font-weight: 500;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-   
-  }
-  
-  .submit-btn {
-    background-color: #e53935;
-    color: #fff;
-    border: none;
-  }
-  
-  .clear-btn {
-    background-color: #0077b6;
-    color: #fff;
-    border: none;
-  }
-  
-  .submit-btn:hover {
-     color: #d32f2f;
-     background-color: #fff;
-     border:2px solid #d32f2f;
-  }
-  
-  .clear-btn:hover {
-    color: #005f83;
-    border:2px solid #005f83;
-  }
-  
-  /* .submit-btn:active,
-  .clear-btn:active {
-    transform: translateY(2px);
-  } */
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .form-container {
-      flex-direction: column;
-    }
-  
-    .form-group {
-      width: 100%;
-    }
-  
-    .header {
-      font-size: 1.8rem;
-    }
-  }
-  
+}
