@@ -228,7 +228,10 @@ const MarkStudentAttendance = ({ facultyID }) => {
           <span>{absentStudents} Absent Today</span> {/* Dynamic absent count */}
           <span className="icon">❌</span>
         </div>
-        
+        <div className="calendar">
+          <h4>Calendar</h4>
+          {/* Include calendar component or placeholder */}
+        </div>
       </div>
 
       {/* Success Popup */}

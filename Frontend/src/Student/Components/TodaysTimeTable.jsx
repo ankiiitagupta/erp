@@ -48,4 +48,4 @@ const TodaysTimeTable = (props) => {
   )
 }
 
-export default TodaysTimeTable;
+export default TodaysTimeTable
