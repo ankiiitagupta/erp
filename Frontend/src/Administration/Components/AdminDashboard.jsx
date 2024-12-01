@@ -5,39 +5,48 @@ import AdminSidebar from "./AdminSidebar.jsx";
 import DashboardContent from "./DashboardContent"; // Import the new component
 import CreateNotice from "./CreateNotice.jsx";
 import AddTimetable from "./CreateTimeTable.jsx";
+import AddStudent from "./AddStudent.jsx";
+import AddFaculty from "./AddFaculty.jsx";
 
 const AdminDashboard = () => {
   const { admin_id } = useParams();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [CreateNoticeFlag, setcreateNoticeFlag] = useState(false);
+  const [CreateNoticeFlag, setCreateNoticeFlag] = useState(false);
   const [AddTimetableFlag, setAddTimetableFlag] = useState(false);
+  const [AddFacultyFlag, setAddFacultyFlag] = useState(false);
+  const [AddStudentFlag, setAddStudentFlag] = useState(false);
 
   // Toggle sidebar collapse/expand state
   const toggleSidebar = () => {
     setSidebarCollapsed((prevState) => !prevState);
   };
 
+  // Reset all flags
   const resetFlags = () => {
-    setcreateNoticeFlag(false);
+    setCreateNoticeFlag(false);
+    setAddFacultyFlag(false);
+    setAddTimetableFlag(false);
+    setAddStudentFlag(false);
   };
 
   return (
     <div className="admin-dashboard">
-      {/* Sidebar */}
-      <div
-        className={`sidebar-section ${
-          sidebarCollapsed ? "collapsed" : "expanded"
-        }`}
-      >
-        <AdminSidebar
-          setcreateNoticeFlag={setcreateNoticeFlag}
-          setAddTimetableFlag={setAddTimetableFlag}
-          admin_id={admin_id}
-          resetFlags={resetFlags}
-        />
-      </div>
+      {/* Sidebar Component */}
+      <AdminSidebar
+        setcreateNoticeFlag={setCreateNoticeFlag}
+        setAddTimetableFlag={setAddTimetableFlag}
+        setAddFacultyFlag={setAddFacultyFlag}
+        setAddStudentFlag={setAddStudentFlag}
+        admin_id={admin_id}
+        resetFlags={resetFlags}
+      />
 
-      {AddTimetableFlag ? (
+      {/* Main Content Section */}
+      {AddStudentFlag ? (
+        <AddStudent />
+      ) : AddFacultyFlag ? (
+        <AddFaculty />
+      ) : AddTimetableFlag ? (
         <AddTimetable />
       ) : CreateNoticeFlag ? (
         <CreateNotice />
