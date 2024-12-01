@@ -108,7 +108,7 @@ body {
   flex-direction:column;
   gap: 20px;
   margin-top: 30px;
-  /* flex-wrap: wrap; */
+  flex-wrap: wrap;
 }
 h1{
   text-align: left;
