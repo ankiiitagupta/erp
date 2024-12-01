@@ -9,13 +9,14 @@ import {
   CDBSidebarMenuItem,
 } from "cdbreact";
 
-const AdminSidebar = ({ admin_id, setcreateNoticeFlag, resetFlags }) => {
+const AdminSidebar = ({ admin_id, setcreateNoticeFlag,setAddTimetableFlag, resetFlags }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("Dashboard");
   const [showAcademicSubMenu, setShowAcademicSubMenu] = useState(false);
   const [showStudentSubMenu, setShowStudentSubMenu] = useState(false);
   const [showDepartmentSubMenu, setShowDepartmentSubMenu] = useState(false); // Added state for Department SubMenu
-  const [showSubjectSubMenu, setShowSubjectSubMenu] = useState(false); // Added state for Subject SubMenu
+  const [showSubjectSubMenu, setShowSubjectSubMenu] = useState(false);
+
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -101,11 +102,13 @@ const AdminSidebar = ({ admin_id, setcreateNoticeFlag, resetFlags }) => {
 
             {/* Timetable Section without Sub-Menu */}
             <NavLink
-              className={
-                selectedMenuItem === "Timetable" ? "activeClicked" : ""
-              }
-              onClick={() => handleMenuClick("Timetable", "/timetable")}
-              activeClassName="activeClicked"
+              className={`menu-item ${
+                selectedMenuItem === "TimeTable" ? "activeClicked" : ""
+              }`}
+              onClick={() => {
+                setAddTimetableFlag(true);
+                setSelectedMenuItem("TimeTable");
+              }}
             >
               <CDBSidebarMenuItem icon="fas fa-calendar-plus">
                 Timetable
