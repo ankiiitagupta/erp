@@ -36,9 +36,9 @@ const CreateNotice = () => {
   return (
     <div className="create-notice-container">
       
-      <form className="form-container" onSubmit={handleSubmit}>
+      <form className="notice-form-container" onSubmit={handleSubmit}>
       <h1 className="header">Create Notice</h1>
-        <div className="form-group">
+        <div className="notice-form-group">
           <label htmlFor="date">Date:</label>
           <input
             type="date"
@@ -48,7 +48,7 @@ const CreateNotice = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
+        <div className="notice-form-group">
           <label htmlFor="topic">Topic:</label>
           <input
             type="text"
@@ -59,7 +59,7 @@ const CreateNotice = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
+        <div className="notice-form-group">
           <label htmlFor="to">To:</label>
           <select
             id="to"
@@ -73,7 +73,7 @@ const CreateNotice = () => {
             <option value="admins">Admins</option>
           </select>
         </div>
-        <div className="form-group">
+        <div className="notice-form-group">
           <label htmlFor="from">From:</label>
           <input
             type="text"
@@ -84,7 +84,7 @@ const CreateNotice = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group large">
+        <div className="notice-form-group large">
           <label htmlFor="content">Content:</label>
           <textarea
             id="content"
