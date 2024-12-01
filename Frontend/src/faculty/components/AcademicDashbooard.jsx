@@ -37,7 +37,7 @@ const AcademicsDashboard = ({facultyID}) => {
       ) : showMeetings ? (
         <Meetings />
       ) : (
-        <div className="main-content">
+        <div className="main-contentfac">
           <h2 className="content-title">ACADEMICS</h2>
           <div className="icon-grid">
             <div className="icon-card" onClick={() => setShowMarks(true)}>

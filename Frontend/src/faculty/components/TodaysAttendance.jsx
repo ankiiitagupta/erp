@@ -101,7 +101,7 @@ const TodaysAttendance = ({}) => {
   return (
     <div className="todays-attendance-page">
       <FacultySidebar />
-      <div className="main-content">
+      <div className="main-contenttatt">
         <Header />
         <div className="mark-attendance">
           <h2>Mark Attendance for {lecture.SubjectName}</h2>

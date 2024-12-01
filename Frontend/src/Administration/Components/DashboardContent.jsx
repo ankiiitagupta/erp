@@ -80,7 +80,7 @@ const DashboardContent = () => {
       </div>
 
       {/* Main Content */}
-      <div className="main-content">
+      <div className="main-content3">
         {/* Calendar */}
         
 

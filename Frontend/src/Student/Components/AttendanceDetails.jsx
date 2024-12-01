@@ -317,7 +317,7 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
 
 {activeBox === "daily" && (
           <>
-            <div className="box-active top-left main-content">
+            <div className="box-active top-left main-content2">
               <div className="attboxdata">
                 <img
                   src={pieClip}

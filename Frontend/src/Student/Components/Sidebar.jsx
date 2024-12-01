@@ -8,7 +8,7 @@ import {
   CDBSidebarMenu,
   CDBSidebarMenuItem,
 } from 'cdbreact';
-// import '../stylesheets/Sidebar.css';
+import '../stylesheets/Sidebar.css';
 
 const Sidebar = ({ setAttFlag,setProfileFlag, setNoticeFlag, resetFlags, RollNO }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
