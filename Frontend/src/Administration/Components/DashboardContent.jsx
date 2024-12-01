@@ -20,10 +20,21 @@ const DashboardContent = () => {
     { title: "Holiday Announcement", details: "Details about holidays." },
   ];
 
+  const handleLogout = () => {
+    // Add your logout logic here
+    alert("Logged out!");
+  };
+
   return (
     <div className="dashboard-wrapper">
       <div className="dashboard-header">
         <h1>Welcome to Admin Dashboard</h1>
+
+        {/* Logout Icon */}
+        <div className="logout-container" onClick={handleLogout}>
+          <i className="fas fa-sign-out-alt logout-icon"></i>
+          
+        </div>
       </div>
 
       {/* Data Cards */}

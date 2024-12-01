@@ -9,13 +9,13 @@ import {
   CDBSidebarMenuItem,
 } from "cdbreact";
 
-const AdminSidebar = ({ FacultyID }) => {
+const AdminSidebar = ({ admin_id, setcreateNoticeFlag, resetFlags }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("Dashboard");
   const [showAcademicSubMenu, setShowAcademicSubMenu] = useState(false);
   const [showStudentSubMenu, setShowStudentSubMenu] = useState(false);
-  const [showDepartmentSubMenu, setShowDepartmentSubMenu] = useState(false);  // Added state for Department SubMenu
-  const [showSubjectSubMenu, setShowSubjectSubMenu] = useState(false);        // Added state for Subject SubMenu
+  const [showDepartmentSubMenu, setShowDepartmentSubMenu] = useState(false); // Added state for Department SubMenu
+  const [showSubjectSubMenu, setShowSubjectSubMenu] = useState(false); // Added state for Subject SubMenu
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -24,11 +24,14 @@ const AdminSidebar = ({ FacultyID }) => {
 
   const handleMenuClick = (menuItem, navigatePath) => {
     setSelectedMenuItem(menuItem);
-    if (navigatePath) navigate(navigatePath);
+    resetFlags();
+    if (action) action();
   };
 
   return (
-    <div style={{ display: "flex", height: "100vh", overflow: "scroll initial" }}>
+    <div
+      style={{ display: "flex", height: "100vh", overflow: "scroll initial" }}
+    >
       <CDBSidebar
         textColor="#fff"
         backgroundColor="#001F54"
@@ -44,7 +47,11 @@ const AdminSidebar = ({ FacultyID }) => {
             ></i>
           }
         >
-          <a href="/" className="text-decoration-none" style={{ color: "inherit" }}>
+          <a
+            href="/"
+            className="text-decoration-none"
+            style={{ color: "inherit" }}
+          >
             MPGI
           </a>
         </CDBSidebarHeader>
@@ -54,8 +61,12 @@ const AdminSidebar = ({ FacultyID }) => {
           <CDBSidebarMenu>
             {/* Dashboard */}
             <NavLink
-              className={selectedMenuItem === "Dashboard" ? "activeClicked" : ""}
-              onClick={() => handleMenuClick("Dashboard", `/facultydashboard/${FacultyID}`)}
+              className={
+                selectedMenuItem === "Dashboard" ? "activeClicked" : ""
+              }
+              onClick={() =>
+                handleMenuClick("Dashboard", `/AdminDashboard/${admin_id}`)
+              }
               activeClassName="activeClicked"
             >
               <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
@@ -63,7 +74,9 @@ const AdminSidebar = ({ FacultyID }) => {
 
             {/* Employee Detail */}
             <NavLink
-              className={selectedMenuItem === "EmpDetail" ? "activeClicked" : ""}
+              className={
+                selectedMenuItem === "EmpDetail" ? "activeClicked" : ""
+              }
               onClick={() => handleMenuClick("EmpDetail", "/empdetail")}
               activeClassName="activeClicked"
             >
@@ -72,36 +85,55 @@ const AdminSidebar = ({ FacultyID }) => {
 
             {/* Student Attendance */}
             <NavLink
-              className={selectedMenuItem === "StudAttendance" ? "activeClicked" : ""}
-              onClick={() => handleMenuClick("StudAttendance", "/studattendance")}
-              activeClassName="activeClicked"
+              className={`menu-item ${
+                selectedMenuItem === "Notice" ? "activeClicked" : ""
+              }`}
+              onClick={() => {
+                setcreateNoticeFlag(true);
+                setSelectedMenuItem("Notice");
+              }}
             >
-              <CDBSidebarMenuItem icon="fas fa-sticky-note">Notice</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="fas fa-sticky-note">
+                Notice
+              </CDBSidebarMenuItem>
             </NavLink>
+            
 
             {/* Timetable Section without Sub-Menu */}
             <NavLink
-              className={selectedMenuItem === "Timetable" ? "activeClicked" : ""}
+              className={
+                selectedMenuItem === "Timetable" ? "activeClicked" : ""
+              }
               onClick={() => handleMenuClick("Timetable", "/timetable")}
               activeClassName="activeClicked"
             >
-              <CDBSidebarMenuItem icon="fas fa-calendar-plus">Timetable</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="fas fa-calendar-plus">
+                Timetable
+              </CDBSidebarMenuItem>
             </NavLink>
 
             {/* Academic Section with Sub-Menu */}
             <div>
               <div
-                className={`academic-menu ${selectedMenuItem === "Academic" ? "activeClicked" : ""}`}
+                className={`academic-menu ${
+                  selectedMenuItem === "Academic" ? "activeClicked" : ""
+                }`}
                 onClick={() => setShowAcademicSubMenu(!showAcademicSubMenu)}
                 style={{ cursor: "pointer" }}
               >
-                <CDBSidebarMenuItem icon="chalkboard-teacher">Faculty</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem icon="chalkboard-teacher">
+                  Faculty
+                </CDBSidebarMenuItem>
               </div>
               {showAcademicSubMenu && (
                 <div style={{ paddingLeft: "20px" }}>
                   <NavLink
-                    className={selectedMenuItem === "AddFaculty" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("AddFaculty", "/faculty/add")}
+                    className={
+                      selectedMenuItem === "AddFaculty" ? "activeClicked" : ""
+                    }
+                    onClick={() =>
+                      handleMenuClick("AddFaculty", "/faculty/add")
+                    }
                     activeClassName="activeClicked"
                   >
                     <CDBSidebarMenuItem icon="fas fa-user-plus">
@@ -109,8 +141,14 @@ const AdminSidebar = ({ FacultyID }) => {
                     </CDBSidebarMenuItem>
                   </NavLink>
                   <NavLink
-                    className={selectedMenuItem === "DeleteFaculty" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("DeleteFaculty", "/faculty/delete")}
+                    className={
+                      selectedMenuItem === "DeleteFaculty"
+                        ? "activeClicked"
+                        : ""
+                    }
+                    onClick={() =>
+                      handleMenuClick("DeleteFaculty", "/faculty/delete")
+                    }
                     activeClassName="activeClicked"
                   >
                     <CDBSidebarMenuItem icon="fas fa-user-minus">
@@ -124,29 +162,43 @@ const AdminSidebar = ({ FacultyID }) => {
             {/* Student Section with Sub-Menu */}
             <div>
               <div
-                className={`student-menu ${selectedMenuItem === "Student" ? "activeClicked" : ""}`}
+                className={`student-menu ${
+                  selectedMenuItem === "Student" ? "activeClicked" : ""
+                }`}
                 onClick={() => setShowStudentSubMenu(!showStudentSubMenu)}
                 style={{ cursor: "pointer" }}
               >
-                <CDBSidebarMenuItem icon="fas fa-user-graduate">Student</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem icon="fas fa-user-graduate">
+                  Student
+                </CDBSidebarMenuItem>
               </div>
               {showStudentSubMenu && (
                 <div style={{ paddingLeft: "20px" }}>
                   <NavLink
-                    className={selectedMenuItem === "AddStudent" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("AddStudent", "/student/add")}
+                    className={
+                      selectedMenuItem === "AddStudent" ? "activeClicked" : ""
+                    }
+                    onClick={() =>
+                      handleMenuClick("AddStudent", "/student/add")
+                    }
                     activeClassName="activeClicked"
                   >
-                    <CDBSidebarMenuItem icon="fas fa-plus">
+                    <CDBSidebarMenuItem icon="fas fa-user-plus">
                       Add Student
                     </CDBSidebarMenuItem>
                   </NavLink>
                   <NavLink
-                    className={selectedMenuItem === "RemoveStudent" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("RemoveStudent", "/student/remove")}
+                    className={
+                      selectedMenuItem === "RemoveStudent"
+                        ? "activeClicked"
+                        : ""
+                    }
+                    onClick={() =>
+                      handleMenuClick("RemoveStudent", "/student/remove")
+                    }
                     activeClassName="activeClicked"
                   >
-                    <CDBSidebarMenuItem icon="fas fa-minus">
+                    <CDBSidebarMenuItem icon="fas fa-user-minus">
                       Remove Student
                     </CDBSidebarMenuItem>
                   </NavLink>
@@ -157,17 +209,27 @@ const AdminSidebar = ({ FacultyID }) => {
             {/* Department Section with Sub-Menu */}
             <div>
               <div
-                className={`department-menu ${selectedMenuItem === "Department" ? "activeClicked" : ""}`}
+                className={`department-menu ${
+                  selectedMenuItem === "Department" ? "activeClicked" : ""
+                }`}
                 onClick={() => setShowDepartmentSubMenu(!showDepartmentSubMenu)}
                 style={{ cursor: "pointer" }}
               >
-                <CDBSidebarMenuItem icon="fas fa-building">Department</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem icon="fas fa-building">
+                  Department
+                </CDBSidebarMenuItem>
               </div>
               {showDepartmentSubMenu && (
                 <div style={{ paddingLeft: "20px" }}>
                   <NavLink
-                    className={selectedMenuItem === "AddDepartment" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("AddDepartment", "/department/add")}
+                    className={
+                      selectedMenuItem === "AddDepartment"
+                        ? "activeClicked"
+                        : ""
+                    }
+                    onClick={() =>
+                      handleMenuClick("AddDepartment", "/department/add")
+                    }
                     activeClassName="activeClicked"
                   >
                     <CDBSidebarMenuItem icon="fas fa-plus">
@@ -175,11 +237,17 @@ const AdminSidebar = ({ FacultyID }) => {
                     </CDBSidebarMenuItem>
                   </NavLink>
                   <NavLink
-                    className={selectedMenuItem === "RemoveDepartment" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("RemoveDepartment", "/department/remove")}
+                    className={
+                      selectedMenuItem === "RemoveDepartment"
+                        ? "activeClicked"
+                        : ""
+                    }
+                    onClick={() =>
+                      handleMenuClick("RemoveDepartment", "/department/remove")
+                    }
                     activeClassName="activeClicked"
                   >
-                    <CDBSidebarMenuItem icon="fas fa-minus">
+                    <CDBSidebarMenuItem icon="fas fa-minus ">
                       Remove Department
                     </CDBSidebarMenuItem>
                   </NavLink>
@@ -190,36 +258,54 @@ const AdminSidebar = ({ FacultyID }) => {
             {/* Subjects Section with Sub-Menu */}
             <div>
               <div
-                className={`subject-menu ${selectedMenuItem === "Subject" ? "activeClicked" : ""}`}
+                className={`subject-menu ${
+                  selectedMenuItem === "Subject" ? "activeClicked" : ""
+                }`}
                 onClick={() => setShowSubjectSubMenu(!showSubjectSubMenu)}
                 style={{ cursor: "pointer" }}
               >
-                <CDBSidebarMenuItem icon="fas fa-book">Subjects</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem icon="fas fa-book">
+                  Subjects
+                </CDBSidebarMenuItem>
               </div>
               {showSubjectSubMenu && (
                 <div style={{ paddingLeft: "20px" }}>
                   <NavLink
-                    className={selectedMenuItem === "AddSubject" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("AddSubject", "/subject/add")}
+                    className={
+                      selectedMenuItem === "AddSubject" ? "activeClicked" : ""
+                    }
+                    onClick={() =>
+                      handleMenuClick("AddSubject", "/subject/add")
+                    }
                     activeClassName="activeClicked"
                   >
-                    <CDBSidebarMenuItem icon="fas fa-plus">
+                    <CDBSidebarMenuItem icon="fas fa-book-medical">
                       Add Subject
                     </CDBSidebarMenuItem>
                   </NavLink>
                   <NavLink
-                    className={selectedMenuItem === "RemoveSubject" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("RemoveSubject", "/subject/remove")}
+                    className={
+                      selectedMenuItem === "RemoveSubject"
+                        ? "activeClicked"
+                        : ""
+                    }
+                    onClick={() =>
+                      handleMenuClick("RemoveSubject", "/subject/remove")
+                    }
                     activeClassName="activeClicked"
                   >
-                    <CDBSidebarMenuItem icon="fas fa-minus">
+                    <CDBSidebarMenuItem
+                      icon="fas fa-times-circle
+                    
+                    
+                    "
+                    >
                       Remove Subject
                     </CDBSidebarMenuItem>
                   </NavLink>
                 </div>
               )}
             </div>
-
           </CDBSidebarMenu>
         </CDBSidebarContent>
 

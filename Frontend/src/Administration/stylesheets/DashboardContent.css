@@ -4,12 +4,18 @@
     font-family: Arial, sans-serif;
     color: #333;
   }
+
+.dashboard-header {
+ 
+  position: relative; /* This makes it scroll with the page */
+}
   
   /* Header */
   .dashboard-header h1 {
     font-size: 24px;
     text-align: center;
     margin-bottom: 20px;
+    color: black;
   }
   
   /* Data Cards */
@@ -121,4 +127,24 @@
     font-size: 16px;
     line-height: 1.5;
   }
+  .logout-container {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    
+  }
   
+  .logout-icon {
+    font-size: 1.5rem;
+    color: #001F54;
+    margin-right: 5rem;
+    transition: color 0.3s ease;
+  }
+  
+  .logout-icon:hover {
+    color: #ff4d4d;
+  }
+ 
