@@ -35,12 +35,12 @@ const AddDefaultTimetable = () => {
     setSubjectOptions([
       { name: "Mathematics", code: "MTH101" },
       { name: "Physics", code: "PHY101" },
-      { name: "Computer Science", code: "CS101" }
+      { name: "Computer Science", code: "CS101" },
     ]);
     setFacultyOptions([
       { name: "Dr. A", id: "FAC001" },
       { name: "Prof. B", id: "FAC002" },
-      { name: "Mr. C", id: "FAC003" }
+      { name: "Mr. C", id: "FAC003" },
     ]);
     setRoomOptions(["Room 101", "Room 102", "Room 103"]);
   }, []);
@@ -86,40 +86,52 @@ const AddDefaultTimetable = () => {
   };
 
   const renderTimetable = () => {
-    // Initialize a timetable structure with empty values for each day and timeslot
     const timeSlots = [
-      "8:00 AM - 9:00 AM", "9:00 AM - 10:00 AM", "10:00 AM - 11:00 AM", 
-      "11:00 AM - 12:00 PM", "12:00 PM - 1:00 PM", "1:00 PM - 2:00 PM", 
-      "2:00 PM - 3:00 PM", "3:00 PM - 4:00 PM", "4:00 PM - 5:00 PM"
+      "8:00 AM - 9:00 AM",
+      "9:00 AM - 10:00 AM",
+      "10:00 AM - 11:00 AM",
+      "11:00 AM - 12:00 PM",
+      "12:00 PM - 1:00 PM",
+      "1:00 PM - 2:00 PM",
+      "2:00 PM - 3:00 PM",
+      "3:00 PM - 4:00 PM",
+      "4:00 PM - 5:00 PM",
     ];
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-    
-    // Initialize an empty timetable grid with "No lectures" as the default message
+
     const timetableGrid = days.map((day) => ({
       day,
-      slots: timeSlots.map(() => "No lectures")
+      slots: timeSlots.map(() => "No lectures"),
     }));
 
-    // Populate timetable grid with added entries
     timetable.forEach((entry) => {
       const dayIndex = days.indexOf(entry.day);
-      const slotIndex = entry.lectureNumber - 1; // assuming lectureNumber starts from 1
+      const slotIndex = entry.lectureNumber - 1;
       timetableGrid[dayIndex].slots[slotIndex] = `${entry.subject} (${entry.faculty}) - ${entry.room} - ${entry.startTime} to ${entry.endTime}`;
     });
 
     return (
       <div className="timetable-grid">
-        {timetableGrid.map((dayEntry, index) => (
-          <div key={index} className="day-column">
-            <h4>{dayEntry.day}</h4>
-            {dayEntry.slots.map((slot, i) => (
-              <div key={i} className="slot">
-                <p>{timeSlots[i]}</p>
-                <p>{slot}</p>
-              </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Day/Time</th>
+              {timeSlots.map((slot, index) => (
+                <th key={index}>{slot}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {timetableGrid.map((dayEntry, index) => (
+              <tr key={index}>
+                <td>{dayEntry.day}</td>
+                {dayEntry.slots.map((slot, i) => (
+                  <td key={i}>{slot}</td>
+                ))}
+              </tr>
             ))}
-          </div>
-        ))}
+          </tbody>
+        </table>
       </div>
     );
   };
@@ -127,137 +139,174 @@ const AddDefaultTimetable = () => {
   return (
     <div className="add-timetable-container">
       <h2>Add Timetable</h2>
-      <div className="form-container">
-        <div className="form-group">
-          <label htmlFor="department-name">Department Name</label>
-          <input
-            type="text"
-            id="department-name"
-            value={departmentName}
-            onChange={(e) => setDepartmentName(e.target.value)}
-            placeholder="Enter Department Name"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="class-selection">Course/Section/Year</label>
-          <input
-            list="class-options"
-            id="class-selection"
-            value={selectedClass}
-            onChange={handleClassChange}
-            placeholder="Search Course/Section/Year"
-          />
-          <datalist id="class-options">
-            {classOptions.map((option, index) => (
-              <option key={index} value={option} />
-            ))}
-          </datalist>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="lecture-day">Lecture Day</label>
-          <select
-            id="lecture-day"
-            value={lectureDay}
-            onChange={(e) => setLectureDay(e.target.value)}
-          >
-            {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map(
-              (day, index) => (
-                <option key={index} value={day}>
-                  {day}
-                </option>
-              )
-            )}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="lecture-number">Lecture Number</label>
-          <select
-            id="lecture-number"
-            value={lectureNumber}
-            onChange={(e) => setLectureNumber(e.target.value)}
-          >
-            {[1, 2, 3, 4, 5, 6, 7].map((number) => (
-              <option key={number} value={number}>
-                {number}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="subject">Subject</label>
-          <input
-            list="subject-options"
-            id="subject"
-            value={selectedSubject}
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            placeholder="Search Subject"
-          />
-          <datalist id="subject-options">
-            {subjectOptions.map((subject, index) => (
-              <option key={index} value={`${subject.name} (${subject.code})`} />
-            ))}
-          </datalist>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="faculty">Faculty</label>
-          <input
-            list="faculty-options"
-            id="faculty"
-            value={selectedFaculty}
-            onChange={(e) => setSelectedFaculty(e.target.value)}
-            placeholder="Search Faculty"
-          />
-          <datalist id="faculty-options">
-            {facultyOptions.map((faculty, index) => (
-              <option key={index} value={`${faculty.name} (${faculty.id})`} />
-            ))}
-          </datalist>
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="start-time">Start Time</label>
-          <input
-            type="time"
-            id="start-time"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="end-time">End Time</label>
-          <input
-            type="time"
-            id="end-time"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="room">Room</label>
-          <select
-            id="room"
-            value={selectedRoom}
-            onChange={(e) => setSelectedRoom(e.target.value)}
-          >
-            {roomOptions.map((room, index) => (
-              <option key={index} value={room}>
-                {room}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <button onClick={handleAddTimetable}>Add Timetable</button>
-        </div>
-      </div>
+      <table className="form-table">
+        <tbody>
+          <tr>
+            <td>
+              <label htmlFor="department-name">Department Name</label>
+            </td>
+            <td>
+              <input
+                type="text"
+                id="department-name"
+                value={departmentName}
+                onChange={(e) => setDepartmentName(e.target.value)}
+                placeholder="Enter Department Name"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="class-selection">Course/Section/Year</label>
+            </td>
+            <td>
+              <input
+                list="class-options"
+                id="class-selection"
+                value={selectedClass}
+                onChange={handleClassChange}
+                placeholder="Search Course/Section/Year"
+              />
+              <datalist id="class-options">
+                {classOptions.map((option, index) => (
+                  <option key={index} value={option} />
+                ))}
+              </datalist>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="lecture-day">Lecture Day</label>
+            </td>
+            <td>
+              <select
+                id="lecture-day"
+                value={lectureDay}
+                onChange={(e) => setLectureDay(e.target.value)}
+              >
+                {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map(
+                  (day, index) => (
+                    <option key={index} value={day}>
+                      {day}
+                    </option>
+                  )
+                )}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="lecture-number">Lecture Number</label>
+            </td>
+            <td>
+              <select
+                id="lecture-number"
+                value={lectureNumber}
+                onChange={(e) => setLectureNumber(e.target.value)}
+              >
+                {[1, 2, 3, 4, 5, 6, 7].map((number) => (
+                  <option key={number} value={number}>
+                    {number}
+                  </option>
+                ))}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="subject">Subject</label>
+            </td>
+            <td>
+              <input
+                list="subject-options"
+                id="subject"
+                value={selectedSubject}
+                onChange={(e) => setSelectedSubject(e.target.value)}
+                placeholder="Search Subject"
+              />
+              <datalist id="subject-options">
+                {subjectOptions.map((subject, index) => (
+                  <option
+                    key={index}
+                    value={`${subject.name} (${subject.code})`}
+                  />
+                ))}
+              </datalist>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="faculty">Faculty</label>
+            </td>
+            <td>
+              <input
+                list="faculty-options"
+                id="faculty"
+                value={selectedFaculty}
+                onChange={(e) => setSelectedFaculty(e.target.value)}
+                placeholder="Search Faculty"
+              />
+              <datalist id="faculty-options">
+                {facultyOptions.map((faculty, index) => (
+                  <option
+                    key={index}
+                    value={`${faculty.name} (${faculty.id})`}
+                  />
+                ))}
+              </datalist>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="start-time">Start Time</label>
+            </td>
+            <td>
+              <input
+                type="time"
+                id="start-time"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="end-time">End Time</label>
+            </td>
+            <td>
+              <input
+                type="time"
+                id="end-time"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label htmlFor="room">Room</label>
+            </td>
+            <td>
+              <select
+                id="room"
+                value={selectedRoom}
+                onChange={(e) => setSelectedRoom(e.target.value)}
+              >
+                {roomOptions.map((room, index) => (
+                  <option key={index} value={room}>
+                    {room}
+                  </option>
+                ))}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td colSpan="2" style={{ textAlign: "center" }}>
+              <button onClick={handleAddTimetable}>Add Timetable</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       {/* Display Timetable */}
       <div className="timetable-display">

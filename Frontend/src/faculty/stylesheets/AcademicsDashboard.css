@@ -26,11 +26,14 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   justify-items: center;
+  margin-right:2rem;
 }
 .icon-grid-2{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
+  margin-right:2rem;
+  glyph-orientation-horizontal: 3rem;
   justify-items: center;
 }
 
@@ -220,7 +223,7 @@ th.out-of-header {
 
   .icon-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .icon-card {
@@ -245,7 +248,7 @@ th.out-of-header {
 
   .icon-grid {
     grid-template-columns: 1fr;
-    gap: 1.2rem;
+    gap: 1rem;
   }
 
   .icon-card {
