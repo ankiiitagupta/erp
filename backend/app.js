@@ -301,11 +301,11 @@ app.get("/api/timetablebydate", (req, res) => {
               t.DayOfWeek, 
               t.StartTime, 
               t.EndTime, 
-              t.RoomNumber, 
               t.LectureNumber, 
               t.LectureDate,
               s.SubjectID AS SubjectCode, 
-              a.AttendanceStatus
+              a.AttendanceStatus,
+              a.EventId
           FROM 
               student AS st
           JOIN 
@@ -330,7 +330,7 @@ app.get("/api/timetablebydate", (req, res) => {
               AND t.LectureDate = ?  -- Replace with dynamic date input
             
           ORDER BY 
-              t.StartTime;`,
+              t.LectureNumber;`,
     [RollNO, LectureDate],
     (err, results) => {
       if (err) {
@@ -1500,13 +1500,13 @@ WHERE
 
 
 
-// get the year and section of coordinators
+// get the year and section  and course of coordinators
 app.get("/api/yearandsectionofcoordinator", (req, res) => {
   const { facultyID } = req.query;
 
   db.query(
     `
-    select AssignedYear,AssignedSection from role_assignments where facultyID=? and role_id=2;
+    select AssignedYear,AssignedSection, AssignedCourse from role_assignments where facultyID=? and role_id=2;
 
     `,
     [facultyID],
@@ -1530,6 +1530,7 @@ app.post("/api/postevents", (req, res) => {
     OrganizedBy,
     Section,
     YearOfStudy,
+    course
   } = req.body;
 
   // Validate required fields
@@ -1541,13 +1542,13 @@ app.post("/api/postevents", (req, res) => {
 
   const query = `
     INSERT INTO Events 
-    (EventName, EventDescription, EventDate, StartTime, EndTime, OrganizedBy, Section, YearOfStudy, CreatedAt)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    (EventName, EventDescription, EventDate, StartTime, EndTime, OrganizedBy, Section, YearOfStudy, CreatedAt, Course)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)
   `;
 
   db.query(
     query,
-    [EventName, EventDescription, EventDate, StartTime, EndTime, OrganizedBy, Section, YearOfStudy, CreatedAt],
+    [EventName, EventDescription, EventDate, StartTime, EndTime, OrganizedBy, Section, YearOfStudy, CreatedAt,course],
     (err, result) => {
       if (err) {
         console.error("Error inserting event:", err);
@@ -1564,7 +1565,7 @@ app.get("/api/showeventsofcoordinator", (req, res) => {
 
   db.query(
     `
-    select EventID,EventName , EventDate,OrganizedBy,Section,YearOfStudy from events where OrganizedBy=?;
+    select EventID,EventName , EventDate,OrganizedBy,Section,YearOfStudy,Course from events where OrganizedBy=?;
 
     `,
     [facultyID],
@@ -1574,6 +1575,113 @@ app.get("/api/showeventsofcoordinator", (req, res) => {
     }
   );
 });
+
+//Time Table of Event date
+app.get("/api/Eventtimetable", (req, res) => {
+  const { date,yearOfStudy , Section,Course} = req.query;
+  
+
+  db.query(
+    `SELECT 
+    t.TimetableID,
+    s.SubjectName, 
+    f.Faculty_Name, 
+    t.StartTime, 
+    t.EndTime,
+    t.LectureNumber
+FROM 
+    timetable AS t
+LEFT JOIN 
+    subject AS s ON t.SubjectID = s.SubjectID
+LEFT JOIN 
+    faculty AS f ON s.FacultyID = f.FacultyID
+WHERE 
+    t.LectureDate = ? -- Replace with dynamic date input
+    AND t.YearOfStudy= ? -- Replace with dynamic year input
+    AND t.Section = ? -- Replace with dynamic section input
+    AND t.CourseID=?
+ORDER BY 
+    t.LectureNumber;
+
+`,
+    [ date,yearOfStudy,Section,Course],
+    (err, results) => {
+      if (err) {
+        res.status(500).send("Database query failed");
+        return;
+      }
+      res.json(results);
+    }
+  );
+});
+
+//Get List Of Studen of course section and year
+app.get('/api/getstudents', (req, res) => {
+  const { year, section, course } = req.query;
+  const query = `
+      
+SELECT 
+    s.RollNO, 
+    s.Stud_name 
+FROM 
+    student s
+JOIN 
+    enrollment e ON s.RollNO = e.RollNO
+JOIN 
+    course c ON e.CourseID = c.CourseID
+WHERE 
+    s.Stud_YearOfStudy = ?
+    AND s.Section = ? 
+    AND c.CourseID = ?;
+
+  `;
+
+  db.query(query, [year, section, course], (err, results) => {
+      if (err) {
+          console.error("Error fetching students:", err);
+          res.status(500).send("Error fetching students");
+      } else {
+          res.json(results);
+      }
+  });
+});
+
+
+
+
+app.post('/api/markeventattendance', (req, res) => {
+  const attendanceData = req.body;
+
+  // Format data for insertion
+  const formattedAttendance = attendanceData.map(({ RollNO, FacultyID, AttendanceStatus, LectureNumber, LectureDate, EventID }) => {
+      return [RollNO, FacultyID, AttendanceStatus, LectureNumber, LectureDate, EventID];
+  });
+
+  const attendanceQuery = `
+    INSERT INTO attendance (RollNO, FacultyID, AttendanceStatus, LectureNumber, LectureDate, EventId)
+    VALUES (?, ?, ?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+        AttendanceStatus = VALUES(AttendanceStatus),
+        FacultyID = VALUES(FacultyID),
+        LectureNumber = VALUES(LectureNumber),
+        LectureDate = VALUES(LectureDate),
+        EventId = VALUES(EventId);
+`;
+
+
+  // Execute all queries in a loop without promises
+  formattedAttendance.forEach((data) => {
+      db.query(attendanceQuery, data, (error, result) => {
+          if (error) {
+              console.error('Error inserting/updating attendance:', error);
+              return res.status(500).send('Failed to mark attendance.');
+          }
+      });
+  });
+
+  res.status(200).send('Attendance marked successfully.');
+});
+
 
 
 

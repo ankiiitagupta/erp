@@ -72,10 +72,16 @@ const StudentAttendance = ({ facultyID, resetFlags }) => {
                 </div>
               </>
             )}
-            <div className="icon-card" onClick={() => updateView("eventAttendance")}>
-              <img src={showAttendanceByClassIcon} alt="Event Attendance" className="icon" />
-              <p>Event Attendance</p>
-            </div>
+            {selectedRole === "coordinator" && (
+              <>
+                <div className="icon-card" onClick={() => updateView("eventAttendance")}>
+                  <img src={showAttendanceByClassIcon} alt="Event Attendance" className="icon" />
+                  <p>Event Attendance</p>
+
+                </div>
+              </>
+            )}
+
 
 
           </div>

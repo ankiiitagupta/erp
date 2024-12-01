@@ -23,6 +23,9 @@ const TodaysTimeTable = (props) => {
                 status = "Absent";
                 backgroundColor = "rgba(255, 99, 132, 1)"; // Red
                 
+              }else if (lecture.AttendanceStatus == 1 && lecture.EventId != null) {
+                status = "Event attendance Marked";
+                backgroundColor = "rgba(245, 40, 145, 0.8)"; // Pink
               } else if (lecture.AttendanceStatus == 1) {
                 status = "Present";
                 backgroundColor = "rgba(75, 192, 192, 0.5)"; // Green

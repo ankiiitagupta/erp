@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../../axios";
 
-const CreateEvent = ({ setView, setEvents, facultyID ,year,section}) => {
+const CreateEvent = ({ setView, setEvents, facultyID ,year,section,course}) => {
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -16,7 +16,7 @@ const CreateEvent = ({ setView, setEvents, facultyID ,year,section}) => {
   
 const handleSubmit = (e) => {
     e.preventDefault();
-  
+    console.log(course);
     const newEvent = {
       EventName: eventName,
       EventDescription: eventDescription,
@@ -27,6 +27,7 @@ const handleSubmit = (e) => {
       Section: section,
       YearOfStudy: year,
       CreatedAt: new Date().toISOString(),
+      course:course,
     };
   
     axios
