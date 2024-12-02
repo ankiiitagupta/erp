@@ -16,8 +16,7 @@ const AdminSidebar = ({
   setAddTimetableFlag,
   setAddFacultyFlag,
   setEditFacultyFlag,
-  setDeleteFacultyFlag,
-  setDeleteStudentFlag,
+  
   setEditStudentFlag,
   setAddStudentFlag,
   resetFlags,
@@ -154,16 +153,7 @@ const AdminSidebar = ({
                   >
                     <CDBSidebarMenuItem icon="fas fa-user-edit">Edit Faculty</CDBSidebarMenuItem>
                   </NavLink>
-                  <NavLink
-                    className={selectedMenuItem === "DeleteFaculty" ? "activeClicked" : ""}
-                    onClick={() => {
-                      setDeleteFacultyFlag(true);
-                      setSelectedMenuItem("DeleteFaculty");
-                    }}
-                    activeClassName="activeClicked"
-                  >
-                    <CDBSidebarMenuItem icon="fas fa-user-minus">Delete Faculty</CDBSidebarMenuItem>
-                  </NavLink>
+                  
                 </div>
               )}
             </div>
@@ -199,16 +189,7 @@ const AdminSidebar = ({
                   >
                     <CDBSidebarMenuItem icon="fas fa-pencil">Edit Student</CDBSidebarMenuItem>
                   </NavLink>
-                  <NavLink
-                    className={selectedMenuItem === "RemoveStudent" ? "activeClicked" : ""}
-                    onClick={() => {
-                      setDeleteStudentFlag(true);
-                      setSelectedMenuItem("RemoveStudent");
-                    }}
-                    activeClassName="activeClicked"
-                  >
-                    <CDBSidebarMenuItem icon="fas fa-user-minus">Remove Student</CDBSidebarMenuItem>
-                  </NavLink>
+                 
                 </div>
               )}
             </div>

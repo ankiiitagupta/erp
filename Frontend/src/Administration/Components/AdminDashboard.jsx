@@ -74,8 +74,6 @@ const AdminDashboard = () => {
           setAddStudentFlag={(flag) => setFlags((prev) => ({ ...prev, AddStudentFlag: flag }))}
           setEditStudentFlag={(flag) => setFlags((prev) => ({ ...prev, EditStudentFlag: flag }))}
           setEditFacultyFlag={(flag) => setFlags((prev) => ({ ...prev, EditFacultyFlag: flag }))}
-          setDeleteStudentFlag={(flag) => setFlags((prev) => ({ ...prev, DeleteStudentFlag: flag }))}
-          setDeleteFacultyFlag={(flag) => setFlags((prev) => ({ ...prev, DeleteFacultyFlag: flag }))}
           admin_id={admin_id}
           resetFlags={resetFlags}
         />
