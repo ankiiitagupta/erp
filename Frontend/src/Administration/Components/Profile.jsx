@@ -3,48 +3,48 @@ import "../stylesheets/Adminprofile.css";
 
 const Profile = () => {
   return (
-    <div className="profile-container">
-      <div className="profile-header">
-        <div className="profile-picture"></div>
-        <div className="profile-info">
+    <div className="adprofile-container">
+      <div className="adprofile-header">
+        <div className="adprofile-picture"></div>
+        <div className="adprofile-info">
           <h3>Name</h3>
           <p>Mail ID</p>
           <p>Position</p>
         </div>
       </div>
-      <div className="profile-body">
+      <div className="adprofile-body">
         <div className="tabs">
           <button className="active">Personal</button>
           <button>Academic</button>
         </div>
-        <div className="personal-details">
+        <div className="adpersonal-details">
           <div className="edit-btn">
             <button>Edit</button>
           </div>
           <form>
-            <div className="form-row">
+            <div className="adform-row">
               <label>First Name:</label>
               <input type="text" placeholder="Enter First Name" />
               <label>Last Name:</label>
               <input type="text" placeholder="Enter Last Name" />
             </div>
-            <div className="form-group">
+            <div className="adform-group">
               <label>Mail ID:</label>
               <input type="email" placeholder="Enter Mail ID" />
             </div>
-            <div className="form-group">
+            <div className="adform-group">
               <label>Phone Number:</label>
               <input type="tel" placeholder="Enter Phone Number" />
             </div>
-            <div className="form-group">
+            <div className="adform-group">
               <label>Address:</label>
               <input type="text" placeholder="Enter Address" />
             </div>
-            <div className="form-group">
+            <div className="adform-group">
               <label>Date of Birth:</label>
               <input type="date" />
             </div>
-            <div className="form-group">
+            <div className="adform-group">
               <label>Bio:</label>
               <textarea placeholder="Enter Bio"></textarea>
             </div>
