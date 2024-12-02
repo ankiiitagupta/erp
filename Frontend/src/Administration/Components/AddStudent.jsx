@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import "../stylesheets/AddStudent.css";
 
@@ -74,10 +73,10 @@ const AddStudent = () => {
   };
 
   return (
-    <div className="form-container">
+    <div className="addst-form-container">
       <h1>Add Student</h1>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Student Name</label>
           <input
             type="text"
@@ -87,7 +86,7 @@ const AddStudent = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Email</label>
           <input
             type="email"
@@ -97,7 +96,7 @@ const AddStudent = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Contact</label>
           <input
             type="text"
@@ -107,7 +106,7 @@ const AddStudent = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Date of Birth</label>
           <input
             type="date"
@@ -117,7 +116,7 @@ const AddStudent = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Address</label>
           <textarea
             name="studAddress"
@@ -126,7 +125,7 @@ const AddStudent = () => {
             required
           ></textarea>
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Enrollment Status</label>
           <input
             type="text"
@@ -136,7 +135,7 @@ const AddStudent = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Gender</label>
           <select
             name="studGender"
@@ -149,7 +148,7 @@ const AddStudent = () => {
             <option value="Female">Female</option>
           </select>
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Year of Study</label>
           <input
             type="number"
@@ -159,7 +158,7 @@ const AddStudent = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Guardian Details</label>
           <textarea
             name="studGuardianDetails"
@@ -168,7 +167,7 @@ const AddStudent = () => {
             required
           ></textarea>
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Section</label>
           <input
             type="text"
@@ -178,7 +177,7 @@ const AddStudent = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Login ID</label>
           <input
             type="text"
@@ -188,7 +187,7 @@ const AddStudent = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Password</label>
           <input
             type="password"
@@ -198,16 +197,16 @@ const AddStudent = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="addst-form-group">
           <label>Photo</label>
           <input type="file" name="photo" onChange={handleChange} required />
         </div>
         <button type="submit">Add Student</button>
       </form>
-      {successMessage && <p className="success-message">{successMessage}</p>}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {successMessage && <p className="addst-success-message">{successMessage}</p>}
+      {errorMessage && <p className="addst-error-message">{errorMessage}</p>}
     </div>
   );
 };
 
-export default AddStudent;
+export default AddStudent

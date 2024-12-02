@@ -1,73 +1,110 @@
+/* AddStudent.css */
+.addst-form-container {
+  width: 90%;
+  max-width: 650px;
+  margin: 2rem auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 2rem;
+}
 
-.form-container {
-    max-width: 600px;
-    margin: 0 auto;
+.addst-form-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #001f54;
+}
+
+.addst-form-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.addst-form-group {
+  margin-bottom: 20px;
+}
+
+.addst-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #444444;
+}
+
+.addst-form-group input[type="text"],
+.addst-form-group input[type="email"],
+.addst-form-group input[type="date"],
+.addst-form-group input[type="number"],
+.addst-form-group input[type="password"],
+.addst-form-group textarea,
+.addst-form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #555555;
+  box-sizing: border-box;
+}
+
+.addst-form-group textarea {
+  resize: none;
+  height: 100px;
+}
+
+.addst-form-group input[type="file"] {
+  padding: 5px;
+}
+
+.addst-form-container button {
+  width: 100%;
+  padding: 12px;
+  background: #001f54;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addst-form-container button:hover {
+  background:white;
+  color:#001f54;
+  border:2px solid #001f54;
+}
+
+.addst-success-message {
+  margin-top: 20px;
+  color: #28a745;
+  font-weight: bold;
+  text-align: center;
+}
+
+.addst-error-message {
+  margin-top: 20px;
+  color: #dc3545;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .addst-form-container {
     padding: 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
-  h1 {
-    text-align: center;
-    color: #333;
+
+  .addst-form-container h1 {
+    font-size: 20px;
   }
-  
-  .form-group {
-    margin-bottom: 15px;
+
+  .addst-form-container button {
+    font-size: 14px;
   }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  input, textarea, select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-  }
-  
-  textarea {
-    resize: none;
-  }
-  
-  button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .success-message {
-    color: green;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  .error-message {
-    color: red;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  @media (max-width: 768px) {
-    .form-container {
-      padding: 10px;
-    }
-  
-    input, textarea, select, button {
-      font-size: 14px;
-    }
-  }
+}
