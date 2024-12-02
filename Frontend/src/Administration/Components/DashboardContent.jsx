@@ -20,12 +20,12 @@ const DashboardContent = () => {
     { title: "Holiday Announcement", details: "Details about holidays." },
   ];
 
-  const faculty = [
-    { name: "John Doe", department: "BTech", subject:"DSA" },
-    { name: "Jane Smith", department: "BTech" , subject:"DSA" },
-    { name: "Michael Brown", department: "BTech" , subject:"DSA" },
-    { name: "Sara White", department: "BTech", subject:"DSA"  },
-  ];
+  const [faculty, setFaculty] = useState([
+    { name: "John Doe", department: "BTech", subject: "DSA" },
+    { name: "Jane Smith", department: "BTech", subject: "DSA" },
+    { name: "Michael Brown", department: "BTech", subject: "DSA" },
+    { name: "Sara White", department: "BTech", subject: "DSA" },
+  ]);
 
   const students = [
     { name: "Alice Green", course: "Btech", Phone: "1223456" },
@@ -35,6 +35,10 @@ const DashboardContent = () => {
     { name: "Eva Black", course: "BCA", Phone: "1223456" },
     { name: "Frank White", course: "BBA", Phone: "1223456" },
   ];
+
+  const addFaculty = (newFaculty) => {
+    setFaculty((prevFaculty) => [...prevFaculty, newFaculty]);
+  };
 
   const handleLogout = () => {
     // Add your logout logic here
