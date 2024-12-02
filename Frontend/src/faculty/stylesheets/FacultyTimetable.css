@@ -21,11 +21,17 @@ h4 {
 
 .timetable-table td {
   text-align: center;
-  border-bottom: 0.1rem solid #f0f0f0;
-  font-size: 2vw; /* Dynamic font size based on viewport width */
+  
+  
   white-space: nowrap; /* Prevent text from wrapping */
   overflow: hidden; /* Hide overflowed text */
   text-overflow: ellipsis; /* Add ellipsis when text overflows */
+}
+.timetable-table td {
+  /* padding: 1rem; */
+  text-align: center;
+  border-bottom: 0.1rem solid #f0f0f0;
+  font-size: 0.95rem;
 }
 
 .faculty-timetable th,
@@ -61,6 +67,9 @@ h4 {
 
 .faculty-timetable .attendance-button {
   margin-top: 5px;
+  margin-bottom:1rem;
+  margin-left:0.8rem;
+  margin-right:0.5rem;
   padding: 4px 8px; /* Reduced padding */
   background-color: #4caf50;
   color: white;
@@ -68,6 +77,7 @@ h4 {
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s ease;
+  width:fit-content;
 }
 
 .faculty-timetable .attendance-button:hover {
