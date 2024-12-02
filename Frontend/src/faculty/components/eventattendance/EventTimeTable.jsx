@@ -1,4 +1,6 @@
 import React from "react";
+import "../../stylesheets/eventattendance/EventTimeTable.css";
+
 
 const EventTimeTable = ({ ttpass, handleLectureSelection, selectedLectures ,handleSelectAll}) => {
     return (
