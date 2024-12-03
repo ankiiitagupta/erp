@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import "../stylesheets/EditStudent.css";
+//   
 
 const EditStudent = () => {
   // Sample student data

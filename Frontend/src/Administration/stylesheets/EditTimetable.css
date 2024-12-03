@@ -1,0 +1,89 @@
+/* General container for timetable */
+.edit-timetable-container {
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  
+  .edit-timetable-title {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 24px;
+    color: #2baf8b;
+  }
+  
+  /* Timetable table styling */
+  .edit-timetable-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .edit-timetable-table th {
+    background-color: #2baf8b;
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .edit-timetable-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    cursor: pointer; /* Makes the cell clickable */
+  }
+  
+  .edit-timetable-table td:hover {
+    background-color: #f1f1f1; /* Highlight on hover */
+  }
+  
+  .edit-timetable-day {
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* Form container */
+  .edit-timetable-form-container {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .edit-timetable-form-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .edit-timetable-form-group {
+    margin-bottom: 15px;
+  }
+  
+  .edit-timetable-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .edit-timetable-input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .edit-timetable-submit-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .edit-timetable-submit-btn:hover {
+    background-color: #218838;
+  }
+  
