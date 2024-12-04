@@ -3,6 +3,7 @@ import "../stylesheets/AddStudent.css";
 
 const AddStudent = () => {
   const [formData, setFormData] = useState({
+    rollNo: "", // Added RollNo field
     studName: "",
     studEmail: "",
     studContact: "",
@@ -15,38 +16,36 @@ const AddStudent = () => {
     section: "",
     loginID: "",
     passwordHash: "",
-    photo: null,
   });
 
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formDataObj = new FormData();
-    for (let key in formData) {
-      formDataObj.append(key, formData[key]);
-    }
-
     try {
-      const response = await fetch("/api/addStudent", {
+      const response = await fetch(`http://localhost:3006/api/addStudent`, {
         method: "POST",
-        body: formDataObj,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         setSuccessMessage("Student added successfully!");
         setErrorMessage("");
         setFormData({
+          rollNo: "", // Reset RollNo
           studName: "",
           studEmail: "",
           studContact: "",
@@ -59,7 +58,6 @@ const AddStudent = () => {
           section: "",
           loginID: "",
           passwordHash: "",
-          photo: null,
         });
       } else {
         const error = await response.json();
@@ -75,7 +73,17 @@ const AddStudent = () => {
   return (
     <div className="addst-form-container">
       <h1>Add Student</h1>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form onSubmit={handleSubmit}>
+        <div className="addst-form-group">
+          <label>Roll Number</label>
+          <input
+            type="text"
+            name="rollNo"
+            value={formData.rollNo}
+            onChange={handleChange}
+            required
+          />
+        </div>
         <div className="addst-form-group">
           <label>Student Name</label>
           <input
@@ -197,10 +205,6 @@ const AddStudent = () => {
             required
           />
         </div>
-        <div className="addst-form-group">
-          <label>Photo</label>
-          <input type="file" name="photo" onChange={handleChange} required />
-        </div>
         <button type="submit">Add Student</button>
       </form>
       {successMessage && <p className="addst-success-message">{successMessage}</p>}
@@ -209,4 +213,4 @@ const AddStudent = () => {
   );
 };
 
-export default AddStudent
+export default AddStudent;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "../stylesheets/DashboardContent.css"; // CSS for the new component
@@ -7,12 +7,17 @@ const DashboardContent = () => {
   const [open, setOpen] = useState(false);
   const [openNotice, setOpenNotice] = useState({});
   const [value, onChange] = useState(new Date());
+  // State for total counts
+  const [studentCount, setStudentCount] = useState(0);
+  const [facultyCount, setFacultyCount] = useState(0);
+  const [adminCount, setAdminCount] = useState(0);
+  const [departmentCount, setDepartmentCount] = useState(0);
 
   const dataCounts = [
-    { label: "Faculty", count: 10 },
-    { label: "Students", count: 120 },
-    { label: "Admins", count: 5 },
-    { label: "Departments", count: 8 },
+    { label: "Faculty", count: facultyCount },
+    { label: "Students", count: studentCount },
+    { label: "Admins", count: adminCount },
+    { label: "Departments", count: departmentCount },
   ];
 
   const notices = [
@@ -58,6 +63,47 @@ const DashboardContent = () => {
   };
 
   const groupedStudents = groupStudentsByCourse();
+  
+  const fetchCounts = async () => {
+    try {
+      const studentResponse = await fetch("http://localhost:3006/api/studentCount");
+      const facultyResponse = await fetch("http://localhost:3006/api/facultyCount");
+      const adminResponse = await fetch("http://localhost:3006/api/adminCount");
+      const departmentResponse = await fetch("http://localhost:3006/api/departmentCount");
+      if (studentResponse.ok) {
+        const studentData = await studentResponse.json();
+        setStudentCount(studentData.totalstudents);
+      } else {
+        console.error("Failed to fetch student count");
+      }
+
+      if (facultyResponse.ok) {
+        const facultyData = await facultyResponse.json();
+        setFacultyCount(facultyData.totalfaculties);
+      } else {
+        console.error("Failed to fetch faculty count");
+      }
+      if (adminResponse.ok) {
+        const adminData = await adminResponse.json();
+        setAdminCount(adminData.totaladmins);
+      } else {
+        console.error("Failed to fetch admin count");
+      }
+      if (departmentResponse.ok) {
+        const departmentData = await departmentResponse.json();
+        setDepartmentCount(departmentData.totaldepartment);
+      } else {
+        console.error("Failed to fetch department count");
+      }
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    }
+  };
+
+  // Call fetchCounts when component mounts
+  useEffect(() => {
+    fetchCounts();
+  }, []);
 
   return (
     <div className="dashboard-wrapper">

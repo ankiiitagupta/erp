@@ -1682,8 +1682,129 @@ app.post('/api/markeventattendance', (req, res) => {
   res.status(200).send('Attendance marked successfully.');
 });
 
+/*
+ * ********************************************************************
+ *                             Admin                            *
+ * ********************************************************************/
+// Add Student API
+
+// API to insert a new student
+app.post('/api/addStudent', (req, res) => {
+  const {
+    rollNo,
+    studName,
+    studEmail,
+    studContact,
+    studDOB,
+    studAddress,
+    studEnrollmentStatus,
+    studGender,
+    studYearOfStudy,
+    studGuardianDetails,
+    section,
+    loginID,
+    passwordHash
+  } = req.body;
+
+  const query = `
+  INSERT INTO student (
+    RollNO,
+    Stud_name,
+    Stud_Email,
+    Stud_Contact,
+    Stud_DOB,
+    Stud_Address,
+    Stud_EnrollmentStatus,
+    Stud_Gender,
+    Stud_YearOfStudy,
+    Stud_GuardianDetails,
+    Section,
+    LoginID,
+    PasswordHash
+  ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
+
+const values = [
+  rollNo,
+  studName,
+  studEmail,
+  studContact,
+  studDOB,
+  studAddress,
+  studEnrollmentStatus,
+  studGender,
+  studYearOfStudy,
+  studGuardianDetails,
+  section,
+  loginID,
+  passwordHash
+];
 
 
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error('Error inserting student:', err);
+      return res.status(500).json({ message: 'Failed to add student.' });
+    }
+
+    return res.status(200).json({ message: 'Student added successfully!' });
+  });
+});
+
+
+// Endpoint to get total student count
+app.get('/api/studentCount', (req, res) => {
+  const query = 'SELECT COUNT(*) AS totalstudents FROM student';
+
+  db.query(query, (err, result) => {
+    if (err) {
+      res.status(500).json({ message: 'Error counting student' });
+    } else {
+      res.status(200).json({ totalstudents: result[0].totalstudents });
+    }
+  });
+});
+
+// Endpoint to get total faculty count
+app.get('/api/facultyCount', (req, res) => {
+  const query = 'SELECT COUNT(*) AS totalfaculties FROM faculty';
+
+  db.query(query, (err, result) => {
+    if (err) {
+      res.status(500).json({ message: 'Error counting faculty' });
+    } else {
+      res.status(200).json({ totalfaculties: result[0].totalfaculties });
+    }
+  });
+});
+
+
+// Endpoint to get total admin count
+app.get('/api/adminCount', (req, res) => {
+  const query = 'SELECT COUNT(*) AS totaladmins FROM administration';
+
+
+  db.query(query, (err, result) => {
+    if (err) {
+      res.status(500).json({ message: 'Error counting faculty' });
+    } else {
+      res.status(200).json({ totaladmins: result[0].totaladmins });
+    }
+  });
+});
+// Endpoint to get total department count
+app.get('/api/departmentCount', (req, res) => {
+  const query = 'SELECT COUNT(*) AS totaldepartment FROM department;';
+
+
+  db.query(query, (err, result) => {
+    if (err) {
+      res.status(500).json({ message: 'Error counting faculty' });
+    } else {
+      res.status(200).json({ totaldepartment: result[0].totaldepartment });
+    }
+  });
+});
 
 
 // Start the server on the specified port
