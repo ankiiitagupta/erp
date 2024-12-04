@@ -13,6 +13,8 @@ const MarkStudentAttendance = ({ facultyID }) => {
   const [totalStudents, setTotalStudents] = useState(0); // Total students state
   const [presentStudents, setPresentStudents] = useState(0); // Present students state
   const [absentStudents, setAbsentStudents] = useState(0); // Absent students state
+  const [confirmPopupVisible, setConfirmPopupVisible] = useState(false);
+  const [absentStudentsList, setAbsentStudentsList] = useState([]);
 
   useEffect(() => {
     if (selectedDate !== "") {
@@ -64,7 +66,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
         const initialAttendance = response.data.map((student) => ({
           status: student.AttendanceStatus === "not marked" ? null : Number(student.AttendanceStatus),
         }));
-        
+
         setAttendance(initialAttendance);
       } else {
         console.error("Invalid student data format");
@@ -88,32 +90,52 @@ const MarkStudentAttendance = ({ facultyID }) => {
   };
 
   const handleSubmit = () => {
+    // Ensure all attendance is marked
+    const unmarkedStudents = attendance.filter((att) => att.status === null);
+    if (unmarkedStudents.length > 0) {
+      alert("Please mark attendance for all students before submitting.");
+      return;
+    }
+
+    // List absent students for confirmation
+    const absentStudents = students
+      .filter((_, index) => attendance[index]?.status === 0)
+      .map((student) => student.Stud_name);
+
+    setAbsentStudentsList(absentStudents);
+    setConfirmPopupVisible(true); // Show the confirmation modal
+  };
+  const confirmSubmit = () => {
     const attendanceData = students.map((student, index) => ({
       studentID: student.RollNO,
       lectureDate: selectedDate,
       lectureNumber: selectedLecture,
       status: attendance[index]?.status ?? null,
       facultyID: facultyID,
-      subjectID: lectures.find((lec) => lec.LectureNumber == selectedLecture)?.SubjectID,
+      subjectID: lectures.find((lec) => lec.LectureNumber == selectedLecture)
+        ?.SubjectID,
     }));
-    console.log(attendanceData)
 
     axios
       .post(`${API_URL}/api/markattendance`, { attendanceData })
       .then(() => {
         setShowSuccessPopup(true);
+        setConfirmPopupVisible(false); // Close confirmation modal
         setStudents([]);
         setAttendance([]);
         setSelectedDate("");
         setSelectedLecture("");
-        setTotalStudents(0); // Reset total students after submission
-        setPresentStudents(0); // Reset present students after submission
-        setAbsentStudents(0); // Reset absent students after submission
+        setTotalStudents(0);
+        setPresentStudents(0);
+        setAbsentStudents(0);
       })
       .catch((error) => {
         console.error("Failed to mark attendance", error);
       });
   };
+
+  const cancelSubmit = () => setConfirmPopupVisible(false); // Close confirmation modal
+
 
   const handleClosePopup = () => setShowSuccessPopup(false);
 
@@ -203,6 +225,27 @@ const MarkStudentAttendance = ({ facultyID }) => {
             <p>No students found for this lecture.</p>
           )}
         </div>
+        {/* Confirmation Popup */}
+        {confirmPopupVisible && (
+          <div className="popup-overlay">
+            <div className="popup-box">
+              <h3>Absent Students</h3>
+              <ul className="absent-list">
+                {absentStudentsList.map((student, index) => (
+                  <li key={index}>{student}</li>
+                ))}
+              </ul>
+              <div className="popup-buttons">
+                <button className="submit-btn" onClick={confirmSubmit}>
+                  Submit
+                </button>
+                <button className="cancel-btn" onClick={cancelSubmit}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Action Buttons */}
         <div className="btns">

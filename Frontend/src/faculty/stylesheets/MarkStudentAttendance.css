@@ -127,7 +127,11 @@ button.search-btn:hover {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    position: sticky; /* Make it sticky */
+    top: 1rem; /* Adjust based on the distance from the top */
+    height: fit-content; /* Ensure it doesn't expand unnecessarily */
 }
+
 
 /* Sidebar Cards */
 .card {
@@ -259,4 +263,59 @@ button.search-btn:hover {
   .submit:hover {
     background-color: #388e3c;
   }
+
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 400px;
+  }
+  
+  .absent-list {
+    margin: 10px 0;
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  .absent-list li {
+    margin: 5px 0;
+  }
+  
+  .popup-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+  }
+  
+  .submit-btn {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .cancel-btn {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
   
