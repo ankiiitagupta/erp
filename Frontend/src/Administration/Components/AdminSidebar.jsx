@@ -13,10 +13,8 @@ const AdminSidebar = ({
   admin_id,
   setProfileUserFlag,
   setcreateNoticeFlag,
-  setAddTimetableFlag,
   setAddFacultyFlag,
   setEditFacultyFlag,
-  
   setEditStudentFlag,
   setAddStudentFlag,
   resetFlags,
@@ -26,8 +24,7 @@ const AdminSidebar = ({
   const [submenuVisibility, setSubmenuVisibility] = useState({
     academic: false,
     student: false,
-    department: false,
-    subject: false,
+    miscellaneous: false,
   });
 
   const navigate = useNavigate();
@@ -110,18 +107,6 @@ const AdminSidebar = ({
               <CDBSidebarMenuItem icon="fas fa-sticky-note">Notice</CDBSidebarMenuItem>
             </NavLink>
 
-            {/* Timetable */}
-            <NavLink
-              className={selectedMenuItem === "TimeTable" ? "activeClicked" : ""}
-              onClick={() => {
-                setAddTimetableFlag(true);
-                setSelectedMenuItem("TimeTable");
-              }}
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="fas fa-calendar-plus">Timetable</CDBSidebarMenuItem>
-            </NavLink>
-
             {/* Academic Section */}
             <div>
               <div
@@ -153,7 +138,6 @@ const AdminSidebar = ({
                   >
                     <CDBSidebarMenuItem icon="fas fa-user-edit">Edit Faculty</CDBSidebarMenuItem>
                   </NavLink>
-                  
                 </div>
               )}
             </div>
@@ -189,67 +173,20 @@ const AdminSidebar = ({
                   >
                     <CDBSidebarMenuItem icon="fas fa-pencil">Edit Student</CDBSidebarMenuItem>
                   </NavLink>
-                 
                 </div>
               )}
             </div>
 
-            {/* Department Section */}
+            {/* Miscellaneous Section */}
             <div>
               <div
-                aria-expanded={submenuVisibility.department ? "true" : "false"}
-                onClick={() => toggleSubmenu("department")}
+                aria-expanded={submenuVisibility.miscellaneous ? "true" : "false"}
+                onClick={() => toggleSubmenu("miscellaneous")}
                 style={{ cursor: "pointer" }}
               >
-                <CDBSidebarMenuItem icon="fas fa-building">Department</CDBSidebarMenuItem>
+                <CDBSidebarMenuItem icon="fas fa-ellipsis-h">Miscellaneous</CDBSidebarMenuItem>
               </div>
-              {submenuVisibility.department && (
-                <div style={{ paddingLeft: "20px" }}>
-                  <NavLink
-                    className={selectedMenuItem === "AddDepartment" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("AddDepartment", "/department/add")}
-                    activeClassName="activeClicked"
-                  >
-                    <CDBSidebarMenuItem icon="fas fa-plus">Add Department</CDBSidebarMenuItem>
-                  </NavLink>
-                  <NavLink
-                    className={selectedMenuItem === "RemoveDepartment" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("RemoveDepartment", "/department/remove")}
-                    activeClassName="activeClicked"
-                  >
-                    <CDBSidebarMenuItem icon="fas fa-minus">Remove Department</CDBSidebarMenuItem>
-                  </NavLink>
-                </div>
-              )}
-            </div>
-
-            {/* Subject Section */}
-            <div>
-              <div
-                aria-expanded={submenuVisibility.subject ? "true" : "false"}
-                onClick={() => toggleSubmenu("subject")}
-                style={{ cursor: "pointer" }}
-              >
-                <CDBSidebarMenuItem icon="fas fa-book">Subjects</CDBSidebarMenuItem>
-              </div>
-              {submenuVisibility.subject && (
-                <div style={{ paddingLeft: "20px" }}>
-                  <NavLink
-                    className={selectedMenuItem === "AddSubject" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("AddSubject", "/subject/add")}
-                    activeClassName="activeClicked"
-                  >
-                    <CDBSidebarMenuItem icon="fas fa-book-medical">Add Subject</CDBSidebarMenuItem>
-                  </NavLink>
-                  <NavLink
-                    className={selectedMenuItem === "RemoveSubject" ? "activeClicked" : ""}
-                    onClick={() => handleMenuClick("RemoveSubject", "/subject/remove")}
-                    activeClassName="activeClicked"
-                  >
-                    <CDBSidebarMenuItem icon="fas fa-times-circle">Remove Subject</CDBSidebarMenuItem>
-                  </NavLink>
-                </div>
-              )}
+              
             </div>
           </CDBSidebarMenu>
         </CDBSidebarContent>

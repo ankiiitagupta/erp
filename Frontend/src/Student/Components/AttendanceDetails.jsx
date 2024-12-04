@@ -45,7 +45,6 @@ const AttendanceDetails = ({ RollNO, students = [], error }) => {
 
     fetchSubjects();
   }, [RollNO]);
-
   useEffect(() => {
     const now = new Date();
     const year = now.getFullYear();
