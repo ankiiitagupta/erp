@@ -15,11 +15,11 @@ const Profile = () => {
       <div className="adprofile-body">
         <div className="tabs">
           <button className="active">Personal</button>
-          <button>Academic</button>
+          <button className="academic">Academic</button>
         </div>
         <div className="adpersonal-details">
-          <div className="edit-btn">
-            <button>Edit</button>
+          <div className="adedit-btn">
+            <button classname="adedit">Edit</button>
           </div>
           <form>
             <div className="adform-row">

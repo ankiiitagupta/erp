@@ -1,102 +1,173 @@
+.adprofile-container {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #ffffff;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  font-family: "Arial", sans-serif;
+}
 
-  
-  .adprofile-container {
-    max-width: 800px;
-    margin: 20px auto;
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  .adprofile-header {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    background-color: #d9e8e3;
-  }
-  
-  .adprofile-picture {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color: #a3c1b4;
-    margin-right: 20px;
-  }
-  
-  .adprofile-info h3 {
-    margin: 0;
-    font-size: 20px;
-  }
-  
-  .adprofile-info p {
-    margin: 5px 0;
-    color: #555;
-  }
-  
-  .adprofile-body {
-    padding: 20px;
-  }
-  
-  .adtabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-  }
-  
-  .adtabs button {
-    background-color: #d9e8e3;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .adtabs button.active {
-    background-color: #a3c1b4;
-  }
-  
-  .adpersonal-details {
-    position: relative;
-  }
-  
-  .adedit-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-  
-  .adedit-btn button {
-    background-color: #6b8e8e;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .adform-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-  
-  .adform-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  input,
-  textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
+.adprofile-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(90deg, #a3c1b4, #6b8e8e);
+  color: white;
+}
+
+.adprofile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #f2f2f2;
+  margin-right: 20px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.adprofile-info h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.adprofile-info p {
+  margin: 5px 0;
+  color: #f5f5f5;
+  font-size: 14px;
+}
+
+.adprofile-body {
+  padding: 20px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  /* margin-bottom: 20px; */
+}
+
+.tabs button {
+  background-color: #f5f5f5;
+  border: 1px solid #d9e8e3;
+  padding: 10px 25px;
+  color:#6b8e8e;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.tabs button:hover {
+  background-color: #e6f0eb;
+}
+
+.tabs button.active {
+  color: #6b8e8e;
+  background-color: white;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button .academic{
+  background-color: #6b8e8e;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.adpersonal-details {
+  background-color: #f8f8f8;
+  padding: 0 20px 20px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.adedit-btn {
+  /* position: relative; */
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px; /* Adjust to overlap slightly with the personal details box */
+  z-index: 1;
+  background-color: none;
+}
+
+.adedit{
+  display: flex;
+  justify-content: end;
+  justify-items: end;
+}
+
+.adedit-btn button {
+  background-color: #6b8e8e;
+  color: white;
+  border: none;
+  justify-content: end;
+  padding: 5px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  margin-right:0 ;
+  max-width: max-content;
+  /* margin-bottom:3rem; */
+}
+
+.adedit-btn button:hover {
+  background-color: #547c7c;
+}
+
+
+.adform-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.adform-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #6b8e8e;
+  box-shadow: 0 0 5px rgba(107, 142, 142, 0.5);
+}
+
+textarea {
+  resize: none;
+  height: 80px;
+}
+
+button {
+  cursor: pointer;
+  font-weight: bold;
+  background-color: none;
+}
