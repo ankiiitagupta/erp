@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-
+import "../stylesheets/EditStudent.css";
 
 const EditStudent = () => {
-  // Sample student data
   const [studentList, setStudentList] = useState([
     {
       id: 1,
@@ -37,109 +36,126 @@ const EditStudent = () => {
   ]);
 
   const [filteredStudents, setFilteredStudents] = useState(studentList);
-  const [editData, setEditData] = useState(null); // Stores the data being edited
-
+  const [searchQuery, setSearchQuery] = useState("");
+  const [editData, setEditData] = useState(null);
   const [filterCriteria, setFilterCriteria] = useState({
     course: "",
-    section: "",
-    year: "",
+    yearSection: "",
   });
 
-  // Handle filter changes
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilterCriteria((prev) => ({ ...prev, [name]: value }));
-
-    // Filter students based on selected criteria
-    const filtered = studentList.filter(
-      (student) =>
-        (value === "" || student[name] === value) &&
-        (name === "course" || filterCriteria.course === "" || student.course === filterCriteria.course) &&
-        (name === "section" || filterCriteria.section === "" || student.section === filterCriteria.section) &&
-        (name === "year" || filterCriteria.year === "" || student.year === filterCriteria.year)
+  // Filter students dynamically based on criteria
+  const filterStudents = (criteria) => {
+    const filtered = studentList.filter((student) =>
+      Object.keys(criteria).every(
+        (key) =>
+          criteria[key] === "" ||
+          (key === "yearSection"
+            ? `${student.year}/${student.section}` === criteria[key]
+            : student[key] === criteria[key])
+      )
     );
     setFilteredStudents(filtered);
   };
 
-  // Handle Edit
+  // Update filter criteria and trigger filtering
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    const updatedCriteria = { ...filterCriteria, [name]: value };
+    setFilterCriteria(updatedCriteria);
+    filterStudents(updatedCriteria);
+  };
+
+  // Handle search query
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    const filtered = studentList.filter(
+      (student) =>
+        student.name.toLowerCase().includes(query) ||
+        student.rollNumber.toLowerCase().includes(query)
+    );
+    setFilteredStudents(filtered);
+  };
+
+  // Handle edit functionality
   const handleEdit = (id) => {
     const student = studentList.find((item) => item.id === id);
     setEditData(student);
   };
 
-  // Handle Save after editing
+  // Save updated data
   const handleSave = () => {
-    setStudentList((prevList) =>
-      prevList.map((item) =>
-        item.id === editData.id ? { ...item, ...editData } : item
+    setStudentList((prev) =>
+      prev.map((student) =>
+        student.id === editData.id ? { ...student, ...editData } : student
       )
     );
-    setFilteredStudents((prevList) =>
-      prevList.map((item) =>
-        item.id === editData.id ? { ...item, ...editData } : item
-      )
-    );
-    setEditData(null); // Clear the edit form
+    filterStudents(filterCriteria); // Update filtered list
+    setEditData(null); // Close edit form
   };
 
-  // Handle Remove
+  // Remove student from the list
   const handleRemove = (id) => {
-    const confirmed = window.confirm("Are you sure you want to delete this student?");
-    if (confirmed) {
-      setStudentList((prevList) => prevList.filter((item) => item.id !== id));
-      setFilteredStudents((prevList) =>
-        prevList.filter((item) => item.id !== id)
+    if (window.confirm("Are you sure you want to delete this student?")) {
+      setStudentList((prev) => prev.filter((student) => student.id !== id));
+      setFilteredStudents((prev) =>
+        prev.filter((student) => student.id !== id)
       );
     }
   };
 
-  // Handle Change in Edit Form
+  // Handle form change during editing
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setEditData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div className="student-table-container">
-      <h2>Student List</h2>
+    <div className="edit-student-container">
+      <h2 className="edit-student-header">Student List</h2>
 
-      <div className="filter-container">
-        <label>Department:</label>
-        <select
-          name="course"
-          value={filterCriteria.course}
-          onChange={handleFilterChange}
-        >
-          <option value="">All Courses</option>
-          <option value="Computer Science">Computer Science</option>
-          <option value="Mathematics">Mathematics</option>
-        </select>
+      {/* Filters - Course, Year/Section, and Search on the same row */}
+      <div className="edit-student-filter-container">
+        <div className="edit-student-dropdowns">
+          <select
+            name="course"
+            className="edit-student-select"
+            value={filterCriteria.course}
+            onChange={handleFilterChange}
+          >
+            <option value="">All Courses</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Mathematics">Mathematics</option>
+          </select>
 
-        <select
-          name="section"
-          value={filterCriteria.section}
-          onChange={handleFilterChange}
-        >
-          <option value="">All Sections</option>
-          <option value="A">A</option>
-          <option value="B">B</option>
-        </select>
+          <select
+            name="yearSection"
+            className="edit-student-select"
+            value={filterCriteria.yearSection}
+            onChange={handleFilterChange}
+          >
+            <option value="">All Year/Sections</option>
+            <option value="1/A">1/A</option>
+            <option value="2/B">2/B</option>
+            <option value="2/A">2/A</option>
+          </select>
 
-        <select
-          name="year"
-          value={filterCriteria.year}
-          onChange={handleFilterChange}
-        >
-          <option value="">All Years</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-        </select>
+          <div className="edit-student-searchbar-container">
+            <i className="edit-student-searchbar-icon">🔍</i>
+            <input
+              type="text"
+              className="edit-student-searchbar-input"
+              placeholder="Search by name or roll number"
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+          </div>
+        </div>
       </div>
 
-      <table className="student-table">
+      {/* Student Table */}
+      <table className="edit-student-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -164,13 +180,13 @@ const EditStudent = () => {
               <td>{student.year}</td>
               <td>
                 <button
-                  className="edstedit-btn"
+                  className="edit-student-edit-btn"
                   onClick={() => handleEdit(student.id)}
                 >
                   Edit
                 </button>
                 <button
-                  className="edstremove-btn"
+                  className="edit-student-remove-btn"
                   onClick={() => handleRemove(student.id)}
                 >
                   Remove
@@ -181,77 +197,36 @@ const EditStudent = () => {
         </tbody>
       </table>
 
+      {/* Edit Form */}
       {editData && (
-        <div className="edit-form-container">
+        <div className="edit-student-edit-form-container">
           <h3>Edit Student</h3>
-          <form className="edit-form">
-            <label>
-              Name:
-              <input
-                type="text"
-                name="name"
-                value={editData.name}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Email:
-              <input
-                type="email"
-                name="email"
-                value={editData.email}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Contact:
-              <input
-                type="text"
-                name="contact"
-                value={editData.contact}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Roll Number:
-              <input
-                type="text"
-                name="rollNumber"
-                value={editData.rollNumber}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Course:
-              <input
-                type="text"
-                name="course"
-                value={editData.course}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Section:
-              <input
-                type="text"
-                name="section"
-                value={editData.section}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Year:
-              <input
-                type="text"
-                name="year"
-                value={editData.year}
-                onChange={handleChange}
-              />
-            </label>
-            <button type="button" onClick={handleSave}>
+          <form className="edit-student-edit-form">
+            {Object.keys(editData).map((key) =>
+              key !== "id" ? (
+                <label key={key}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}:
+                  <input
+                    type="text"
+                    name={key}
+                    value={editData[key]}
+                    onChange={handleChange}
+                  />
+                </label>
+              ) : null
+            )}
+            <button
+              className="edit-student-save-btn"
+              type="button"
+              onClick={handleSave}
+            >
               Save
             </button>
-            <button type="button"  onClick={() => setEditData(null)}>
+            <button
+              className="edit-student-cancel-btn"
+              type="button"
+              onClick={() => setEditData(null)}
+            >
               Cancel
             </button>
           </form>
