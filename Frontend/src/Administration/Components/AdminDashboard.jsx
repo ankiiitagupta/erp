@@ -8,10 +8,9 @@ import AddTimetable from "./CreateTimeTable.jsx";
 import AddStudent from "./AddStudent.jsx";
 import AddFaculty from "./AddFaculty.jsx";
 import EditFaculty from "./EditFaculty.jsx";
-import DeleteFaculty from "./DeleteFaculty.jsx";
-import DeleteStudent from "./DeleteStudent.jsx";
 import EditStudent from "./EditStudent.jsx";
 import Profile from "./Profile.jsx";
+import Miscellaneous from "./Miscellaneous.jsx";
 
 const AdminDashboard = () => {
   const { admin_id } = useParams();
@@ -26,6 +25,7 @@ const AdminDashboard = () => {
     EditFacultyFlag: false,
     DeleteFacultyFlag: false,
     ProfileUserFlag: false,
+    MiscellaneousFlag: false,
   });
 
   // Toggle sidebar collapse/expand state
@@ -45,6 +45,7 @@ const AdminDashboard = () => {
       EditFacultyFlag: false,
       DeleteFacultyFlag: false,
       ProfileUserFlag: false,
+      MiscellaneousFlag: false,
     });
   };
 
@@ -59,28 +60,54 @@ const AdminDashboard = () => {
     if (flags.AddTimetableFlag) return <AddTimetable />;
     if (flags.CreateNoticeFlag) return <CreateNotice />;
     if (flags.ProfileUserFlag) return <Profile />;
+    if (flags.MiscellaneousFlag) return <Miscellaneous />;
     return <DashboardContent />;
   };
 
   return (
     <div className="admin-dashboard">
       {/* Sidebar */}
-      <div className={`sidebar-section ${sidebarCollapsed ? "collapsed" : "expanded"}`}>
+      <div
+        className={`sidebar-section ${
+          sidebarCollapsed ? "collapsed" : "expanded"
+        }`}
+      >
         <AdminSidebar
-          setProfileUserFlag={(flag) => setFlags((prev) => ({ ...prev, ProfileUserFlag: flag }))}
-          setcreateNoticeFlag={(flag) => setFlags((prev) => ({ ...prev, CreateNoticeFlag: flag }))}
-          setAddTimetableFlag={(flag) => setFlags((prev) => ({ ...prev, AddTimetableFlag: flag }))}
-          setAddFacultyFlag={(flag) => setFlags((prev) => ({ ...prev, AddFacultyFlag: flag }))}
-          setAddStudentFlag={(flag) => setFlags((prev) => ({ ...prev, AddStudentFlag: flag }))}
-          setEditStudentFlag={(flag) => setFlags((prev) => ({ ...prev, EditStudentFlag: flag }))}
-          setEditFacultyFlag={(flag) => setFlags((prev) => ({ ...prev, EditFacultyFlag: flag }))}
+          setProfileUserFlag={(flag) =>
+            setFlags((prev) => ({ ...prev, ProfileUserFlag: flag }))
+          }
+          setcreateNoticeFlag={(flag) =>
+            setFlags((prev) => ({ ...prev, CreateNoticeFlag: flag }))
+          }
+          setAddTimetableFlag={(flag) =>
+            setFlags((prev) => ({ ...prev, AddTimetableFlag: flag }))
+          }
+          setAddFacultyFlag={(flag) =>
+            setFlags((prev) => ({ ...prev, AddFacultyFlag: flag }))
+          }
+          setAddStudentFlag={(flag) =>
+            setFlags((prev) => ({ ...prev, AddStudentFlag: flag }))
+          }
+          setEditStudentFlag={(flag) =>
+            setFlags((prev) => ({ ...prev, EditStudentFlag: flag }))
+          }
+          setEditFacultyFlag={(flag) =>
+            setFlags((prev) => ({ ...prev, EditFacultyFlag: flag }))
+          }
+          setMiscellaneousFlag={(flag) =>
+            setFlags((prev) => ({ ...prev, MiscellaneousFlag: flag }))
+          }
           admin_id={admin_id}
           resetFlags={resetFlags}
         />
       </div>
 
       {/* Main content */}
-      <div className={`dashboard-section ${sidebarCollapsed ? "shifted" : "full-width"}`}>
+      <div
+        className={`dashboard-section ${
+          sidebarCollapsed ? "shifted" : "full-width"
+        }`}
+      >
         {renderContent()}
       </div>
     </div>

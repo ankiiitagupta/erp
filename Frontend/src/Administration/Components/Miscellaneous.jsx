@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import "../stylesheets/Miscellaneous.css";
+import timetable from "../../assets/AcademicDashboardsvg/timetable.png";
+import department from "../../assets/AcademicDashboardsvg/department.png";
+import subject from "../../assets/AcademicDashboardsvg/subject.png";
+import course from "../../assets/AcademicDashboardsvg/course.png";
+import events from "../../assets/AcademicDashboardsvg/event.png";
+import room from "../../assets/AcademicDashboardsvg/room.png";
 
 const Miscellaneous = () => {
   const options = [
-    { title: "TIME TABLE", image: "/images/timetable.png" },
-    { title: "DEPARTMENT", image: "/images/department.png" },
-    { title: "SUBJECT", image: "/images/subject.png" },
-    { title: "COURSE", image: "/images/course.png" },
-    { title: "EVENTS", image: "/images/event.png" },
-    { title: "ROOM", image: "/images/room.png" },
+    { title: "TIME TABLE", image: timetable },
+    { title: "DEPARTMENT", image: department },
+    { title: "SUBJECT", image: subject },
+    { title: "COURSE", image: course },
+    { title: "EVENTS", image: events },
+    { title: "ROOM", image: room },
   ];
 
   const handleClick = (title) => {
