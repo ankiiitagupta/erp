@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-//   
+
 
 const EditStudent = () => {
   // Sample student data
@@ -164,13 +164,13 @@ const EditStudent = () => {
               <td>{student.year}</td>
               <td>
                 <button
-                  className="edit-btn"
+                  className="edstedit-btn"
                   onClick={() => handleEdit(student.id)}
                 >
                   Edit
                 </button>
                 <button
-                  className="remove-btn"
+                  className="edstremove-btn"
                   onClick={() => handleRemove(student.id)}
                 >
                   Remove
@@ -251,7 +251,7 @@ const EditStudent = () => {
             <button type="button" onClick={handleSave}>
               Save
             </button>
-            <button type="button" onClick={() => setEditData(null)}>
+            <button type="button"  onClick={() => setEditData(null)}>
               Cancel
             </button>
           </form>

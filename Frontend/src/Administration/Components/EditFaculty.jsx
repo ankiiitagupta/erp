@@ -77,13 +77,13 @@ const EditFaculty = () => {
               <td>{faculty.department}</td>
               <td>
                 <button
-                  className="edit-btn"
+                  className="edstedit-btn"
                   onClick={() => handleEdit(faculty.id)}
                 >
                   Edit
                 </button>
                 <button
-                  className="remove-btn"
+                  className="edstremove-btn"
                   onClick={() => handleRemove(faculty.id)}
                 >
                   Remove
