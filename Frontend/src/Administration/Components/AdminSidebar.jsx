@@ -18,6 +18,7 @@ const AdminSidebar = ({
   setEditStudentFlag,
   setAddStudentFlag,
   setMiscellaneousFlag,
+  setAddTimetableFlag,
   resetFlags,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -210,23 +211,34 @@ const AdminSidebar = ({
               )}
             </div>
 
-            {/* Miscellaneous Section */}
-            {/* Miscellaneous Section */}
-            <div>
+            {/* Timetable Section */}
             <NavLink
-                    className={
-                      selectedMenuItem === "Miscellaneous" ? "activeClicked" : ""
-                    }
-                    onClick={() => {
-                      setMiscellaneousFlag(true);
-                      setSelectedMenuItem("Misecellaneous");
-                    }}
-                    activeClassName="activeClicked"
-                  >
-                     <CDBSidebarMenuItem icon="fas fa-ellipsis-h">Miscellaneous</CDBSidebarMenuItem>
-                    
-                  </NavLink>
-            </div>
+  className={selectedMenuItem === "Timetable" ? "activeClicked" : ""}
+  onClick={() => {
+    setAddTimetableFlag(true); // Updates the AddTimetableFlag in AdminDashboard
+    setSelectedMenuItem("Timetable"); // Visually highlight the selected menu
+  }}
+  activeClassName="activeClicked"
+>
+  <CDBSidebarMenuItem icon="fas fa-calendar-alt">Timetable</CDBSidebarMenuItem>
+</NavLink>
+
+
+            {/* Miscellaneous Section */}
+            <NavLink
+              className={
+                selectedMenuItem === "Miscellaneous" ? "activeClicked" : ""
+              }
+              onClick={() => {
+                setMiscellaneousFlag(true);
+                setSelectedMenuItem("Miscellaneous");
+              }}
+              activeClassName="activeClicked"
+            >
+              <CDBSidebarMenuItem icon="fas fa-ellipsis-h">
+                Miscellaneous
+              </CDBSidebarMenuItem>
+            </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>
 
@@ -249,4 +261,3 @@ const AdminSidebar = ({
 };
 
 export default AdminSidebar;
-

@@ -8,7 +8,7 @@
     text-align: center;
     margin-top: 20px;
     font-size: 24px;
-    color: #2baf8b;
+    color: #001f54;
   }
   
   /* Timetable table styling */
@@ -19,7 +19,7 @@
   }
   
   .edit-timetable-table th {
-    background-color: #2baf8b;
+    background-color: #001f54;
     color: white;
     padding: 10px;
     text-align: center;

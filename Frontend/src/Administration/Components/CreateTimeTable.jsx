@@ -10,15 +10,15 @@ const AddTimetable = () => {
     const renderCreateTimetableTabs = () => {
       return (
         <div className="timetable-container">
-          <div className="tabs">
+          <div className="adtttabs">
             <button
-              className={`tab-btn ${activeTab === 'add' ? 'active' : ''}`}
+              className={`adtttab-btn ${activeTab === 'add' ? 'active' : ''}`}
               onClick={() => setActiveTab('add')}
             >
               Add Timetable
             </button>
             <button
-              className={`tab-btn ${activeTab === 'edit' ? 'active' : ''}`}
+              className={`adtttab-btn ${activeTab === 'edit' ? 'active' : ''}`}
               onClick={() => setActiveTab('edit')}
             >
               Edit Timetable

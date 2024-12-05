@@ -12,7 +12,7 @@
   }
   
   /* Tabs Container */
-  .tabs {
+  .adtttabs {
     display: flex;
     justify-content: center;
     gap: 20px;
@@ -22,11 +22,11 @@
   }
   
   /* Tab Buttons */
-  .tab-btn {
+  .adtttab-btn {
     padding: 12px 20px;
     font-size: 1rem;
     font-weight: 600;
-    color: #1a237e;
+    color: #001f54;
     background-color: #f9f9f9;
     border: 2px solid transparent;
     border-radius: 8px;
@@ -35,16 +35,16 @@
   }
   
   /* Active Tab Button */
-  .tab-btn.active {
-    background-color: #1a237e;
+  .adtttab-btn.active {
+    background-color: #001f54;
     color: #fff;
     border-color: #1a237e;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
   
   /* Hover Effect */
-  .tab-btn:hover {
-    background-color: #1a237e;
+  .adtttab-btn:hover {
+    background-color: #001f54;
     color: #fff;
   }
   
