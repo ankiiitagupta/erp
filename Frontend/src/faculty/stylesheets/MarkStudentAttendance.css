@@ -80,6 +80,9 @@ button.search-btn:hover {
     border-collapse: collapse;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.select-dropdown{
+ background-color: green; 
+}
 
 .attendance-table th,
 .attendance-table td {
@@ -104,6 +107,10 @@ button.search-btn:hover {
     justify-content: center;
     align-items: center;
     gap: 1rem;
+}
+
+.faculty-mark-stud-attendance-dropdown{
+  background-color: cyan;
 }
 
 .radio-container input[type="radio"] {

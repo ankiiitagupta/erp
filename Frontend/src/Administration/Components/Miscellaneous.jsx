@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "../stylesheets/Miscellaneous.css";
 import timetable from "../../assets/AcademicDashboardsvg/timetable.png";
 import department from "../../assets/AcademicDashboardsvg/department.png";
@@ -9,12 +9,36 @@ import room from "../../assets/AcademicDashboardsvg/room.png";
 
 const Miscellaneous = () => {
   const options = [
-    { title: "TIME TABLE", image: timetable },
-    { title: "DEPARTMENT", image: department },
-    { title: "SUBJECT", image: subject },
-    { title: "COURSE", image: course },
-    { title: "EVENTS", image: events },
-    { title: "ROOM", image: room },
+    {
+      title: "TIME TABLE",
+      image: timetable,
+      className: "miscellaneous-card-timetable",
+    },
+    {
+      title: "DEPARTMENT",
+      image: department,
+      className: "miscellaneous-card-department",
+    },
+    {
+      title: "SUBJECT",
+      image: subject,
+      className: "miscellaneous-card-subject",
+    },
+    {
+      title: "COURSE",
+      image: course,
+      className: "miscellaneous-card-course",
+    },
+    {
+      title: "EVENTS",
+      image: events,
+      className: "miscellaneous-card-events",
+    },
+    {
+      title: "ROOM",
+      image: room,
+      className: "miscellaneous-card-room",
+    },
   ];
 
   const handleClick = (title) => {
@@ -23,17 +47,21 @@ const Miscellaneous = () => {
   };
 
   return (
-    <div className="miscellaneous">
-      <h1>Miscellaneous</h1>
-      <div className="grid">
+    <div className="miscellaneous-container">
+      <h1 className="miscellaneous-heading">Miscellaneous</h1>
+      <div className="miscellaneous-grid">
         {options.map((option, index) => (
           <button
             key={index}
-            className="card"
+            className={`miscellaneous-card ${option.className}`}
             onClick={() => handleClick(option.title)}
           >
-            <img src={option.image} alt={option.title} className="icon" />
-            <div className="title">{option.title}</div>
+            <img
+              src={option.image}
+              alt={option.title}
+              className="miscellaneous-icon"
+            />
+            <div className="miscellaneous-title">{option.title}</div>
           </button>
         ))}
       </div>

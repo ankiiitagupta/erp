@@ -170,7 +170,7 @@ const MarkStudentAttendance = ({ facultyID }) => {
                 value={selectedLecture}
                 onChange={handleLectureChange}
               >
-                <option value="">SELECT</option>
+                <option  value="">SELECT</option>
                 {lectures.map((lec) => (
                   <option key={lec.LectureNumber} value={lec.LectureNumber}>
                     {lec.SubjectName} - {lec.CourseName} Lec-No:{lec.LectureNumber} Sec:{lec.Section}
