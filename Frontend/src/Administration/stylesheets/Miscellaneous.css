@@ -7,6 +7,7 @@
   background-color: #fff;
   padding: 30px;
   border-radius: 10px;
+  margin-top:2rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -15,6 +16,7 @@
   margin-bottom: 30px;
   font-size: 28px;
   color: #333;
+  border-bottom: 2px solid #333;
 }
 
 /* Grid */
@@ -40,6 +42,7 @@
 
 .miscellaneous-card:hover {
   transform: scale(1.1);
+  background-color: rgb(191, 223, 252);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -60,24 +63,36 @@
 /* Dynamic Classes */
 .miscellaneous-card-timetable {
   border: 3px solid #007bff;
+  min-width:20rem;
+  min-height: 17rem;
 }
 
 .miscellaneous-card-department {
   border: 3px solid #28a745;
+  min-width:20rem;
+  min-height: 17rem;
 }
 
 .miscellaneous-card-subject {
   border: 3px solid #ffc107;
+  min-width:20rem;
+  min-height: 17rem;
 }
 
 .miscellaneous-card-course {
   border: 3px solid #17a2b8;
+  min-width:20rem;
+  min-height: 17rem;
 }
 
 .miscellaneous-card-events {
   border: 3px solid #fd7e14;
+  min-width:20rem;
+  min-height: 17rem;
 }
 
 .miscellaneous-card-room {
   border: 3px solid #dc3545;
+  min-width:20rem;
+  min-height: 17rem;
 }
