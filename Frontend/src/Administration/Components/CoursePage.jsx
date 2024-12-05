@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import "../stylesheets/CoursePage.css";
 import addcourseimg from "../../assets/Admin/addcourseadmin.jpg";
 import removecourseimg from "../../assets/Admin/Remocecourseadmin.jpg";
+
 const CoursePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const courses = [{ id: 1, name: "B.Tech - CSE" }];
 
   const handleSearch = () => {
-    // Filter courses by searchQuery
     console.log("Search query:", searchQuery);
   };
 
@@ -24,41 +24,53 @@ const CoursePage = () => {
   };
 
   return (
-    <div className="managecourse-container">
-      <h1 className="managecourse-header">MANAGE COURSE</h1>
-      <div className="managecourse-actions">
-        <div className="managecourse-action-card" onClick={handleAddCourse}>
-          <img
-            src={addcourseimg}
-            alt="Add Course"
-          />
-          <h3>Add Course</h3>
+    <div className="course-page-container">
+      <h1 className="course-page-header">MANAGE COURSE</h1>
+
+      <div className="course-page-actions">
+        <div className="action-card" onClick={handleAddCourse}>
+          <img src={addcourseimg} alt="Add Course" />
+          <h3>ADD COURSE</h3>
         </div>
-        <div className="managecourse-action-card" onClick={handleRemoveCourse}>
-          <img
-            src={removecourseimg}
-            alt="Remove Course"
-          />
-          <h3>Remove Course</h3>
+        <div className="action-card" onClick={handleRemoveCourse}>
+          <img src={removecourseimg} alt="Remove Course" />
+          <h3>REMOVE COURSE</h3>
         </div>
       </div>
-      <div className="managecourse-search">
+      <div className="course-page-details">
+
+      <div className="course-page-search">
         <input
           type="text"
           placeholder="Enter Course Name"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-           className="managecourse-search-input"
         />
-        <button className="managecourse-search-btn" onClick={handleSearch}>Search</button>
+        <button className="course-page-searchbtn" onClick={handleSearch}>SEARCH</button>
       </div>
-      <div className="managecourse-list">
-        {courses.map((course) => (
-          <div className="managecourse-item" key={course.id}>
-            <span>{course.name}</span>
-            <button onClick={() => handleEditCourse(course.id)}>Edit</button>
-          </div>
-        ))}
+
+      <div className="course-page-list">
+        <table>
+          <thead>
+            <tr>
+              <th>COURSE</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            {courses.map((course) => (
+              <tr key={course.id}>
+                <td>{course.name}</td>
+                <td>
+                  <button onClick={() => handleEditCourse(course.id)}>
+                    EDIT
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       </div>
     </div>
   );

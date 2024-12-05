@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../stylesheets/Miscellaneous.css";
 import timetable from "../../assets/AcademicDashboardsvg/timetable.png";
 import department from "../../assets/AcademicDashboardsvg/department.png";
@@ -6,8 +6,11 @@ import subject from "../../assets/AcademicDashboardsvg/subject.png";
 import course from "../../assets/AcademicDashboardsvg/course.png";
 import events from "../../assets/AcademicDashboardsvg/event.png";
 import room from "../../assets/AcademicDashboardsvg/room.png";
+import CoursePage from "./CoursePage"; // Import AddCourse component
 
 const Miscellaneous = () => {
+  const [activePage, setActivePage] = useState("Miscellaneous"); // Manage the active page
+
   const options = [
     {
       title: "TIME TABLE",
@@ -42,31 +45,43 @@ const Miscellaneous = () => {
   ];
 
   const handleClick = (title) => {
-    console.log(`${title} clicked`);
-    // Add any action you want to trigger on button click here
+    if (title === "COURSE") {
+      setActivePage("CoursePage"); // Switch to AddCourse page
+    } else {
+      console.log(`${title} clicked`);
+    }
   };
 
-  return (
-    <div className="miscellaneous-container">
-      <h1 className="miscellaneous-heading">Miscellaneous</h1>
-      <div className="miscellaneous-grid">
-        {options.map((option, index) => (
-          <button
-            key={index}
-            className={`miscellaneous-card ${option.className}`}
-            onClick={() => handleClick(option.title)}
-          >
-            <img
-              src={option.image}
-              alt={option.title}
-              className="miscellaneous-icon"
-            />
-            <div className="miscellaneous-title">{option.title}</div>
-          </button>
-        ))}
+  // Render content based on the active page
+  const renderContent = () => {
+    if (activePage === "CoursePage") {
+      return <CoursePage />;
+    }
+
+    return (
+      <div className="miscellaneous-container">
+        <h1 className="miscellaneous-heading">Miscellaneous</h1>
+        <div className="miscellaneous-grid">
+          {options.map((option, index) => (
+            <button
+              key={index}
+              className={`miscellaneous-card ${option.className}`}
+              onClick={() => handleClick(option.title)}
+            >
+              <img
+                src={option.image}
+                alt={option.title}
+                className="miscellaneous-icon"
+              />
+              <div className="miscellaneous-title">{option.title}</div>
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  return <>{renderContent()}</>;
 };
 
 export default Miscellaneous;
