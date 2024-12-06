@@ -8,6 +8,7 @@ import events from "../../assets/AcademicDashboardsvg/event.png";
 import room from "../../assets/AcademicDashboardsvg/room.png";
 import CoursePage from "./CoursePage"; // Import CoursePage component
 import ManageDepartment from "./ManageDepartment"; // Import ManageDepartment component
+import ManageSubject from "./ManageSubject";
 
 const Miscellaneous = () => {
   const [activePage, setActivePage] = useState("Miscellaneous"); // Manage the active page
@@ -50,6 +51,8 @@ const Miscellaneous = () => {
       setActivePage("CoursePage"); // Switch to CoursePage
     } else if (title === "DEPARTMENT") {
       setActivePage("ManageDepartment"); // Switch to ManageDepartment
+    }  else if (title === "SUBJECT") {
+      setActivePage("ManageSubject"); // Switch to ManageDepartment
     } else {
       console.log(`${title} clicked`);
     }
@@ -61,6 +64,8 @@ const Miscellaneous = () => {
       return <CoursePage />;
     } else if (activePage === "ManageDepartment") {
       return <ManageDepartment />;
+    }else if (activePage === "ManageSubject") {
+      return <ManageSubject />;
     }
 
     return (

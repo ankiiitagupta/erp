@@ -1,19 +1,19 @@
 /* Container Styling */
-.manage-department-container {
+.manage-subject-container {
     font-family: "Arial", sans-serif;
     padding: 20px;
     background-color: #f8f9fa;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1);
     min-height: 100%;
     margin-top: 1.5rem;
-    margin-left: 5rem;
+    margin-left:5rem;
     border-radius: 1rem;
-    margin-right: 5rem;
+    margin-right:5rem;
     text-align: center;
-
+    
   }
   
-  .manage-department-header {
+  .manage-subject-header {
     font-size: 2rem;
     font-weight: bold;
     color: #2c3e50;
@@ -22,29 +22,29 @@
   }
   
   /* Action Section */
-  .manage-department-actions {
+  .manage-subject-actions {
     display: flex;
     justify-content: center;
     gap: 20px;
     min-height: 15rem;
-    min-width: 30rem;
+    min-width:30rem;
     margin-bottom: 30px;
     margin-top: 3rem;
   }
-/*   
-  .manage-department-details {
-    border: 2px solid green;
+  
+  .manage-subject-details{
+    border:none;
   }
-   */
+  
   .action-card {
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    min-width: 40rem;
+    min-width:40rem;
     text-align: center;
-    display: flex;
-    flex-direction: row;
+    display:flex;
+    flex-direction:row;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     width: 180px;
@@ -52,26 +52,26 @@
   
   .action-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2),0 6px 12px rgba(0, 0, 0, 0.2),0 6px 12px rgba(0, 0, 0, 0.2),0 6px 12px rgba(0, 0, 0, 0.2),0 6px 12px rgba(0, 0, 0, 0.2);
   }
   
   .action-card img {
-    margin-top: 2rem;
+    margin-top:2rem;
     margin-left: 4rem;
-    width: 12rem; /* Increased width */
-    height: 12rem; /* Increased height */
+    width: 8rem;
+    height: 8rem;
     margin-bottom: 10px;
   }
   
   .action-card h3 {
     margin-left: 7rem;
-    margin-top: 5rem;
+    margin-top:5rem;
     font-size: 2rem;
     color: #333;
   }
   
   /* Search Section */
-  .manage-department-search {
+  .manage-subject-search {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -85,54 +85,55 @@
     margin-top:2rem;
     
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
+  
   }
-
-.manage-department-search label {
+  
+  .manage-subject-search label {
     font-size: 1.2rem;
     color: #333;
     font-weight: 600;
-  
     margin-right: 10px;
+    
   }
   
   
-.manage-department-search input {
+  .manage-subject-search input {
     flex: 1;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 12px;
     font-size: 1rem;
-    margin-right: 10px;
     margin-top:1rem;
+    margin-right: 10px;
     outline: none;
   }
-  .manage-department-search input::placeholder {
+  .manage-subject-search input::placeholder {
     color: #999;
     font-style: italic;
   }
   
   
-  .manage-department-searchbtn {
+  .manage-subject-searchbtn   {
     background-color:  #d7e8da;
-  color: #4caf50;
+    color: #4caf50;
     padding: 12px 24px;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
+    margin-top: 0;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
   
   
-  .manage-department-searchbtn:hover {
+  .manage-subject-searchbtn:hover {
     background-color: #4caf50;
     color: #d7e8da;
     border:2px solid #4caf50;
   }
- /* Department List Section */
-.manage-department-list {
+  /* Course List Section */
+  .manage-subject-list {
     margin-top: 20px;
     border: 1px solid #dee2e6;
     border-radius: 10px;
@@ -143,21 +144,21 @@
     margin-right:2rem; */
   }
   
-  .manage-department-list table {
+  .manage-subject-list table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
   }
   
-  .manage-department-list th,
-  .manage-department-list td {
+  .manage-subject-list th,
+  .manage-subject-list td {
     padding: 15px;
     text-align: left;
     font-size: 16px;
     color: #333;
   }
   
-  .manage-department-list th {
+  .manage-subject-list th {
     background-color: #f8f9fa;
     color: #2c3e50;
     font-weight: bold;
@@ -165,17 +166,17 @@
     text-transform: uppercase;
   }
   
-  .manage-department-list td {
+  .manage-subject-list td {
     border-bottom: 1px solid #dee2e6;
     vertical-align: middle;
   }
   
-  .manage-department-list tr:last-child td {
+  .manage-subject-list tr:last-child td {
     border-bottom: none;
   }
   
   /* Edit Button */
-  .manage-department-list button {
+  .manage-subject-list button {
     background-color: #d7e8da;
     color: #4caf50;
     border: none;
@@ -187,9 +188,10 @@
     transition: all 0.3s ease;
   }
   
-  .manage-department-list button:hover {
+  .manage-subject-list button:hover {
     background-color: #4caf50;
     color: #fff;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   }
+  
   
