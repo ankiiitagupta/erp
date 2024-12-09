@@ -1,0 +1,151 @@
+.admin-event-container {
+  width: 80%;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-event-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+  font-weight: bold;
+  color:black;
+  
+}
+/* Flex container for Add and Edit Event sections */
+.admin-event-actions-row {
+  display: flex;
+  justify-content: space-around;
+  gap: 2rem;
+  margin-bottom: 30px;
+  margin-right:5rem;
+  margin-left:5rem;
+}
+/* New Card Style for Sections */
+.admin-event-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05), 0px 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  
+}
+
+/* New Section Styling */
+.admin-event-section {
+  margin-bottom: 40px;
+}
+
+/* Action Buttons Section */
+.admin-event-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.admin-event-button {
+  padding: 16px 40px;
+  font-size: 22px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  min-height: 8rem;
+  transition: background-color 0.3s ease;
+}
+
+.admin-event-button--add {
+  background-color: #4a90e2;
+}
+
+.admin-event-button--add:hover {
+  background-color: #3578a7;
+}
+
+.admin-event-button--edit {
+  background-color: #5cb85c;
+}
+
+.admin-event-button--edit:hover {
+  background-color: #4cae4c;
+}
+
+/* Search Section */
+.admin-event-search-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.admin-event-search-label {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.admin-event-search-input {
+  padding: 14px 20px;
+  font-size: 16px;
+  width: 300px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1),0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-event-search-button {
+  padding: 14px 20px;
+  font-size: 16px;
+  background-color: #5cb85c;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1),0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-event-search-button:hover {
+  background-color: #4cae4c;
+}
+
+/* Event List Section */
+.admin-event-list-section {
+  margin-top: 20px;
+}
+
+.admin-event-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-event-table-header {
+  text-align: left;
+  padding: 14px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  font-weight: bold;
+  color:black;
+}
+
+.admin-event-table-cell {
+  padding: 14px;
+  border: 1px solid #ccc;
+}
+
+.admin-event-table-cell button {
+  background-color: #5cb85c;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.admin-event-table-cell button:hover {
+  background-color: #4cae4c;
+}

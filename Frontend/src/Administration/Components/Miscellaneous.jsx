@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import "../stylesheets/Miscellaneous.css";
+import "../stylesheets/Miscellaneous.css"; // Existing stylesheet for Miscellaneous
+
+
+// Import assets
 import timetable from "../../assets/AcademicDashboardsvg/timetable.png";
 import department from "../../assets/AcademicDashboardsvg/department.png";
 import subject from "../../assets/AcademicDashboardsvg/subject.png";
 import course from "../../assets/AcademicDashboardsvg/course.png";
 import events from "../../assets/AcademicDashboardsvg/event.png";
 import room from "../../assets/AcademicDashboardsvg/room.png";
-import CoursePage from "./CoursePage"; // Import CoursePage component
-import ManageDepartment from "./ManageDepartment"; // Import ManageDepartment component
+
+// Import components
+import CoursePage from "./CoursePage";
+import ManageDepartment from "./ManageDepartment";
 import ManageSubject from "./ManageSubject";
+import AdminEvent from "./AdminEvent"; // Import AdminEvent component
 
 const Miscellaneous = () => {
   const [activePage, setActivePage] = useState("Miscellaneous"); // Manage the active page
@@ -51,8 +57,10 @@ const Miscellaneous = () => {
       setActivePage("CoursePage"); // Switch to CoursePage
     } else if (title === "DEPARTMENT") {
       setActivePage("ManageDepartment"); // Switch to ManageDepartment
-    }  else if (title === "SUBJECT") {
-      setActivePage("ManageSubject"); // Switch to ManageDepartment
+    } else if (title === "SUBJECT") {
+      setActivePage("ManageSubject"); // Switch to ManageSubject
+    } else if (title === "EVENTS") {
+      setActivePage("AdminEvent"); // Switch to AdminEvent
     } else {
       console.log(`${title} clicked`);
     }
@@ -64,10 +72,13 @@ const Miscellaneous = () => {
       return <CoursePage />;
     } else if (activePage === "ManageDepartment") {
       return <ManageDepartment />;
-    }else if (activePage === "ManageSubject") {
+    } else if (activePage === "ManageSubject") {
       return <ManageSubject />;
+    } else if (activePage === "AdminEvent") {
+      return <AdminEvent />;
     }
 
+    // Default view: Miscellaneous grid
     return (
       <div className="miscellaneous-container">
         <h1 className="miscellaneous-heading">Miscellaneous</h1>

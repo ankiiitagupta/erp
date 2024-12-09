@@ -92,4 +92,4 @@ const ManageDepartment = () => {
   );
 };
 
-export default ManageDepartment;
+export default ManageDepartment; 
