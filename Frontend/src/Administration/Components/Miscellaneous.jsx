@@ -14,6 +14,7 @@ import room from "../../assets/AcademicDashboardsvg/room.png";
 import CoursePage from "./CoursePage";
 import ManageDepartment from "./ManageDepartment";
 import ManageSubject from "./ManageSubject";
+import ManageRooms from "./ManageRooms";
 import AdminEvent from "./AdminEvent"; // Import AdminEvent component
 
 const Miscellaneous = () => {
@@ -21,9 +22,9 @@ const Miscellaneous = () => {
 
   const options = [
     {
-      title: "TIME TABLE",
+      title:"EXPENSES",
       image: timetable,
-      className: "miscellaneous-card-timetable",
+      className: "miscellaneous-card-expenses",
     },
     {
       title: "DEPARTMENT",
@@ -61,7 +62,10 @@ const Miscellaneous = () => {
       setActivePage("ManageSubject"); // Switch to ManageSubject
     } else if (title === "EVENTS") {
       setActivePage("AdminEvent"); // Switch to AdminEvent
-    } else {
+    } else if (title === "ROOM") {
+      setActivePage("ManageRooms");
+    }
+      else {
       console.log(`${title} clicked`);
     }
   };
@@ -76,6 +80,8 @@ const Miscellaneous = () => {
       return <ManageSubject />;
     } else if (activePage === "AdminEvent") {
       return <AdminEvent />;
+    }else if (activePage === "ManageRooms") {
+      return <ManageRooms />;
     }
 
     // Default view: Miscellaneous grid
