@@ -198,3 +198,22 @@ body {
     }
   }
   
+
+  .pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .pagination button.active {
+    background-color: #007bff;
+    color: white;
+    border: none;
+  }
+  .edit-student-table button {
+    font-size: 12px; /* Smaller font */
+    padding: 5px 8px; /* Smaller padding */
+    margin: 2px; /* Reduce spacing */
+  }
+  
+  

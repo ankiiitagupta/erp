@@ -1021,9 +1021,15 @@ app.get("/api/searchstudentsbyname", (req, res) => {
     `
     SELECT 
       S.RollNO,
+      S.Stud_Email,
       S.Stud_name,
       S.Stud_Contact,
-      S.Stud_YearOfStudy,
+      S.Stud_DOB,
+      S.Stud_Address,
+      S.Stud_EnrollmentStatus,
+	    S.Stud_YearOfStudy,
+      S.Stud_Gender,
+      S.Stud_GuardianDetails,
       S.Section,
       CO.CourseName,
       SUM(A.AttendanceStatus) AS TotalAttendance,
@@ -1805,6 +1811,82 @@ app.get('/api/departmentCount', (req, res) => {
     }
   });
 });
+
+
+//Update student Data
+app.put("/api/updatestudent/:rollNo", (req, res) => {
+  const rollNo = req.params.rollNo;
+  const studentData = req.body;
+
+  // Filter only the fields to update
+  const fields = [
+    "Stud_name",
+    "Stud_Email",
+    "Stud_Contact",
+    "Stud_DOB",
+    "Stud_Address",
+    "Stud_EnrollmentStatus",
+    "Stud_Gender",
+    "Stud_GuardianDetails",
+    "Stud_YearOfStudy",
+    "Section",
+  ];
+
+  const updates = Object.entries(studentData)
+    .filter(([key]) => fields.includes(key))
+    .map(([key, value]) => `${key} = ?`);
+  
+  const values = Object.entries(studentData)
+    .filter(([key]) => fields.includes(key))
+    .map(([, value]) => value);
+
+  if (updates.length === 0) {
+    return res.status(400).json({ message: "No valid fields to update" });
+  }
+
+  const query = `
+    UPDATE student 
+    SET ${updates.join(", ")}
+    WHERE RollNO = ?
+  `;
+
+  db.query(query, [...values, rollNo], (err, results) => {
+    if (err) {
+      console.error("Error updating student:", err);
+      res.status(500).json({ message: "Failed to update student" });
+      return;
+    }
+    res.status(200).json({ message: "Student updated successfully" });
+  });
+});
+
+//delete Student
+app.delete("/api/deletestudent/:rollNo", (req, res) => {
+  const rollNo = req.params.rollNo;
+
+  // Start by deleting from the enrollment table to remove the foreign key references
+  const deleteEnrollmentQuery = "DELETE FROM enrollment WHERE RollNO = ?";
+  db.query(deleteEnrollmentQuery, [rollNo], (err, results) => {
+    if (err) {
+      console.error("Error deleting from enrollment table:", err);
+      res.status(500).json({ message: "Failed to delete from enrollment table" });
+      return;
+    }
+
+    // Now, delete the student from the student table
+    const deleteStudentQuery = "DELETE FROM student WHERE RollNO = ?";
+    db.query(deleteStudentQuery, [rollNo], (err, results) => {
+      if (err) {
+        console.error("Error deleting student:", err);
+        res.status(500).json({ message: "Failed to delete student" });
+        return;
+      }
+      res.status(200).json({ message: "Student removed successfully" });
+    });
+  });
+});
+
+
 
 
 // Start the server on the specified port

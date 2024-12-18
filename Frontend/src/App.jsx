@@ -8,6 +8,7 @@ import StudentDashboard from './Student/Components/StudentDashboard';
 import AdminDashboard from './Administration/Components/AdminDashboard';
 
 
+
 function App() {
   
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/facultydashboard/:FacultyID" element={<FacultyDashboard />} />
           <Route path="/todaysattendance" element={<TodaysAttendance />} />
           <Route path="/studentdashboard/:RollNO" element={<StudentDashboard />} />
+
           
                       {/* <Route path="/facultyreport" element={<FacultyReport />} /> */}
 
